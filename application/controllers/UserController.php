@@ -16,7 +16,10 @@ class UserController extends Zend_Controller_Action {
 	 * vypise informace o aktualnim uzivateli
 	 */
 	public function indexAction() {
+		// nacteni informaci
+		$user = Zend_Auth::getInstance()->getIdentity();
 		
+		$this->view->user = $user;
 	}
 	
 	/**
@@ -39,12 +42,18 @@ class UserController extends Zend_Controller_Action {
 			// kontrola, zda je formular validni
 			if ($form->isValid($this->_request->getParams())) {
 				// formular je validni - prihlaseni uzivatele
-				$tableUsers = new Application_Model_Users();
+				if (Zend_Auth::getInstance()->authenticate($form)->isValid()) {
+					$this->view->authentised = true;
+				}
 			}
 		}
 		
 		// nastaveni formulare do pohledu
 		$this->view->form = $form;
+	}
+	
+	public function logoutAction() {
+		Zend_Auth::getInstance()->clearIdentity();
 	}
 	
 	/**
@@ -58,6 +67,17 @@ class UserController extends Zend_Controller_Action {
 	 * ulozi zmeny existujiciho uzivatele
 	 */
 	public function putAction() {
+		// nacteni dat a vyhodnoceni formulare
+		$form = new Application_Form_User_My();
 		
+		if ($this->_request->isPost()) {
+		
+		} else {
+			$form->isValidPartial($this->_request->getParams());
+		}
+	}
+	
+	public function putPartAction() {
+		$this->putAction();
 	}
 }

@@ -8,23 +8,33 @@ class Application_Form_User extends MP_Form {
 		$this->setElementsBelongTo("user");
 		
 		$this->addElement("text", "login", array(
-				"label" => "Přihlašovací jméno",
+				"label" => "Login name",
 				"required" => true
 				));
 		
 		$this->addElement("text", "username", array(
-				"label" => "Skutečné jméno",
+				"label" => "Real name",
+				"required" => true
+				));
+				
+		$this->addElement("password", "password", array(
+				"label" => "Password",
+				"required" => true
+				));
+				
+		$this->addElement("password", "password_confirm", array(
+				"label" => "Password confirm",
 				"required" => true
 				));
 		
 		$this->addElement("select", "role", array(
-				"label" => "Oprávnění",
+				"label" => "Role",
 				"required" => true,
 				"multiOptions" => MP_Role::getRoles()
 				));
 		
 		$this->addElement("submit", "submit", array(
-				"label" => "Uložit"
+				"label" => "Save"
 				));
 	}
 }

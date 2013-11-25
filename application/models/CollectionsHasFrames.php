@@ -19,6 +19,8 @@ class Application_Model_CollectionsHasFrames extends Zend_Db_Table_Abstract {
 					"refTableClass" => "Application_Model_Frames",
 					"refColumns" => "id"
 					)
-			);
+				);
+
+	protected $_rowClass = "Application_Model_Row_CollectionsHasFrames";
 	
 }

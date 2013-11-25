@@ -15,4 +15,5 @@ class Application_Model_MetainfoTechnical extends Zend_Db_Table_Abstract {
 					)
 			);
 	
+	protected $_rowClass = "Application_Model_Row_MetainfoTechnical";
 }

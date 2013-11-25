@@ -1,1 +1,14 @@
 <?php
+$pattern = "<h2>%s</h2>";
+
+printf($pattern, "My account");
+$form = new Application_Form_User_My();
+echo $form;
+
+printf($pattern, "Create new account");
+$form = new Application_Form_User();
+echo $form;
+
+printf($pattern, "Edit account as admin");
+$form = new Application_Form_User_Admin();
+echo $form;

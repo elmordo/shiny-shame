@@ -13,6 +13,8 @@ class Application_Model_Experiments extends Zend_Db_Table_Abstract {
 					"refTableClass" => "Application_Model_Users",
 					"refColumns" => "id"
 					)
-			);
+				);
+
+	protected $_roeClass = "Application_Mdeol_Row_Experiment";
 	
 }

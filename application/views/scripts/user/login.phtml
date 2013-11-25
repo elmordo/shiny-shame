@@ -1,3 +1,8 @@
 <?php
+// pokud byl uzivatel prihlasen, zobrazi se hlavni strana
+if ($this->authentised) {
+	$redirector = new Zend_Controller_Action_Helper_Redirector();
+	$redirector->gotoUrl("/");
+}
 
 echo $this->form;

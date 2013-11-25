@@ -18,6 +18,6 @@ class Application_Model_Users extends Zend_Db_Table_Abstract {
 	 * @throws Zend_Db_Table_Exception
 	 */
 	public function findByLogin($login) {
-		
+		return $this->fetchRow(array("login like ?" => $login));
 	}
 }

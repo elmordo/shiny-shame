@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<nav>
+		<login>
+			<label>Log in</label>
+			<route>login</route>
+			<resource>user</resource>
+			<priviledge>login</priviledge>
+		</login>
+		<myaccount>
+			<label>My account</label>
+			<route>my-account</route>
+			<resource>user</resource>
+			<priviledge>index</priviledge>
+		</myaccount>
+		<experiments>
+			<label>Experiments</label>
+			<route>experiments</route>
+			<resource>experiment</resource>
+			<priviledge>index</priviledge>
+		</experiments>
+		<microscope>
+			<label>Microscopes</label>
+			<route>microscopes</route>
+			<resource>microscope</resource>
+			<priviledge>index</priviledge>
+		</microscope>
+		<logout>
+			<label>Log out</label>
+			<route>logout</route>
+			<resource>user</resource>
+			<priviledge>logout</priviledge>
+		</logout>
+	</nav>
+</config>
