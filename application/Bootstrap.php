@@ -60,6 +60,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 	}
 	
 	protected function _initAcl() {
+        /* @var $acl Zend_Acl */
 		$acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
 		
 		// registrace zdroju
@@ -73,7 +74,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->allow(MP_Role::ROLE_GUEST, "index");
 		$acl->allow(MP_Role::ROLE_GUEST, "error");
 		$acl->allow(MP_Role::ROLE_GUEST, "user", "login");
-		
+        
 		// povoleni akci uzivateli
 		$acl->deny(MP_Role::ROLE_USER, "user", "login");
 		$acl->allow(MP_Role::ROLE_USER, "user", array("index", "logout"));
@@ -81,11 +82,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		// povoleni akci operatorovi
 		
 		// povoleni akci adminovi
-		$acl->allow(MP_Role::ROLE_ADMIN, "index");
-		$acl->allow(MP_Role::ROLE_ADMIN, "error");
-		$acl->allow(MP_Role::ROLE_ADMIN, "user");
-		$acl->allow(MP_Role::ROLE_ADMIN, "experiment");
-		$acl->allow(MP_Role::ROLE_ADMIN, "microscope");
+		$acl->allow(MP_Role::ROLE_ADMIN);
 	}
 	
 	protected function _initNavigation() {
