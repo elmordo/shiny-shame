@@ -1,0 +1,6 @@
+.*
+
+*~
+!.gitignore
+/nbproject/private/
+/nbproject

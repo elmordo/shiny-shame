@@ -21,6 +21,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 						"action" => "index"
 						))
 				);
+        
+        $router->addRoute(
+				"edit-profile",
+				new Zend_Controller_Router_Route("/edit-profile", array(
+						"module" => "default",
+						"controller" => "user",
+						"action" => "put"
+						))
+				);
 		
 		$router->addRoute(
 				"experiments",

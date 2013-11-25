@@ -1,14 +1,11 @@
 <?php
-$pattern = "<h2>%s</h2>";
-
-printf($pattern, "My account");
-$form = new Application_Form_User_My();
-echo $form;
-
-printf($pattern, "Create new account");
-$form = new Application_Form_User();
-echo $form;
-
-printf($pattern, "Edit account as admin");
-$form = new Application_Form_User_Admin();
-echo $form;
+$user = $this->user;
+$this->headTitle("My Account");
+?>
+<table>
+    <?php 
+    echo $this->tableLayout()->row(array("Login name", $user->login));
+    echo $this->tableLayout()->row(array("Real name", $user->username));
+    ?>
+</table>
+<?php echo $this->buttonLink("Edit profile", $this->url(array(), "edit-profile")); ?>
