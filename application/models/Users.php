@@ -20,4 +20,14 @@ class Application_Model_Users extends Zend_Db_Table_Abstract {
 	public function findByLogin($login) {
 		return $this->fetchRow(array("login like ?" => $login));
 	}
+    
+    /**
+     * nacte uzivatele dle jeho id
+     * 
+     * @param int $id id uzivatele
+     * @return Application_Model_Row_User
+     */
+    public function findById($id) {
+        return $this->find($id)->current();
+    }
 }

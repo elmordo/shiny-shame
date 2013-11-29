@@ -94,7 +94,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$acl->allow(MP_Role::ROLE_ADMIN);
 	}
 	
-	protected function _initNavigation() {
+	protected function _initViews() {
 		// inicializace pohledu
 		$this->bootstrap("view");
 		$view = $this->getResource("view");
@@ -125,6 +125,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 		$title = new Zend_View_Helper_HeadTitle();
 		$title->setSeparator(" - ");
 		$title->headTitle("MicroPic");
+        
+        $styles = new Zend_View_Helper_HeadLink();
+        $styles->appendStylesheet("/css/styles.css");
 	}
 	
 }

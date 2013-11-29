@@ -19,12 +19,24 @@ class Application_Form_User extends MP_Form {
 				
 		$this->addElement("password", "password", array(
 				"label" => "Password",
-				"required" => true
+				"required" => true,
+                "filters" => array(
+                    new Zend_Filter_Null()
+                ),
+                "validators" => array(
+                    new Zend_Validate_StringLength(array("min" => 5))
+                )
 				));
 				
 		$this->addElement("password", "password_confirm", array(
 				"label" => "Password confirm",
-				"required" => true
+				"required" => true,
+                "filters" => array(
+                    new Zend_Filter_Null()
+                ),
+                "validators" => array(
+                    //array("Identical", false, "password")
+                )
 				));
 		
 		$this->addElement("select", "role", array(

@@ -70,10 +70,37 @@ class UserController extends Zend_Controller_Action {
 		// nacteni dat a vyhodnoceni formulare
 		$form = new Application_Form_User_My();
 		
+        // nacteni uzivatele
+        $identity = Zend_Auth::getInstance()->getIdentity();
+        $tableUsers = new Application_Model_Users();
+        
+        $user = $tableUsers->findById($identity->id);
+        
 		if ($this->_request->isPost()) {
-		
+            // formular byl odeslan metodou post - kontrola validity a update dat
+            if ($form->isValid($this->_request->getParams())) {
+                // formular je validni - update dat
+                
+                // update jmena
+                $user->username = $form->getValue("username");
+                
+                // update hesla, pokud je treba
+                $password = $form->getValue("password");
+                
+                if (!is_null($password)) {
+                    $user->setPassword($password);
+                }
+                
+                $user->save();
+            } else {
+                // formular neni validni - zapis do view
+                $this->view->form = $form;
+            }
 		} else {
+            // formular nebyl odeslan metodou post - probehne normalni zobrazeni
+            $form->populate($user->toArray());
 			$form->isValidPartial($this->_request->getParams());
+            $this->view->form = $form;
 		}
 	}
 	

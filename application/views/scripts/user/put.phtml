@@ -1,1 +1,14 @@
 <?php
+if (!$this->form) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    
+    $url = $this->url();
+    $redirector->gotoUrl($url);
+    return;
+}
+
+$this->headTitle("Edit Account");
+
+printf("<h2>%s</h2>", "Edit your profile");
+
+echo $this->form;

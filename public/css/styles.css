@@ -1,0 +1,13 @@
+/* 
+    Document   : styles.css
+    Created on : 26.11.2013, 11:23:18
+    Author     : petr
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.required { font-weight: bolder; }
