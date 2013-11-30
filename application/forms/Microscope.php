@@ -1,5 +1,5 @@
 <?php
-class Application_From_Microscope extends MP_Form {
+class Application_Form_Microscope extends MP_Form {
 	
 	public function init() {
 		
@@ -23,5 +23,8 @@ class Application_From_Microscope extends MP_Form {
 				"required" => true
 				));
 		
+        $this->addElement("submit", "submit", array(
+            "label" => "Save"
+        ));
 	}
 }

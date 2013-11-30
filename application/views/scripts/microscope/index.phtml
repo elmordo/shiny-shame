@@ -1,0 +1,54 @@
+<?php
+$this->headTitle("Microscopes");
+?>
+<h1>Microscopes</h1>
+<table id="microscope-table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Tag
+            </th>
+            <th>
+                Comment
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+foreach ($this->microscopes as $microscope) {
+    ?>
+        <tr>
+            <td>
+                <?php echo $microscope->name; ?>
+            </td>
+            <td>
+                <?php echo $microscope->tag; ?>
+            </td>
+            <td>
+                <?php echo $microscope->comment; ?>
+            </td>
+            <td>
+                <?php
+                // vygenerovani odkazu na akce
+                ?>
+            </td>
+        </tr>
+    <?php
+}
+?>
+    </tbody>
+</table>
+<?php
+// pokud je uzivatel opravnen, pak se zobrazi formular pro pridani noveho mikroskopu
+$user = Zend_Auth::getInstance()->getIdentity();
+$acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
+
+if ($acl->isAllowed($user->role, "microscope", "post")) {
+    echo $this->action("post.part", "microscope", "default");
+}
