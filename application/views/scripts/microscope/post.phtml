@@ -1,2 +1,13 @@
 <?php
+// kontrola presmerovani
+if ($this->microscope) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    
+    $redirector->gotoRouteAndExit($this->microscope->toArray(), "microscope-put");
+}
+
 $this->headTitle("New microscope");
+?>
+<h1>New microscope</h1>
+<?php
+echo $this->form;

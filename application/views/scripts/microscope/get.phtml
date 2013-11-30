@@ -1,0 +1,15 @@
+<?php
+$this->headTitle("Microscope");
+$microscope = $this->microscope;
+printf("<h1>Microscope - %s</h1>", $microscope->name);
+?>
+<table>
+    <tbody>
+<?php
+echo $this->tableLayout()->row(array("Name", $microscope->name));
+echo $this->tableLayout()->row(array("Tag", $microscope->tag));
+echo $this->tableLayout()->row(array("Comment", $microscope->comment));
+echo $this->tableLayout()->row(array("Suspended", $microscope->is_suspended ? "Yes" : "No"));
+?>
+    </tbody>
+</table>

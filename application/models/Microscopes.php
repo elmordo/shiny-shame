@@ -8,4 +8,16 @@ class Application_Model_Microscopes extends Zend_Db_Table_Abstract {
 	protected $_sequence = true;
 	
 	protected $_rowClass = "Application_Model_Row_Microscope";
+        
+        /**
+         * nalezne mikroskop dle tagu
+         * 
+         * @param string $tag zkratka mikroskopu
+         * @return Application_Model_Row_Microscope
+         */
+        public function findByTag($tag) {
+            return $this->fetchRow(array(
+                "`tag` like ?" => $tag
+            ));
+        }
 }
