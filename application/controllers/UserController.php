@@ -88,10 +88,29 @@ class UserController extends Zend_Controller_Action {
                 $password = $form->getValue("password");
                 
                 if (!is_null($password)) {
-                    $user->setPassword($password);
+                    // kontrola stareho hesla
+                    $oldPassword = $form->getValue("old_password");
+                    
+                    if ($user->checkPassword($oldPassword)) {
+                        // stare heslo je platne - kontrola shody hesla a potvrzeni hesla
+                        if (strcmp($password, $form->getValidValues("password_confirm"))) {
+                            $this->view->form = $form;
+                        } else {
+                            $user->setPassword($password);
+                            $user->save();
+                            
+                            $this->_helper->getHelper("FlashMessenger")->addMessage("Data has been saved, password has been changed");
+                        }
+                    } else {
+                        $this->view->form = $form;
+                        $form->getElement("old_password")->addError("Invalid old password");
+                    }
+                } else {
+                    // s klidnym svedomim muzeme uzivatele ulozit
+                    $user->save();
+                    $this->_helper->getHelper("FlashMessenger")->addMessage("Data has been saved");
                 }
                 
-                $user->save();
             } else {
                 // formular neni validni - zapis do view
                 $this->view->form = $form;

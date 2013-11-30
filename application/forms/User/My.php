@@ -16,7 +16,40 @@ class Application_Form_User_My extends Application_Form_User {
                 )
 				));
         
-        $this->getElement("password")->setRequired(false);
-        $this->getElement("password_confirm")->setRequired(false);
+        $this->setPasswordRequireStatus(false);
 	}
+    
+    /**
+     * vraci TRUE pokud jsou hesla vyzadovana
+     * 
+     * @return bool
+     */
+    public function getPasswordRequiredStatus() {
+        return $this->getElement("password")->isRequired();
+    }
+    
+    /**
+     * zvaliduje hesla
+     * 
+     * @return bool
+     */
+    public function validatePasswords() {
+        $psw = $this->getElement("password");
+        $confirm = $this->getElement("password_confirm");
+        
+        return $psw->isValid($psw->getValue()) && $confirm->isValid($confirm->getValue());
+    }
+    
+    /**
+     * nastavi, zda jsou hesla pozadovana nebo ne
+     * 
+     * @param bool $required nova hodnota pozadavku na hesla
+     * @return Application_Form_User_My
+     */
+    public function setPasswordRequireStatus($required) {
+        $this->getElement("password")->setRequired($required);
+        $this->getElement("password_confirm")->setRequired($required);
+        
+        return $this;
+    }
 }
