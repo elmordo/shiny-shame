@@ -1,5 +1,5 @@
 <?php
-class Application_Model_MetainfoTechnical extends Zend_Db_Table_Abstract {
+class Application_Model_MetainfoTechnical extends MP_Db_Table_Meta {
 	
 	protected $_name = "metainfo_technical";
 	
@@ -16,4 +16,6 @@ class Application_Model_MetainfoTechnical extends Zend_Db_Table_Abstract {
 			);
 	
 	protected $_rowClass = "Application_Model_Row_MetainfoTechnical";
+        
+        protected $_referenceColumn = "experiment_id";
 }

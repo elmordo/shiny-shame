@@ -1,5 +1,5 @@
 <?php
-class Application_Model_MetainfoBiological extends Zend_Db_Table_Abstract {
+class Application_Model_MetainfoBiological extends MP_Db_Table_Meta {
 	
 	protected $_name = "metainfo_biological";
 	
@@ -16,4 +16,6 @@ class Application_Model_MetainfoBiological extends Zend_Db_Table_Abstract {
 			);
 	
 	protected $_rowClass = "Application_Model_Row_MetaInfoBiological";
+        
+        protected $_referenceColumn = "experiment_id";
 }

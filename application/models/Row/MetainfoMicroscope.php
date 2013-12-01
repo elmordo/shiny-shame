@@ -10,7 +10,7 @@
  *
  * @author petr
  */
-class Application_Model_Row_MetainfoMicroscope extends Zend_Db_Table_Row_Abstract {
+class Application_Model_Row_MetainfoMicroscope extends MP_Db_Table_Row_Meta {
     
 }
 

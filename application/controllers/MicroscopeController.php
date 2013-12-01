@@ -2,6 +2,9 @@
 
 class MicroscopeController extends Zend_Controller_Action {
 
+    /*
+     * zobrazi informace o mikroskopu
+     */
     public function getAction() {
         // nacteni mikroskopu
         $microscope = self::findByTag($this->_request->getParam("tag"));
@@ -9,6 +12,10 @@ class MicroscopeController extends Zend_Controller_Action {
         $this->view->microscope = $microscope;
     }
 
+    /*
+     * vypise seznam mikroskopu
+     * pokud je uzivatel opravnen, tak i formular pro pridani
+     */
     public function indexAction() {
         // nacteni seznamu mikroskopu
         $tableMicroscopes = new Application_Model_Microscopes();
@@ -17,6 +24,9 @@ class MicroscopeController extends Zend_Controller_Action {
         $this->view->microscopes = $microscopes;
     }
 
+    /*
+     * vytvori novy mikroskop
+     */
     public function postAction() {
         $form = new Application_Form_Microscope();
 
@@ -38,12 +48,18 @@ class MicroscopeController extends Zend_Controller_Action {
         }
     }
 
+    /*
+     * volani vytvoreni mikrosopu jako fragment HTML stranky
+     */
     public function postPartAction() {
         $this->postAction();
         
         $this->view->form->setAction("create-microscope");
     }
-
+    
+    /*
+     * upravi existujici mikroskop
+     */
     public function putAction() {
         // nacteni mikroskopu
         $microscope = self::findByTag($this->_request->getParam("tag"));
