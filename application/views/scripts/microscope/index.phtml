@@ -15,17 +15,22 @@ $this->headTitle("Microscopes");
                 Comment
             </th>
             <th>
-                Actions
+                Suspended
             </th>
         </tr>
     </thead>
     <tbody>
 <?php
+$actionPattern = "<a href='%s'>%s</a>";
+
 foreach ($this->microscopes as $microscope) {
     ?>
         <tr>
             <td>
-                <?php echo $microscope->name; ?>
+                <?php 
+                $url = $this->url($microscope->toArray(), "microscope-get");
+                printf($actionPattern, $url, $microscope->name); 
+                ?>
             </td>
             <td>
                 <?php echo $microscope->tag; ?>
@@ -34,9 +39,7 @@ foreach ($this->microscopes as $microscope) {
                 <?php echo $microscope->comment; ?>
             </td>
             <td>
-                <?php
-                // vygenerovani odkazu na akce
-                ?>
+                <?php echo $microscope->is_suspended ? "Yes" : "No"; ?>
             </td>
         </tr>
     <?php

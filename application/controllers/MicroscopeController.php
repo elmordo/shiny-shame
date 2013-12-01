@@ -45,7 +45,25 @@ class MicroscopeController extends Zend_Controller_Action {
     }
 
     public function putAction() {
+        // nacteni mikroskopu
+        $microscope = self::findByTag($this->_request->getParam("tag"));
+        $form = new Application_Form_Microscope();
         
+        if ($this->_request->isPost()) {
+            // validace formulare
+            if ($form->isValid($this->_request->getParams())) {
+                // update dat
+                $microscope->setFromArray($form->getValues(true));
+                
+                $microscope->save();
+                $this->view->redirect = true;
+            }
+        } else {
+            $form->populate($microscope->toArray());
+        }
+        
+        $this->view->microscope = $microscope;
+        $this->view->form = $form;
     }
 
     /**

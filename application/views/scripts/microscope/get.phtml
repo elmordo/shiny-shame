@@ -13,3 +13,14 @@ echo $this->tableLayout()->row(array("Suspended", $microscope->is_suspended ? "Y
 ?>
     </tbody>
 </table>
+<?php
+$user = Zend_Auth::getInstance()->getIdentity();
+$acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
+
+// kontrola, jestli uzivatel muze editovat mikroskop
+if ($acl->isAllowed($user->role, "microscope", "put")) {
+    $url = $this->url($microscope->toArray(), "microscope-put");
+    
+    printf("<a href='%s'>Edit</a>", $url);
+}
+?>

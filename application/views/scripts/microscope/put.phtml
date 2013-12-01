@@ -1,0 +1,24 @@
+<?php
+// otestovani presmerovani
+if ($this->redirect) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($this->url($this->microscope->toArray()));
+}
+
+$this->headTitle("Microscope");
+$this->headTitle($this->microscope->name);
+
+printf("<h1>Edit microscope - %s</h1>", $this->microscope->name);
+
+echo $this->form;
+?>
+<h2>Technical information</h2>
+<table>
+    <thead>
+        <tr>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+</table>
