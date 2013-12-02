@@ -59,7 +59,7 @@ class MetaController extends Zend_Controller_Action {
         // vyhodnoceni typu. Pokud typ neni nastaven -> vyjimka
         $metaType = $this->_request->getParam(self::REQUEST_PARAM_NAME);
         
-        switch ($this->_request->getParam($metaType)) {
+        switch ($metaType) {
             case self::TYPE_BIO:
                 $this->_table = new Application_Model_MetainfoBiological();
                 break;
@@ -81,23 +81,47 @@ class MetaController extends Zend_Controller_Action {
         $this->_parentId = $this->_request->getParam(self::REQUEST_PARAM_PARENT_ID);
     }
     
+    /*
+     * smaze meta informaci
+     */
     public function deleteAction() {
         
     }
     
+    /**
+     * zobrazi seznam metainformaci jako samostatnou stranku
+     * 
+     * @throws Zend_Controller_Action_Exception
+     */
     public function indexAction() {
         // rodicovsky objekt nesmi byt prazdny
         if (is_null($this->_parentId)) {
-            throw new Zend_Controller_Action_Exception("Parent id is null")
+            throw new Zend_Controller_Action_Exception("Parent id is null");
         }
         
         // nacteni dat dle rodicovskeho objektu
+        $items = $this->_table->findByParent($this->_parentId, "name");
+        
+        $this->view->items = $items;
     }
     
+    /**
+     * zobrazi seznam meta informaci jako fragment stranky
+     */
+    public function indexPartAction() {
+        $this->indexAction();
+    }
+    
+    /**
+     * nova meta informace
+     */
     public function postAction() {
         
     }
     
+    /**
+     * upravi meta informaci
+     */
     public function putAction() {
         
     }

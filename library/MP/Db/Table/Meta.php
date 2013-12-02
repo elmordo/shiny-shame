@@ -26,4 +26,17 @@ class MP_Db_Table_Meta extends Zend_Db_Table_Abstract {
     public function findById($id) {
         return $this->find($id)->current();
     }
+    
+    /**
+     * vraci zaznamy dle rodice
+     * 
+     * @param int $parentId identifikacni cilo rodice
+     * @param string $order razeni
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public function findByParent($parentId, $order = null) {
+        return $this->fetchAll(array(
+            sprintf("%s = ?", $this->_referenceColumn) => $parentId
+        ), $order);
+    }
 }

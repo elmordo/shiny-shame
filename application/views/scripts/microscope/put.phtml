@@ -1,4 +1,6 @@
 <?php
+require_once APPLICATION_PATH . '/controllers/MetaController.php';
+
 // otestovani presmerovani
 if ($this->redirect) {
     $redirector = new Zend_Controller_Action_Helper_Redirector();
@@ -8,17 +10,14 @@ if ($this->redirect) {
 $this->headTitle("Microscope");
 $this->headTitle($this->microscope->name);
 
-printf("<h1>Edit microscope - %s</h1>", $this->microscope->name);
-
+echo $this->header(sprintf("Edit microscope - %s", $this->microscope->name));
+$this->header()->goDown();
 echo $this->form;
+
+echo $this->header("Technical data");
+
+echo $this->action("index.part", "meta", "default", array(
+    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE,
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->microscope->id
+));
 ?>
-<h2>Technical information</h2>
-<table>
-    <thead>
-        <tr>
-            <th>
-                
-            </th>
-        </tr>
-    </thead>
-</table>
