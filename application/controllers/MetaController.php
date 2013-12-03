@@ -79,6 +79,10 @@ class MetaController extends Zend_Controller_Action {
         
         // nactnei id rodicovskeho objektu
         $this->_parentId = $this->_request->getParam(self::REQUEST_PARAM_PARENT_ID);
+        
+        // nastaveni hodnot do view
+        $this->view->parentId = $this->_parentId;
+        $this->view->metaType = $metaType;
     }
     
     /*
@@ -116,7 +120,17 @@ class MetaController extends Zend_Controller_Action {
      * nova meta informace
      */
     public function postAction() {
+        // vytvoreni formulare a nacteni dat
+        $form = new Application_Form_MetaInfo();
+        $form->populate($this->_request->getParams());
         
+        if ($this->_request->isPost()) {
+            
+        } else {
+            $form->isValidPartial($this->_request->getParams());
+        }
+        
+        $this->view->form = $form;
     }
     
     /**

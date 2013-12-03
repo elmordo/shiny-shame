@@ -21,5 +21,9 @@ class Application_Form_MetaInfo extends MP_Form {
 		$this->addElement("submit", "submit", array(
 				"label" => "Save"
 				));
+                
+                $this->addElement("hidden", MetaController::REQUEST_PARAM_PARENT_ID, array(
+                    "required" => true
+                ));
 	}
 }

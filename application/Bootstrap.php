@@ -96,6 +96,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("user"));
         $acl->addResource(new Zend_Acl_Resource("experiment"));
         $acl->addResource(new Zend_Acl_Resource("microscope"));
+        $acl->addResource(new Zend_Acl_Resource("meta"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");
