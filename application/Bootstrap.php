@@ -1,4 +1,5 @@
 <?php
+require_once APPLICATION_PATH . '/controllers/MetaController.php';
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
@@ -83,6 +84,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "controller" => "microscope",
                     "action" => "put"
                 ))
+                );
+        
+        $router->addRoute(
+                "meta-post", new Zend_Controller_Router_Route(sprintf("/meta/:%s/parent/:%s/post", MetaController::REQUEST_PARAM_NAME, MetaController::REQUEST_PARAM_PARENT_ID), array(
+                    "module" => "default",
+                    "controller" => "meta",
+                    "action" => "post"))
                 );
     }
 

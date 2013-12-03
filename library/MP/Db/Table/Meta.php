@@ -13,9 +13,30 @@
  */
 class MP_Db_Table_Meta extends Zend_Db_Table_Abstract {
     
+    /**
+     * jmeno sloupce s referenci na predka
+     *
+     * @var string
+     */
     protected $_referenceColumn = null;
     
     protected $_rowClass = "MP_Db_Table_Row_Meta";
+    
+    /**
+     * vytvori a ulozi zaznam o metadatech
+     * 
+     * @param array $data data z formulare
+     * @param int $parentId identifikacni cislo predka
+     * @return MP_Db_Table_Row_Meta
+     */
+    public function createMetaItem(array $data, $parentId) {
+        $row = $this->createRow($data);
+        $row[$this->_referenceColumn] = $parentId;
+        
+        $row->save();
+        
+        return $row;
+    }
     
     /**
      * vraci zaznam dle jeho id
@@ -38,5 +59,14 @@ class MP_Db_Table_Meta extends Zend_Db_Table_Abstract {
         return $this->fetchAll(array(
             sprintf("%s = ?", $this->_referenceColumn) => $parentId
         ), $order);
+    }
+    
+    /**
+     * vraci jmeno referenciho sloupce s vazbou na predka
+     * 
+     * @return string
+     */
+    public function getReferenceColumn() {
+        return $this->_referenceColumn;
     }
 }

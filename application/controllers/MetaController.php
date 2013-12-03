@@ -45,6 +45,13 @@ class MetaController extends Zend_Controller_Action {
     protected $_parentId = null;
     
     /**
+     * repinac typu rodicovskeho objektu
+     *
+     * @var string
+     */
+    protected $_metaType = null;
+    
+    /**
      * nastavi tabulku s metadaty, se kterou se bude pracovat
      * 
      * @throws Zend_Controller_Action_Exception
@@ -58,6 +65,7 @@ class MetaController extends Zend_Controller_Action {
         
         // vyhodnoceni typu. Pokud typ neni nastaven -> vyjimka
         $metaType = $this->_request->getParam(self::REQUEST_PARAM_NAME);
+        $this->_metaType = $metaType;
         
         switch ($metaType) {
             case self::TYPE_BIO:
@@ -122,10 +130,18 @@ class MetaController extends Zend_Controller_Action {
     public function postAction() {
         // vytvoreni formulare a nacteni dat
         $form = new Application_Form_MetaInfo();
-        $form->populate($this->_request->getParams());
+        $form->setAction($this->view->url(array(
+            self::REQUEST_PARAM_NAME => $this->_metaType, 
+            self::REQUEST_PARAM_PARENT_ID => $this->_parentId), "meta-post"));
         
         if ($this->_request->isPost()) {
-            
+            // validace formulare
+            if ($form->isValid($this->_request->getParams())) {
+                // vytvoreni noveho zaznamu
+                $item = $this->_table->createMetaItem($form->getValues(true), $this->_parentId);
+                
+                $this->view->item = $item;
+            }
         } else {
             $form->isValidPartial($this->_request->getParams());
         }
