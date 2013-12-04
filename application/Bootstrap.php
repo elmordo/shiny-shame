@@ -92,6 +92,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "controller" => "meta",
                     "action" => "post"))
                 );
+        
+        $router->addRoute(
+                "meta-put-microscope", new Zend_Controller_Router_Route(sprintf("/microscope/:%s/meta/:metaId/put", MetaController::REQUEST_PARAM_PARENT_ID), array(
+                    "module" => "default",
+                    "controller" => "meta",
+                    "action" => "put",
+                    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE
+                ))
+                );
     }
 
     protected function _initAcl() {

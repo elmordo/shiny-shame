@@ -1,0 +1,28 @@
+<?php
+// kontrola, jestli doslo k ulozeni dat
+if ($this->meta) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrl($_SERVER["HTTP_REFERER"]);
+}
+
+echo $this->header("Edit meta information");
+$this->header()->goDown();
+
+// vytvoreni navratoveho odkazu
+switch ($this->metaType) {
+    case MetaController::TYPE_MICROSCOPE:
+        $tableMicroscopes = new Application_Model_Microscopes();
+        $microscope = $tableMicroscopes->findById($this->parentId);
+        
+        $url = $this->url($microscope->toArray(), "microscope-put");
+        printf("<a href='%s'>Back to %s</a>", $url, $microscope->name);
+        
+        break;
+}
+
+echo $this->form;
+
+// formular smazani
+echo $this->header("Delete iformation");
+echo $this->deleteForm;
+?>

@@ -97,7 +97,20 @@ class MetaController extends Zend_Controller_Action {
      * smaze meta informaci
      */
     public function deleteAction() {
+        // nacteni a kontrola dat
+        $form = new MP_Form_Delete();
         
+        if ($form->isValid($this->_request->getParams())) {
+            // nacteni a smazani polozky
+            $meta = self::findMetaData($this->_request->getParam("metaId"), $this->_table);
+            
+            $meta->delete();
+            
+            $this->view->deleted = true;
+        } else {
+            // chyba - polozka nemuze byt smazana
+            $this->view->deleted = false;
+        }
     }
     
     /**
@@ -153,23 +166,54 @@ class MetaController extends Zend_Controller_Action {
      * upravi meta informaci
      */
     public function putAction() {
+        $form = new Application_Form_MetaInfo();
+        $meta = self::findMetaData($this->_request->getParam("metaId"), $this->_table);
+        $form->populate($meta->toArray());
         
+        if ($this->_request->isPost()) {
+            if ($form->isValid($this->_request->getParams())) {
+                $meta->setFromArray($form->getValues(true));
+                $meta->save();
+                
+                $this->view->meta = $meta;
+            }
+        } else {
+            $form->isValidPartial($this->_request->getParams());
+            
+            // nastaveni formulare smazani
+            $deleteForm = new MP_Form_Delete();
+            
+            // nastaveni akce
+            $action = sprintf("/meta/delete?%s=%s&%s=%s&metaId=%s", 
+                    self::REQUEST_PARAM_NAME, 
+                    $this->_metaType, 
+                    self::REQUEST_PARAM_PARENT_ID, 
+                    $this->_parentId,
+                    $meta->id);
+            
+            $deleteForm->setAction($action);
+            
+            $this->view->deleteForm = $deleteForm;
+        }
+        
+        $this->view->form = $form;
     }
     
     /**
      * vraci zaznam z meta dat dle identifikacniho cisla
      * 
      * @param int $id identifikator zaznamu
+     * @param MP_Db_Table_Meta $table tabulka meta dat
      * @return MP_Db_Table_Row_Meta
      * @throws Zend_Db_Table_Exception
      */
-    public static function findMetaData($id) {
-        $retVal = $this->_table->findById($id);
+    public static function findMetaData($id, MP_Db_Table_Meta $table) {
+        $retVal = $table->findById($id);
         
         if (is_null($retVal)) {
             throw new Zend_Db_Table_Exception(sprintf("Meta information #%s not found in table '%s'",
                     $id,
-                    $this->_table->info("name")));
+                    $table->info("name")));
         }
         
         return $retVal;

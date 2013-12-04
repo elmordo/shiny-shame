@@ -1,0 +1,18 @@
+<?php
+$redirector = new Zend_Controller_Action_Helper_Redirector();
+
+if ($this->deleted) {
+    // vyhodnoceni typu meta informace a presun na korektni stranku
+    switch ($this->metaType) {
+        case MetaController::TYPE_MICROSCOPE:
+            $tableMicroscopes = new Application_Model_Microscopes();
+            $microscope = $tableMicroscopes->findById($this->parentId);
+            
+            $url = $this->url($microscope->toArray(), "microscope-put");
+            $redirector->gotoUrlAndExit($url);
+            break;
+    }
+} else {
+    // nebylo nic smazano
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
+}
