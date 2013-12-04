@@ -1,4 +1,5 @@
 <?php
+require_once APPLICATION_PATH . '/controllers/MetaController.php';
 
 class MicroscopeController extends Zend_Controller_Action {
 
@@ -9,7 +10,11 @@ class MicroscopeController extends Zend_Controller_Action {
         // nacteni mikroskopu
         $microscope = self::findByTag($this->_request->getParam("tag"));
         
+        // nacteni metainformaci
+        $metaInfo = $microscope->findMeta();
+        
         $this->view->microscope = $microscope;
+        $this->view->metaInfo = $metaInfo;
     }
 
     /*

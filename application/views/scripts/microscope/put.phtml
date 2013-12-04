@@ -1,6 +1,4 @@
 <?php
-require_once APPLICATION_PATH . '/controllers/MetaController.php';
-
 // otestovani presmerovani
 if ($this->redirect) {
     $redirector = new Zend_Controller_Action_Helper_Redirector();
@@ -14,10 +12,30 @@ echo $this->header(sprintf("Edit microscope - %s", $this->microscope->name));
 $this->header()->goDown();
 echo $this->form;
 
-echo $this->header("Technical data");
+// vygenerovani akci pro meta informace
+$options = array(
+    "displayActions" => true,
+    "actions" => array(
+        "edit" => array(
+            "caption" => "Edit",
+            "url" => sprintf("/microscope/%s/meta/{metaId}/edit", urlencode($this->microscope->id)),
+            "class" => "button",
+            "type" => "link"
+        )
+    )
+);
 
-echo $this->action("index.part", "meta", "default", array(
+echo $this->header("Technical data");
+echo $this->meta($this->microscope->findMeta(), $options);
+
+// vyhodnocnei vytvoreni nove meta informaci
+$acl = $this->acl();
+$user = Zend_Auth::getInstance()->getIdentity();
+
+if ($acl->isAllowed($user->role, "meta", "post")) {
+    echo $this->action("post", "meta", "default", array(
     MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE,
     MetaController::REQUEST_PARAM_PARENT_ID => $this->microscope->id
-));
+    ));
+}
 ?>

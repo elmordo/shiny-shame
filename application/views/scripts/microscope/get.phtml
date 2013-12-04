@@ -1,7 +1,8 @@
 <?php
 $this->headTitle("Microscope");
 $microscope = $this->microscope;
-printf("<h1>Microscope - %s</h1>", $microscope->name);
+echo $this->header(sprintf("Microscope - %s", $microscope->name));
+$this->header()->goDown();
 ?>
 <table>
     <tbody>
@@ -14,6 +15,7 @@ echo $this->tableLayout()->row(array("Suspended", $microscope->is_suspended ? "Y
     </tbody>
 </table>
 <?php
+// vyhodnoceni moznosti editovat mikroskop
 $user = Zend_Auth::getInstance()->getIdentity();
 $acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
 
@@ -23,4 +25,8 @@ if ($acl->isAllowed($user->role, "microscope", "put")) {
     
     printf("<a href='%s'>Edit</a>", $url);
 }
+
+// vypsani metainformaci
+echo $this->header("Technical data");
+echo $this->meta($this->metaInfo);
 ?>
