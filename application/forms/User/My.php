@@ -4,6 +4,8 @@ class Application_Form_User_My extends Application_Form_User {
 	public function init() {
 		parent::init();
 		
+        $this->setElementsBelongTo("myaccount");
+        
 		$this->removeElement("login");
 		$this->removeElement("role");
 		

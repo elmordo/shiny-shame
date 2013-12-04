@@ -6,7 +6,7 @@ class Application_Form_User extends MP_Form {
 		$this->setName("user");
 		$this->setMethod("post");
 		$this->setElementsBelongTo("user");
-		
+        
 		$this->addElement("text", "login", array(
 				"label" => "Login name",
 				"required" => true

@@ -3,7 +3,9 @@
 class Application_Form_MetaInfo extends MP_Form {
 
     public function init() {
-
+        
+        $this->setElementsBelongTo("meta");
+        
         $this->addElement("text", "name", array(
             "label" => "Name",
             "required" => true

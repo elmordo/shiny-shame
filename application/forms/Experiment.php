@@ -2,6 +2,8 @@
 class Application_Form_Experiment extends MP_Form {
 	
 	public function init() {
+        
+        $this->setElementsBelongTo("experiment");
 		
 		$this->addElement("text", "name", array(
 				"label" => "Name",
