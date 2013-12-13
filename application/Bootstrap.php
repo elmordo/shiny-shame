@@ -101,6 +101,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE
                 ))
                 );
+        
+        $router->addRoute(
+                "create-experiment", new Zend_Controller_Router_Route("/new-experiment", array(
+                    "module" => "default",
+                    "controller" => "experiment",
+                    "action" => "post"
+                ))
+                );
     }
 
     protected function _initAcl() {

@@ -22,7 +22,10 @@ class Application_Form_Experiment extends MP_Form {
 		
 		$this->addElement("text", "ends", array(
 				"label" => "Ends",
-				"required" => false
+				"required" => false,
+                "validators" => array(
+                    new MP_Validate_SqlDateTime()
+                )
 				));
 		
 		$this->addElement("submit", "submit", array(

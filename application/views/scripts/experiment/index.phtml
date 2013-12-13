@@ -1,16 +1,14 @@
-<h1>New experiment</h1>
 <?php
-$form = new Application_Form_Experiment();
+// pokud je uzivatel opravnen, zobrazi se odkaz pro vytvoreni experimentu
+$user = Zend_Auth::getInstance()->getIdentity();
+$acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
 
-echo $form;
-?>
-<h2>Biological information</h2>
-<?php 
-$form = new Application_Form_MetaInfo();
+if ($acl->isAllowed($user, "experiment", "post")) {
+    // zobrazeni odkazu na vytvoreni noveho experimentu
+    $url = $this->url(array(), "create-experiment");
+    
+    printf("<a href='%s'>New experiment</a>", $url);
+}
 
-echo $form;
-?>
-<h2>Technical information</h2>
-<?php 
-echo $form;
+echo $this->experiment()->table($this->experiments);
 ?>
