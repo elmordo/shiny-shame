@@ -17,14 +17,17 @@ class Application_Form_Experiment extends MP_Form {
 		
 		$this->addElement("text", "begins", array(
 				"label" => "Begins",
-				"required" => false
+				"required" => false,
+                "validators" => array(
+                    new MP_Validate_SqlDate(MP_Validate_SqlDate::CHECK_DATETIME)
+                )
 				));
 		
 		$this->addElement("text", "ends", array(
 				"label" => "Ends",
 				"required" => false,
                 "validators" => array(
-                    new MP_Validate_SqlDateTime()
+                    new MP_Validate_SqlDate(MP_Validate_SqlDate::CHECK_DATETIME)
                 )
 				));
 		
