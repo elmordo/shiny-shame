@@ -1,1 +1,11 @@
 <?php
+if ($this->redirect) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
+}
+
+$this->headTitle($this->experiment->name);
+
+echo $this->header("Experiment");
+echo $this->buttonLink("Back to overview", $this->url($this->experiment->toArray(), "get-experiment"));
+echo $this->form;

@@ -109,6 +109,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "action" => "post"
                 ))
                 );
+        
+        $router->addRoute(
+                "edit-experiment", new Zend_Controller_Router_Route("/experiment/:id/edit", array(
+                    "module" => "default",
+                    "controller" => "experiment",
+                    "action" => "put"
+                ))
+                );
+        
+        $router->addRoute(
+                "get-experiment", new Zend_Controller_Router_Route("/experiment/:id/overview", array(
+                    "module" => "default",
+                    "controller" => "experiment",
+                    "action" => "get"
+                ))
+                );
     }
 
     protected function _initAcl() {

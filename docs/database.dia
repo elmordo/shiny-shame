@@ -519,7 +519,7 @@
             <dia:string>#int#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
-            <dia:string>#not null#</dia:string>
+            <dia:string>#null#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
             <dia:string>#identikační číslo mikroskopu#</dia:string>

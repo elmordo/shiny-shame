@@ -1,5 +1,5 @@
 <?php
-class Application_Model_CollectionsHasFrames extends Zend_Db_Table_Abstract {
+class Application_Model_CollectionsHasFrames extends MP_Db_Table {
 	
 	protected $_name = "collections_has_frames";
 	

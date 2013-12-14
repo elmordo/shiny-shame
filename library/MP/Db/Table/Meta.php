@@ -11,7 +11,7 @@
  *
  * @author petr
  */
-class MP_Db_Table_Meta extends Zend_Db_Table_Abstract {
+class MP_Db_Table_Meta extends MP_Db_Table {
     
     /**
      * jmeno sloupce s referenci na predka

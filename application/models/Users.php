@@ -1,5 +1,5 @@
 <?php
-class Application_Model_Users extends Zend_Db_Table_Abstract {
+class Application_Model_Users extends MP_Db_Table {
 	
 	protected $_name = "users";
 	

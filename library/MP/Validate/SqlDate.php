@@ -19,6 +19,9 @@ class MP_Validate_SqlDate extends Zend_Validate_Abstract {
     const CHECK_DATETIME = 3;
     const CHECH_DATE_AND_OR_TIME = 4;
     
+    const PATTERN_DATE = "[0-9]{4}(-[0-9]{2}){2}";
+    const PATTERN_TIME = "[0-9]{2}(-[0-9]{2}){2}";
+    
     protected $_messageTemplates = array(
         self::INVALID => "Incorrect date format"
     );
@@ -35,19 +38,19 @@ class MP_Validate_SqlDate extends Zend_Validate_Abstract {
         
         switch ($this->_checkType) {
             case self::CHECK_DATE:
-                
+                $regEx = self::PATTERN_DATE;
                 break;
             
             case self::CHECK_TIME:
-                
+                $regEx = self::PATTERN_TIME;
                 break;
             
             case self::CHECK_DATETIME:
-                
+                $regEx = sprintf("%s %s", self::PATTERN_DATE, self::PATTERN_TIME);
                 break;
             
             case self::CHECH_DATE_AND_OR_TIME:
-                
+                $regEx = sprintf("%s (%s)?", self::PATTERN_DATE, self::PATTERN_TIME);
                 break;
         }
         

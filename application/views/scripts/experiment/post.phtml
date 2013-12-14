@@ -1,2 +1,10 @@
 <?php
+// presmerovani, pokud byl radek vytvoren
+if ($this->experiment) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $url = $this->url($this->experiment->toArray(), "edit-experiment");
+    
+    $redirector->gotoUrlAndExit($url);
+}
+
 echo $this->form;
