@@ -1,1 +1,15 @@
 <?php
+$this->headTitle($this->experiment->name);
+echo $this->header($this->experiment->name);
+echo $this->experiment($this->experiment);
+
+// vyhodnoceni, jestli je uzivateli dovoleno editovat experiment
+$user = Zend_Auth::getInstance()->getIdentity();
+/* @var $acl Zend_Acl */
+$acl = $this->acl();
+
+if ($acl->isAllowed($user->role, $this->experiment, "put")) {
+    $url = $this->url($this->experiment->toArray(), "edit-experiment");
+    
+    echo $this->buttonLink("Edit experiment", $url);
+}

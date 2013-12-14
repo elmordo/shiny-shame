@@ -1,5 +1,7 @@
 <?php
-class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract {
+class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract implements Zend_Acl_Resource_Interface {
+    
+    const RESOURCE_NAME = "experiment";
     
     /**
      *
@@ -36,4 +38,14 @@ class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract {
         
         return $this->_user;
     }
+    
+    /**
+     * vraci id zdroje
+     * 
+     * @return string
+     */
+    public function getResourceId() {
+        return self::RESOURCE_NAME;
+    }
+    
 }

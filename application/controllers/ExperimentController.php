@@ -12,7 +12,10 @@ class ExperimentController extends Zend_Controller_Action {
 	 * zobrazi experiment
 	 */
 	public function getAction() {
-		
+		// nacteni dat
+        $experiment = self::findExperiment($this->_request->getParam("id"));
+        
+        $this->view->experiment = $experiment;
 	}
 	
 	/**

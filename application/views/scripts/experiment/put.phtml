@@ -6,6 +6,6 @@ if ($this->redirect) {
 
 $this->headTitle($this->experiment->name);
 
-echo $this->header("Experiment");
+echo $this->header($this->experiment->name);
 echo $this->buttonLink("Back to overview", $this->url($this->experiment->toArray(), "get-experiment"));
 echo $this->form;

@@ -11,3 +11,6 @@ root {
 }
 
 .required { font-weight: bolder; }
+.info-table tr td:first-child { font-style: italic; }
+.info-table tr td:last-child { font-weight: bolder; }
+.info-table tr td { margin: 0; padding: 5px 15px 5px 5px; }

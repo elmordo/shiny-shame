@@ -147,8 +147,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         // povoleni akci uzivateli
         $acl->deny(MP_Role::ROLE_USER, "user", "login");
         $acl->allow(MP_Role::ROLE_USER, "user", array("index", "logout"));
+        $acl->allow(MP_Role::ROLE_USER, "experiment", array("index", "get"));
 
         // povoleni akci operatorovi
+        $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", array("post"));
+        $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", "put", new MP_Acl_Assert_Experiment());
+        
         // povoleni akci adminovi
         $acl->allow(MP_Role::ROLE_ADMIN);
     }
