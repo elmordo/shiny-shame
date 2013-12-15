@@ -63,9 +63,8 @@ class ExperimentController extends Zend_Controller_Action {
         if ($this->_request->isPost()) {
             // formular byl odeslan, dojde k validaci a pripadnemu ulozeni dat
             if ($form->isValid($this->_request->getParams())) {
-                
-                $tableExperiments = new Application_Model_Experiments();
-                $tableExperiments->update($form->getValues(true), array("id = ?" => $experiment->id));
+                $experiment->setFromArray($form->getValues(true));
+                $experiment->save();
                 
                 $this->view->redirect = true;
             }
