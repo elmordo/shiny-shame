@@ -21,7 +21,7 @@ class Zend_View_Helper_Meta extends Zend_View_Helper_Abstract {
     public function head(array $config = array()) {
         $config = array_merge(array("displayActions" => false), $config);
         
-        $cols = array("Name", "Value");
+        $cols = array("Name", "Value", "Constant");
         
         if ($config["displayActions"]) {
             $cols[] = "Actions";
@@ -42,7 +42,7 @@ class Zend_View_Helper_Meta extends Zend_View_Helper_Abstract {
         $config = array_merge(array("displayActions" => false, "actions" => array()), $config);
         
         // sestaveni zakladni informaci
-        $information = array($data["name"], $data["value"]);
+        $information = array($data["name"], $data["value"], $data["is_constant"] ? "Yes" : "No");
         
         if ($config["displayActions"]) {
             $actions = array();

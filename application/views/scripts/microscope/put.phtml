@@ -18,7 +18,7 @@ $options = array(
     "actions" => array(
         "edit" => array(
             "caption" => "Edit",
-            "url" => sprintf("/microscope/%s/meta/{metaId}/put", urlencode($this->microscope->id)),
+            "url" => sprintf("/microscope/%s/meta/{metaId}/put?%s=1", urlencode($this->microscope->id), MetaController::REQUEST_PARAM_ADMIN),
             "class" => "button",
             "type" => "link"
         )

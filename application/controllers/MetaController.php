@@ -29,6 +29,11 @@ class MetaController extends Zend_Controller_Action {
      * definuje jmeno parametru, kde je v requestu ulozeno id rodicovskeho objketu
      */
     const REQUEST_PARAM_PARENT_ID = "PARENT_ID";
+    
+    /**
+     * definuje jmeno parametru, ve kterem je ulozen prepinac administracniho modu
+     */
+    const REQUEST_PARAM_ADMIN = "ADMIN_MODE";
 
     /**
      * tabulka metainformace
@@ -50,6 +55,13 @@ class MetaController extends Zend_Controller_Action {
      * @var string
      */
     protected $_metaType = null;
+    
+    /**
+     * prepinac adminstracniho modu
+     *
+     * @var bool
+     */
+    protected $_adminMode = false;
     
     /**
      * nastavi tabulku s metadaty, se kterou se bude pracovat
@@ -91,6 +103,17 @@ class MetaController extends Zend_Controller_Action {
         // nastaveni hodnot do view
         $this->view->parentId = $this->_parentId;
         $this->view->metaType = $metaType;
+        
+        // vyhodnoceni administracniho prepinace
+        if ($this->_request->getParam(self::REQUEST_PARAM_ADMIN, 0)) {
+            // kontrola acl
+            $acl = $this->getFrontController()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
+            $user = Zend_Auth::getInstance()->getIdentity();
+            
+            if (!$acl->isAllowed($user, "meta", "admin")) throw new Zend_Acl_Exception("User can not change constant meta values");
+            
+            $this->_adminMode = true;
+        }
     }
     
     /*
@@ -143,6 +166,8 @@ class MetaController extends Zend_Controller_Action {
     public function postAction() {
         // vytvoreni formulare a nacteni dat
         $form = new Application_Form_MetaInfo();
+        $form->enableAdminMode();
+        
         $form->setAction($this->view->url(array(
             self::REQUEST_PARAM_NAME => $this->_metaType, 
             self::REQUEST_PARAM_PARENT_ID => $this->_parentId), "meta-post"));
@@ -167,6 +192,12 @@ class MetaController extends Zend_Controller_Action {
      */
     public function putAction() {
         $form = new Application_Form_MetaInfo();
+        
+        // pokud je aktivovan administracni mod, prepne se formular
+        if ($this->_adminMode) {
+            $form->enableAdminMode();
+        }
+        
         $meta = self::findMetaData($this->_request->getParam("metaId"), $this->_table);
         $form->populate($meta->toArray());
         
