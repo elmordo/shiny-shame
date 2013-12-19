@@ -8,8 +8,10 @@
 	?>
 </head>
 <body>
+    <div id="main-menu">
+        <?php echo $this->navigation()->menu(); ?>
+    </div>
 <?php
-echo $this->navigation()->menu();
 echo $this->flashMessages()->printMessages();
 echo $this->layout()->content; 
 ?>
