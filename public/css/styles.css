@@ -11,8 +11,8 @@ root {
 }
 
 #main-menu { padding: 0px; border-radius: 10px; border: 1px #000000 solid; }
-#main-menu .navigation { margin: 5px; }
-#main-menu .navigation li { display: inline; text-align: center; font-size: 14pt; font-variant: small-caps; border-right: 1px #000000 solid; margin: 5px 15px; padding-right: 15px; }
+#main-menu .navigation { margin: 5px; padding: 0px; }
+#main-menu .navigation li { display: inline; text-align: center; font-size: 14pt; font-variant: small-caps; border-right: 1px #000000 solid; margin: 5px 0px; padding-right: 15px; padding-left: 15px }
 #main-menu .navigation li:last-child { border: 0; }
 
 .required { font-weight: bolder; }
