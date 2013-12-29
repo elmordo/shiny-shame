@@ -1,0 +1,16 @@
+<?php
+echo $this->header("Frame collections");
+$this->header()->goDown();
+
+$acl = $this->acl();
+$user = Zend_Auth::getInstance()->getIdentity();
+
+if ($acl->isAllowed($user, "collection", "post")) {
+    $url = $this->url(array("experimentId" => $this->experiment->id), "post-collection");
+    echo $this->buttonLink("Create new collection", $url);
+}
+
+echo $this->collection()->collections($this->collections);
+
+$this->header()->goUp();
+?>

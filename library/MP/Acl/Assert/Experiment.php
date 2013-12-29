@@ -20,6 +20,9 @@ class MP_Acl_Assert_Experiment implements Zend_Acl_Assert_Interface {
         // vyhodnoceni role
         if ($role->getRoleId() == MP_Role::ROLE_ADMIN) return true;
         
+        // vyhodnoceni akce - cizimu uzivateli je povolen get
+        if ($privilege == "get") return true;
+        
         return Zend_Auth::getInstance()->getIdentity()->id == $resource->user_id;
     }
 }

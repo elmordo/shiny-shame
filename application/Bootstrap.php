@@ -125,6 +125,22 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "action" => "get"
                 ))
                 );
+        
+        $router->addRoute(
+                "post-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/new-collection", array(
+                    "module" => "default",
+                    "controller" => "collection",
+                    "action" => "post"
+                ))
+                );
+        
+        $router->addRoute(
+                "put-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/collection/:id/edit", array(
+                    "module" => "default",
+                    "controller" => "collection",
+                    "action" => "put"
+                ))
+                );
     }
 
     protected function _initAcl() {
@@ -138,6 +154,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("experiment"));
         $acl->addResource(new Zend_Acl_Resource("microscope"));
         $acl->addResource(new Zend_Acl_Resource("meta"));
+        $acl->addResource(new Zend_Acl_Resource("collection"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");
@@ -151,7 +168,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
 
         // povoleni akci operatorovi
         $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", array("post"));
-        $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", "put", new MP_Acl_Assert_Experiment());
+        $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", array("put", "get"), new MP_Acl_Assert_Experiment());
         
         // povoleni akci adminovi
         $acl->allow(MP_Role::ROLE_ADMIN);

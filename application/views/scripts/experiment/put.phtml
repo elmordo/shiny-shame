@@ -7,5 +7,9 @@ if ($this->redirect) {
 $this->headTitle($this->experiment->name);
 
 echo $this->header($this->experiment->name);
+$this->header()->goDown();
 echo $this->buttonLink("Back to overview", $this->url($this->experiment->toArray(), "get-experiment"));
 echo $this->form;
+
+// vypsani kolekci
+echo $this->action("index", "collection", "default", array("experimentId" => $this->experiment->id));

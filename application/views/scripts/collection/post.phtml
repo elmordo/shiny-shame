@@ -1,0 +1,21 @@
+<?php
+if ($this->row) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $url = $this->url(array(
+        "id" => $this->row->id,
+        "experimentId" => $this->row->experiment_id
+    ), "put-collection");
+    
+    $redirector->gotoUrlAndExit($url);
+}
+
+echo $this->header(sprintf("New collection for experiment &QUOT;%s&QUOT;", $this->experiment->name));
+$this->header()->goDown();
+
+$backUrl = $this->url($this->experiment->toArray(), "edit-experiment");
+echo $this->buttonLink("Back to experiment", $backUrl);
+
+echo $this->form;
+
+$this->header()->goUp();
+?>

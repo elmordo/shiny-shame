@@ -2151,16 +2151,16 @@ tabulky#</dia:string>
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#expr#</dia:string>
+            <dia:string>#tag#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#text#</dia:string>
+            <dia:string>#varchar(16)#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
-            <dia:string>#not null#</dia:string>
+            <dia:string>#null#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>#definiční výraz#</dia:string>
+            <dia:string>#tag kolekce pro tvorbu a třídění#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -2289,7 +2289,7 @@ tabulky#</dia:string>
         <dia:real val="3.6000000000000001"/>
       </dia:attribute>
       <dia:attribute name="name">
-        <dia:string>#collections_has_frames#</dia:string>
+        <dia:string>#collections_have_frames#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
         <dia:string>##</dia:string>

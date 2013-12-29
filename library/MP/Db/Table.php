@@ -32,9 +32,28 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
     }
 
     /**
+     * vytvori radek s daty
+     * 
+     * @param array $data informace z databaze
+     * @param bool $stored prepinac ulozene hodnoty
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    protected function _generateRow(array $data, $stored = true) {
+        $rowClassName = $this->_rowClass;
+        $retVal = new $rowClassName(array(
+            "data" => $data,
+            "stored" => $stored,
+            "table" => $this
+        ));
+        
+        return $retVal;
+    }
+    
+    /**
      * vytvori rowset s daty
      * 
      * @param array $data data v rowsetu
+     * @param bool $stored prepinac ulozene hodnoty
      * @return Zend_Db_Table_Rowset_Abstract
      */
     protected function _generateRowset(array $data, $stored = true) {

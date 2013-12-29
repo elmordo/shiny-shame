@@ -1,6 +1,7 @@
 <?php
 $this->headTitle($this->experiment->name);
 echo $this->header($this->experiment->name);
+$this->header()->goDown();
 echo $this->experiment($this->experiment);
 
 // vyhodnoceni, jestli je uzivateli dovoleno editovat experiment
@@ -13,3 +14,6 @@ if ($acl->isAllowed($user->role, $this->experiment, "put")) {
     
     echo $this->buttonLink("Edit experiment", $url);
 }
+
+// vypsani kolekci
+echo $this->action("index", "collection", "default", array("experimentId" => $this->experiment->id));
