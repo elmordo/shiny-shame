@@ -37,20 +37,22 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
         }
         
         // vyhodnoceni requestu
+        $permisions = $this[$this->getAccessColumn()];
+        
         switch ($accessRequest) {
             case MP_Db_Table_Row_DataAccess::ACCESS_READ:
                 $offset += MP_Db_Table_Row_DataAccess::ACCESS_READ;
-                return $this->_dataAccess[$offset] == MP_Db_Table_Row_DataAccess::VALUE_READ;
+                return $permisions[$offset] == MP_Db_Table_Row_DataAccess::VALUE_READ;
                 break;
             
             case MP_Db_Table_Row_DataAccess::ACCESS_WRITE:
                 $offset += MP_Db_Table_Row_DataAccess::ACCESS_WRITE;
-                return $this->_dataAccess[$offset] == MP_Db_Table_Row_DataAccess::VALUE_WRITE;
+                return $permisions[$offset] == MP_Db_Table_Row_DataAccess::VALUE_WRITE;
                 break;
             
             case MP_Db_Table_Row_DataAccess::ACCESS_DELETE:
                 $offset += MP_Db_Table_Row_DataAccess::ACCESS_DELETE;
-                return $this->_dataAccess[$offset] == MP_Db_Table_Row_DataAccess::VALUE_DELETE;
+                return $permisions[$offset] == MP_Db_Table_Row_DataAccess::VALUE_DELETE;
                 break;
             
             default:

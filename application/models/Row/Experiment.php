@@ -1,8 +1,6 @@
 <?php
-class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract implements Zend_Acl_Resource_Interface {
-    
-    const RESOURCE_NAME = "experiment";
-    
+class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract implements MP_Db_Table_Row_DataAccess {
+
     /**
      *
      * @var Application_Model_Row_User
@@ -48,4 +46,15 @@ class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract implem
         return self::RESOURCE_NAME;
     }
     
+    public function getAccessPermisions() {
+        return "access_permisions";
+    }
+    
+    public function getGroupId() {
+        return $this->group_id;
+    }
+    
+    public function getOwnerId() {
+        return $this->user_id;
+    }
 }

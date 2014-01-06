@@ -46,6 +46,13 @@ interface MP_Db_Table_Row_DataAccess {
      * @return int
      */
     public function getGroupId();
+    
+    /**
+     * vraci nastaveni pristupovych prav
+     * 
+     * @return string
+     */
+    public function getAccessPermisions();
 }
 
 ?>

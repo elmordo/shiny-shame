@@ -513,16 +513,16 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#access_permisions#</dia:string>
+            <dia:string>#group_id#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#varchar(9)#</dia:string>
+            <dia:string>#int#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
-            <dia:string>#not null defatul "rwdr--r--"#</dia:string>
+            <dia:string>#null#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>#sloupec pro uložení přístupových práv#</dia:string>
+            <dia:string>#identifikační číslo skupiny#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
@@ -536,16 +536,16 @@
         </dia:composite>
         <dia:composite type="umlattribute">
           <dia:attribute name="name">
-            <dia:string>#group_id#</dia:string>
+            <dia:string>#access_permisions#</dia:string>
           </dia:attribute>
           <dia:attribute name="type">
-            <dia:string>#int#</dia:string>
+            <dia:string>#varchar(9)#</dia:string>
           </dia:attribute>
           <dia:attribute name="value">
-            <dia:string>#null#</dia:string>
+            <dia:string>#not null defatul "rwdr--r--"#</dia:string>
           </dia:attribute>
           <dia:attribute name="comment">
-            <dia:string>#identifikační číslo skupiny#</dia:string>
+            <dia:string>#sloupec pro uložení přístupových práv#</dia:string>
           </dia:attribute>
           <dia:attribute name="visibility">
             <dia:enum val="0"/>
