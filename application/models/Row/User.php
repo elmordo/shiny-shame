@@ -1,5 +1,39 @@
 <?php
 class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Zend_Acl_Role_Interface {
+    
+    /**
+     * seznam skupin, ve kterych je uzivatel clenem
+     *
+     * @var array
+     */
+    protected $_groups = array();
+    
+    /**
+     * inicializuje instanci nactenim seznamu id skupin
+     */
+    public function init() {
+        // nacteni seznamu skupin
+        $select = new Zend_Db_Select($this->getTable()->getAdapter());
+        $nameGroups = MP_Db_Table::getRealName("Application_Model_Groups");
+        $nameAssocs = MP_Db_Table::getRealName("Application_Model_UsersHaveGroups");
+        
+        $select->from(array("g" => $nameGroups), array("id"));
+        $select->joinInner(array("a" => $nameAssocs), "a.group_id = g.id", array());
+        
+        $data = $select->query()->fetchAll();
+        $this->_groups = array();
+        
+        foreach ($data as $item) {
+            $this->_groups[] = $item["id"];
+        }
+    }
+    
+    public function __sleep() {
+        $array = parent::__sleep();
+        $array[] = "_groups";
+        
+        return $array;
+    }
 	
 	/**
 	 * (non-PHPdoc)
@@ -8,6 +42,16 @@ class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Z
 	public function getRoleId() {
 		return $this->role;
 	}
+    
+    /**
+     * vraci True, pokud uzivatel nalezi do dane skupiny
+     * 
+     * @param int $groupId id skupiny
+     * @return bool
+     */
+    public function hasGroup($groupId) {
+        return in_array($groupId, $this->_groups);
+    }
 	
 	/**
 	 * zkontroluje heslo
