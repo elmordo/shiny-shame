@@ -79,6 +79,15 @@ class GroupController extends Zend_Controller_Action {
        $group = self::loadGroup($this->_request->getParam("id"));
        $form->populate($group->toArray());
        
+       if ($this->_request->isPost()) {
+           if ($form->isValid($this->_request->getParams())) {
+               $group->setFromArray($form->getValues(true));
+               $group->save();
+               
+               $this->view->saved = true;
+           }
+       }
+       
        $this->view->form = $form;
        $this->view->group = $group;
     }

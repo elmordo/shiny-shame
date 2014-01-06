@@ -1,4 +1,9 @@
 <?php
+if ($this->saved) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
+}
+
 echo $this->header(sprintf("Edit group - %s", $this->group->name));
 echo $this->buttonLink("Back to overview", $this->url($this->group->toArray(), "group-get"));
 echo $this->form;
