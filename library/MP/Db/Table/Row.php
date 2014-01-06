@@ -37,7 +37,7 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
         }
         
         // vyhodnoceni requestu
-        $permisions = $this[$this->getAccessColumn()];
+        $permisions = $this[$this->getAccessPermisions()];
         
         switch ($accessRequest) {
             case MP_Db_Table_Row_DataAccess::ACCESS_READ:

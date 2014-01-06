@@ -1,5 +1,5 @@
 <?php
-class Application_Model_Row_Experiment extends Zend_Db_Table_Row_Abstract implements MP_Db_Table_Row_DataAccess {
+class Application_Model_Row_Experiment extends MP_Db_Table_Row implements MP_Db_Table_Row_DataAccess {
 
     /**
      *

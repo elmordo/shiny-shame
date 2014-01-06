@@ -9,7 +9,7 @@ $user = Zend_Auth::getInstance()->getIdentity();
 /* @var $acl Zend_Acl */
 $acl = $this->acl();
 
-if ($acl->isAllowed($user->role, $this->experiment, "put")) {
+if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
     $url = $this->url($this->experiment->toArray(), "edit-experiment");
     
     echo $this->buttonLink("Edit experiment", $url);

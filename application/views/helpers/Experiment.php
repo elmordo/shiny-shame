@@ -70,6 +70,12 @@ class Zend_View_Helper_Experiment extends Zend_View_Helper_Abstract {
         return $retVal;
     }
     
+    /**
+     * vygeneruje radek pro tabulku experimentu
+     * 
+     * @param Application_Model_Row_Experiment $experiment
+     * @return string
+     */
     public function tableRow($experiment) {
         $pattern = "<tr>
 <td>%s</td>
@@ -79,11 +85,22 @@ class Zend_View_Helper_Experiment extends Zend_View_Helper_Abstract {
 <td>%s</td>
 </tr>";
         
+        // vyhodnoceni akci
+        $actions = array();
+        
+        if ($experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_READ)) {
+            $actions[] = sprintf("<a href='%s'>%s</a>", $this->view->url($experiment->toArray(), "get-experiment"), "Show");
+        }
+        
+        if ($experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
+            $actions[] = sprintf("<a href='%s'>%s</a>", $this->view->url($experiment->toArray(), "edit-experiment"), "Edit");
+        }
+        
         return sprintf($pattern, $experiment->name,
                     $experiment->username,
                     $experiment->microscope_name,
                     $this->view->sqlDateTime($experiment->created_at),
-                    sprintf("<a href='%s'>%s</a>", $this->view->url($experiment->toArray(), "get-experiment"), "Edit"));
+                    implode(" ", $actions));
     }
 
     public function table($experiments, array $config = array()) {
