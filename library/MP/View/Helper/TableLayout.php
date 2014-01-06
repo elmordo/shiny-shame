@@ -19,7 +19,7 @@ class MP_View_Helper_TableLayout extends Zend_View_Helper_Abstract {
     }
     
     public function row(array $data, array $config = array()) {
-        $config = array_merge(array("rowClasses" => "", "cellClasses" => ""), $config);
+        $config = array_merge(array("rowClasses" => "", "cellClasses" => "", "cellTag" => "td"), $config);
         
         return $this->_row($data, $config);
     }
@@ -31,7 +31,7 @@ class MP_View_Helper_TableLayout extends Zend_View_Helper_Abstract {
     private function _cell($data, array $config) {
         $classes = $this->_classes($config["cellClasses"]);
         
-        return $this->_wrap($data, "td", $classes);
+        return $this->_wrap($data, $config["cellTag"], $classes);
     }
     
     /**

@@ -1,0 +1,13 @@
+<?php
+if ($this->row) {
+    // presmerovani na editaci
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $url = $this->url($this->row->toArray(), "group-put");
+    
+    $redirector->gotoUrlAndExit($url);
+}
+
+echo $this->header("New group");
+
+echo $this->form;
+?>

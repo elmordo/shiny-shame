@@ -1,0 +1,14 @@
+<?php
+echo $this->header(sprintf("Edit group - %s", $this->group->name));
+echo $this->buttonLink("Back to overview", $this->url($this->group->toArray(), "group-get"));
+echo $this->form;
+
+// vygenerovani formulare smazani
+$formDelete = new MP_Form_Delete();
+$formDelete->setAction("/group/delete?id=" . $this->group->id);
+
+$this->header()->goDown();
+echo $this->action("users", "group", "default", array("id" => $this->group->id));
+echo $this->action("delete", "group", "default", array("id" => $this->group->id));
+$this->header()->goUp();
+?>

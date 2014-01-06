@@ -1,0 +1,12 @@
+<?php
+if ($this->deleted) {
+    // presmerovani na vypis
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $url = $this->url(array(), "groups");
+    
+    $redirector->gotoUrlAndExit($url);
+}
+
+echo $this->header("Delete group");
+echo $this->form;
+?>

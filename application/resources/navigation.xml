@@ -25,6 +25,12 @@
 			<resource>microscope</resource>
 			<privilege>index</privilege>
 		</microscope>
+		<groups>
+			<label>User groups</label>
+			<route>groups</route>
+			<resource>group</resource>
+			<privilege>index</privilege>
+		</groups>
 		<logout>
 			<label>Log out</label>
 			<route>logout</route>

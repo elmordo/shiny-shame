@@ -141,6 +141,30 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "action" => "put"
                 ))
                 );
+        
+        $router->addRoute(
+                "groups", new Zend_Controller_Router_Route("/groups", array(
+                    "module" => "default",
+                    "controller" => "group",
+                    "action" => "index"
+                ))
+                );
+        
+        $router->addRoute(
+                "group-put", new Zend_Controller_Router_Route("/group/:id/edit", array(
+                    "module" => "default",
+                    "controller" => "group",
+                    "action" => "put"
+                ))
+                );
+        
+        $router->addRoute(
+                "group-get", new Zend_Controller_Router_Route("/group/:id", array(
+                    "module" => "default",
+                    "controller" => "group",
+                    "action" => "get"
+                ))
+                );
     }
 
     protected function _initAcl() {
@@ -155,6 +179,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("microscope"));
         $acl->addResource(new Zend_Acl_Resource("meta"));
         $acl->addResource(new Zend_Acl_Resource("collection"));
+        $acl->addResource(new Zend_Acl_Resource("group"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");

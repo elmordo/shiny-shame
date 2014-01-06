@@ -1,0 +1,13 @@
+<?php
+echo $this->header(sprintf("Group - %s", $this->group->name));
+echo $this->group($this->group);
+
+$acl = $this->acl();
+$user = Zend_Auth::getInstance()->getIdentity();
+
+if ($acl->isAllowed($user, "group", "put")) {
+    $url = $this->url($this->group->toArray(), "group-put");
+    
+    echo $this->buttonLink("Edit group", $url);
+}
+?>

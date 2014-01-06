@@ -1,0 +1,9 @@
+<?php
+$this->headTitle("Users groups");
+
+echo $this->header("List of users groups");
+$this->header()->goDown();
+
+echo $this->group()->groups($this->groups);
+echo $this->action("post", "group", "default");
+?>
