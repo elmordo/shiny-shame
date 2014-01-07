@@ -35,7 +35,11 @@ class CollectionController extends Zend_Controller_Action {
     }
     
     public function getAction() {
+        $experiment = $this->_experiment;
+        $collection = self::findCollection($this->_request->getParam("id"));
         
+        $this->view->collection = $collection;
+        $this->view->experiment = $experiment;
     }
     
     /*
@@ -62,10 +66,7 @@ class CollectionController extends Zend_Controller_Action {
             if ($form->isValid($this->_request->getParams())) {
                 // vytvoreni noveho zaznamu
                 $tableCollections = new Application_Model_Collections();
-                $row = $tableCollections->createRow($form->getValues(true));
-                $row->experiment_id = $experiment->id;
-                
-                $row->save();
+                $row = $tableCollections->createCollection($form->getValues(true), $experiment);
                 
                 $this->view->row = $row;
             }

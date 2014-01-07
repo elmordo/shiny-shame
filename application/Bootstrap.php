@@ -143,6 +143,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 );
         
         $router->addRoute(
+                "get-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/collection/:id", array(
+                    "module" => "default",
+                    "controller" => "collection",
+                    "action" => "get"
+                ))
+                );
+        
+        $router->addRoute(
                 "groups", new Zend_Controller_Router_Route("/groups", array(
                     "module" => "default",
                     "controller" => "group",

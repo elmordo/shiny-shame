@@ -1,0 +1,27 @@
+<?php
+$collection = $this->collection;
+echo $this->header(sprintf("Collection %s", $collection->name));
+
+echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArray(), "get-experiment"));
+?>
+<table class="info-table">
+    <?php
+    $table = $this->tableLayout();
+    
+    echo $table->row(array("Name", $collection->name));
+    echo $table->row(array("Tag", $collection->tag));
+    echo $table->row(array("Name", $collection->group_name));
+    echo $table->row(array("Owner", $collection->username));
+    echo $table->row(array("Frame count", $collection->frame_count));
+    ?>
+</table>
+<?php
+if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
+    $url = $this->url(array(
+        "experimentId" => $collection->experiment_id,
+        "id" => $collection->id
+    ), "put-collection");
+    
+    echo $this->buttonLink("Edit collection", $url);
+}
+?>

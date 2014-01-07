@@ -18,6 +18,29 @@ class Application_Model_Collections extends MP_Db_Table {
 	protected $_rowClass = "Application_Model_Row_Collection";
     
     /**
+     * vytvori novou instanci radku kolekce a vraci ji
+     * radek je automaticky ulozen
+     * 
+     * @param array $data data k ulozeni
+     * @param Application_Model_Row_Experiment $experiment experiment do ktereho kolekce spada
+     * @param int $userId id uzivatele
+     * @return Application_Model_Row_Collection
+     */
+    public function createCollection(array $data, $experiment, $userId = null) {
+        if (is_null($userId)) {
+            $userId = Zend_Auth::getInstance()->getIdentity()->id;
+        }
+        
+        $retVal = $this->createRow($data);
+        $retVal->user_id = $userId;
+        $retVal->experiment_id = $experiment->id;
+        
+        $retVal->save();
+        
+        return $retVal;
+    }
+    
+    /**
      * vraci seznam kolekci k experimentu
      * 
      * @param int $experimentId identifikator experimentu
@@ -55,13 +78,24 @@ class Application_Model_Collections extends MP_Db_Table {
         // propojeni tabulek na snimky
         $nameFrames = self::getRealName("Application_Model_Frames");
         $nameAssocs = self::getRealName("Application_Model_CollectionsHaveFrames");
+        $nameGroups = self::getRealName("Application_Model_Groups");
+        $nameUsers = self::getRealName("Application_Model_Users");
         
+        // zakladni data
         $select->from(array("c" => $this->_name), array(
             new Zend_Db_Expr("c.*"),
             "frame_count" => new Zend_Db_Expr("COUNT(f.id)")
         ));
+        
+        // napojeni na snimky
         $select->joinLeft(array("a" => $nameAssocs), "c.id = a.collection_id", array());
         $select->joinLeft(array("f" => $nameFrames), "f.id = a.frame_id", array());
+        
+        // napojeni na skupinu
+        $select->joinLeft(array("g" => $nameGroups), "g.id = c.group_id", array( "group_name" => "g.name"));
+        
+        // napojeni na uzivatele
+        $select->joinInner(array("u" => $nameUsers), "u.id = c.user_id", array( "username" => "u.username"));
         
         $select->group("c.id");
         
