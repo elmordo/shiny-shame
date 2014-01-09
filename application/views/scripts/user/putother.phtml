@@ -1,4 +1,9 @@
 <?php
+if ($this->saved) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
+}
+
 echo $this->header(sprintf("Edit user - %s", $this->user->username));
 echo $this->buttonLink("Back to overview", $this->url($this->user->toArray(), "get-user"));
 echo $this->form;

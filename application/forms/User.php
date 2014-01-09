@@ -33,9 +33,6 @@ class Application_Form_User extends MP_Form {
 				"required" => true,
                 "filters" => array(
                     new Zend_Filter_Null()
-                ),
-                "validators" => array(
-                    //array("Identical", false, "password")
                 )
 				));
 		
@@ -48,5 +45,10 @@ class Application_Form_User extends MP_Form {
 		$this->addElement("submit", "submit", array(
 				"label" => "Save"
 				));
+        
+        // priprava validatoru stejneho hesla a kontroly hesla
+        $sameValidator = new Zend_Validate_Identical("password", true);
+        $sameValidator->setMessage("Password and password confirmation are not same", Zend_Validate_Identical::NOT_SAME);
+        $this->_elements["password_confirm"]->addValidator($sameValidator, false);
 	}
 }

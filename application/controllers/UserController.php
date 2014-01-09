@@ -140,6 +140,28 @@ class UserController extends Zend_Controller_Action {
         $form = new Application_Form_User_Admin();
         $form->populate($user->toArray());
         
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            // nastaveni obecnych dat
+            $user->username = $form->getValue("username");
+            $user->role = $form->getValue("role");
+
+            // kontrola hesla
+            $password = $form->getValue("password");
+            
+            if (!is_null($password)) {
+                $confirm = $form->getValue("password_confirm");
+                
+                if (!is_null($confirm)) {
+                    $user->setPassword($password);
+                }
+            }
+            
+            $this->_helper->getHelper("FlashMessenger")->addMessage("Data has been saved");
+            
+            $user->save();
+            $this->view->saved = true;
+        }
+        
         $this->view->user = $user;
         $this->view->form = $form;
     }
