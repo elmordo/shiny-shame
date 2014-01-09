@@ -25,6 +25,12 @@
 			<resource>microscope</resource>
 			<privilege>index</privilege>
 		</microscope>
+		<users>
+			<label>Users</label>
+			<route>users</route>
+			<resource>user</resource>
+			<privilege>index</privilege>
+		</users>
 		<groups>
 			<label>User groups</label>
 			<route>groups</route>

@@ -8,4 +8,11 @@ $this->headTitle("My Account");
     echo $this->tableLayout()->row(array("Real name", $user->username));
     ?>
 </table>
-<?php echo $this->buttonLink("Edit profile", $this->url(array(), "edit-profile")); ?>
+<?php 
+$acl = $this->acl();
+$identity = Zend_Auth::getInstance()->getIdentity();
+
+if ($acl->isAllowed($identity, "user", "putother")) {
+    echo $this->buttonLink("Edit user", $this->url($user->toArray(), "put-user")); 
+}
+?>

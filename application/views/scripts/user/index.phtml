@@ -1,11 +1,19 @@
 <?php
-$user = $this->user;
-$this->headTitle("My Account");
+$this->header("User list");
+
+// vyhodnoceni akci
+$acl = $this->acl();
+$user = Zend_Auth::getInstance()->getIdentity();
+
+$actions = array();
+
+if ($acl->isAllowed($user, "user", "getother")) {
+    $actions["get-user"] = "Show";
+}
+
+if ($acl->isAllowed($user, "user", "putother")) {
+    $actions["put-user"] = "Edit";
+}
+
+echo $this->user()->users($this->users, array("actions" => $actions));
 ?>
-<table>
-    <?php 
-    echo $this->tableLayout()->row(array("Login name", $user->login));
-    echo $this->tableLayout()->row(array("Real name", $user->username));
-    ?>
-</table>
-<?php echo $this->buttonLink("Edit profile", $this->url(array(), "edit-profile")); ?>

@@ -1,7 +1,17 @@
 <?php
 class UserController extends Zend_Controller_Action {
 	
-	public function deleteAction() {
+    /**
+     *
+     * @var Application_Model_Row_User
+     */
+    private $_user;
+
+    public function init() {
+        $this->_user = Zend_Auth::getInstance()->getIdentity();
+    }
+
+    public function deleteAction() {
 		
 	}
 	
@@ -9,24 +19,25 @@ class UserController extends Zend_Controller_Action {
 	 * zobrazi informace o uzivateli (read only)
 	 */
 	public function getAction() {
-		
+		// nacteni informaci
+		$this->view->user = $this->_user;
 	}
+    
+    public function getotherAction() {
+        $tableUsers = new Application_Model_Users();
+        
+        $this->_user = $tableUsers->findByLogin($this->_request->getParam("login"));
+        $this->getAction();
+    }
 	
 	/**
 	 * vypise informace o aktualnim uzivateli
 	 */
 	public function indexAction() {
-		// nacteni informaci
-		$user = Zend_Auth::getInstance()->getIdentity();
-		
-		$this->view->user = $user;
-	}
-	
-	/**
-	 * vypise seznam uzivatelu
-	 */
-	public function listAction() {
-		
+		$tableUsers = new Application_Model_Users();
+        $users = $tableUsers->fetchAll(null, "username");
+        
+        $this->view->users = $users;
 	}
 	
 	/**
@@ -71,7 +82,7 @@ class UserController extends Zend_Controller_Action {
 		$form = new Application_Form_User_My();
 		
         // nacteni uzivatele
-        $identity = Zend_Auth::getInstance()->getIdentity();
+        $identity = $this->_user;
         $tableUsers = new Application_Model_Users();
         
         $user = $tableUsers->findById($identity->id);
@@ -122,6 +133,16 @@ class UserController extends Zend_Controller_Action {
             $this->view->form = $form;
 		}
 	}
+    
+    public function putotherAction() {
+        $tableUsers = new Application_Model_Users();
+        $user = $tableUsers->findByLogin($this->_request->getParam("login"));
+        $form = new Application_Form_User_Admin();
+        $form->populate($user->toArray());
+        
+        $this->view->user = $user;
+        $this->view->form = $form;
+    }
 	
 	public function putPartAction() {
 		$this->putAction();

@@ -1,0 +1,5 @@
+<?php
+echo $this->header(sprintf("Edit user - %s", $this->user->username));
+echo $this->buttonLink("Back to overview", $this->url($this->user->toArray(), "get-user"));
+echo $this->form;
+?>
