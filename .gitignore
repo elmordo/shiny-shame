@@ -4,3 +4,4 @@
 !.gitignore
 /nbproject/private/
 /nbproject
+/public/changelog.txt

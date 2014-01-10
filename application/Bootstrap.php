@@ -54,6 +54,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             "action" => "index"
                 ))
         );
+        
+        $router->addRoute(
+                "post-user", new Zend_Controller_Router_Route("/new-user", array(
+            "module" => "default",
+            "controller" => "user",
+            "action" => "post"
+                ))
+        );
 
         $router->addRoute(
                 "experiments", new Zend_Controller_Router_Route("/experiments", array(

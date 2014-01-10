@@ -71,7 +71,25 @@ class UserController extends Zend_Controller_Action {
 	 * vytvori noveho uzivatele
 	 */
 	public function postAction() {
-		
+		$form = new Application_Form_User();
+        
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            $tableUsers = new Application_Model_Users();
+            
+            $row = $tableUsers->createRow();
+            $row->login = $form->getValue("login");
+            $row->username = $form->getValue("username");
+            $row->role = $form->getValue("role");
+            
+            $row->generateSalt();
+            $row->setPassword($form->getValue("password"));
+            
+            $row->save();
+            
+            $this->view->row = $row;
+        }
+        
+        $this->view->form = $form;
 	}
 	
 	/**

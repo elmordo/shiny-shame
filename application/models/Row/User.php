@@ -35,6 +35,17 @@ class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Z
         return $array;
     }
 	
+    /**
+     * vygeneruje novou sul
+     * 
+     * @return \Application_Model_Row_User
+     */
+    public function generateSalt() {
+        $this->salt = sha1(time() . microtime(false));
+        
+        return $this;
+    }
+    
 	/**
 	 * (non-PHPdoc)
 	 * @see Zend_Acl_Role_Interface::getRoleId()

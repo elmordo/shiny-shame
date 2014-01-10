@@ -1,6 +1,8 @@
 <?php
 $this->header("User list");
 
+echo $this->buttonLink("Create new user", $this->url(array(), "post-user"));
+
 // vyhodnoceni akci
 $acl = $this->acl();
 $user = Zend_Auth::getInstance()->getIdentity();
