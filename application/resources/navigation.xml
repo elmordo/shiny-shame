@@ -43,5 +43,10 @@
 			<resource>user</resource>
 			<privilege>logout</privilege>
 		</logout>
+        <changelog>
+			<label>Changelog</label>
+			<uri>/changelog.txt</uri>
+            <target>_blank</target>
+        </changelog>
 	</nav>
 </config>
