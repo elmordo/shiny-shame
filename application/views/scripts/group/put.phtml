@@ -10,10 +10,10 @@ echo $this->form;
 
 // vygenerovani formulare smazani
 $formDelete = new MP_Form_Delete();
-$formDelete->setAction("/group/delete?id=" . $this->group->id);
+$formDelete->setAction("/group/delete?id=" . $this->group->group_id);
 
 $this->header()->goDown();
-echo $this->action("users", "group", "default", array("id" => $this->group->id));
-echo $this->action("delete", "group", "default", array("id" => $this->group->id));
+echo $this->action("users", "group", "default", array("group_id" => $this->group->group_id));
+echo $this->action("delete", "group", "default", array("group_id" => $this->group->group_id));
 $this->header()->goUp();
 ?>

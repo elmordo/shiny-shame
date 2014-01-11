@@ -144,7 +144,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "edit-experiment", new Zend_Controller_Router_Route("/experiment/:id/edit", array(
+                "edit-experiment", new Zend_Controller_Router_Route("/experiment/:experiment_id/edit", array(
             "module" => "default",
             "controller" => "experiment",
             "action" => "put"
@@ -152,7 +152,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "get-experiment", new Zend_Controller_Router_Route("/experiment/:id/overview", array(
+                "get-experiment", new Zend_Controller_Router_Route("/experiment/:experiment_id/overview", array(
             "module" => "default",
             "controller" => "experiment",
             "action" => "get"
@@ -160,7 +160,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "post-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/new-collection", array(
+                "post-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/new-collection", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "post"
@@ -168,7 +168,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "put-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/collection/:id/edit", array(
+                "put-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id/edit", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "put"
@@ -176,7 +176,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "get-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/collection/:id", array(
+                "get-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "get"
@@ -192,7 +192,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "group-put", new Zend_Controller_Router_Route("/group/:id/edit", array(
+                "group-put", new Zend_Controller_Router_Route("/group/:group_id/edit", array(
             "module" => "default",
             "controller" => "group",
             "action" => "put"
@@ -200,7 +200,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "group-get", new Zend_Controller_Router_Route("/group/:id", array(
+                "group-get", new Zend_Controller_Router_Route("/group/:group_id", array(
             "module" => "default",
             "controller" => "group",
             "action" => "get"

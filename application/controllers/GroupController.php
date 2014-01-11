@@ -24,7 +24,7 @@ class GroupController extends Zend_Controller_Action {
         
         if ($this->_request->isPost() && isset($params[self::DEL_ARRAY])) {
             if ($form->isValid($params)) {
-                $group = self::loadGroup($this->_request->getParam("id"));
+                $group = self::loadGroup($this->_request->getParam("group_id"));
                 $group->delete();
                 
                 $this->view->deleted = true;
@@ -38,7 +38,7 @@ class GroupController extends Zend_Controller_Action {
      * vypise informace o uzivatelske skupine
      */
     public function getAction() {
-        $group = self::loadGroup($this->_request->getParam("id"));
+        $group = self::loadGroup($this->_request->getParam("group_id"));
         
         $this->view->group = $group;
     }
@@ -76,7 +76,7 @@ class GroupController extends Zend_Controller_Action {
      */
     public function putAction() {
        $form = new Application_Form_Group();
-       $group = self::loadGroup($this->_request->getParam("id"));
+       $group = self::loadGroup($this->_request->getParam("group_id"));
        $form->populate($group->toArray());
        
        if ($this->_request->isPost()) {
@@ -93,7 +93,7 @@ class GroupController extends Zend_Controller_Action {
     }
     
     public function usersAction() {
-        $group = self::loadGroup($this->_request->getParam("id"));
+        $group = self::loadGroup($this->_request->getParam("group_id"));
         
         $users = $group->findUsers();
         $form = new Application_Form_Group_Users();

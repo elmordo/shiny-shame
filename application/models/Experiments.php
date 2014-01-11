@@ -4,7 +4,7 @@ class Application_Model_Experiments extends MP_Db_Table {
 
     protected $_name = "experiments";
     
-    protected $_primary = array("id");
+    protected $_primary = array("experiment_id");
     
     protected $_sequence = true;
     
@@ -12,13 +12,13 @@ class Application_Model_Experiments extends MP_Db_Table {
         "user" => array(
             "columns" => "user_id",
             "refTableClass" => "Application_Model_Users",
-            "refColumns" => "id"
+            "refColumns" => "user_id"
         ),
         
         "microscope" => array(
             "columns" => "microscope_id",
             "refTableClass" => "Application_Model_Microscopes",
-            "refColumns" => "id"
+            "refColumns" => "microscope_id"
         )
     );
     
@@ -34,7 +34,7 @@ class Application_Model_Experiments extends MP_Db_Table {
     public function createExperiment(array $data, $user) {
         // vyhodnoceni jestli je uzivatel predan jako objekt nebo jako cislo
         if (is_object($user)) {
-            $userId = $user->id;
+            $userId = $user->user_id;
         } else {
             $userId = $user;
         }
@@ -56,7 +56,7 @@ class Application_Model_Experiments extends MP_Db_Table {
     public function findById($id) {
         // priprava selectu
         $select = $this->prepareSelect();
-        $select->where("et.id = ?", $id);
+        $select->where("et.experiment_id = ?", $id);
         
         return $this->_generateRowset($select->query()->fetchAll())->current();
     }
@@ -70,7 +70,7 @@ class Application_Model_Experiments extends MP_Db_Table {
      */
     public function findByUser($user, $order = "created_at desc") {
         if (is_object($user)) {
-            $userId = $user->id;
+            $userId = $user->user_id;
         } else {
             $userId = $user;
         }
@@ -98,12 +98,12 @@ class Application_Model_Experiments extends MP_Db_Table {
         // pripojeni mikroskopu
         $nameMicroscopes = self::getRealName("Application_Model_Microscopes");
         
-        $select->joinLeft(array("mt" => $nameMicroscopes), "mt.id = microscope_id", array("microscope_name" => "mt.name"));
+        $select->joinLeft(array("mt" => $nameMicroscopes), "mt.microscope_id = et.microscope_id", array("microscope_name" => "mt.name"));
         
         // pripojeni uzivatele
         $nameUsers = self::getRealName("Application_Model_Users");
         
-        $select->joinLeft(array("ut" => $nameUsers), "ut.id = user_id", array("username"));
+        $select->joinLeft(array("ut" => $nameUsers), "ut.user_id = et.user_id", array("username"));
         
         return $select;
     }

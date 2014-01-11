@@ -3,7 +3,7 @@ class Application_Model_Frames extends MP_Db_Table {
 	
 	protected $_name = "frames";
 	
-	protected $_primary = array("id");
+	protected $_primary = array("frame_id");
 	
 	protected $_sequence = true;
 	
@@ -11,7 +11,7 @@ class Application_Model_Frames extends MP_Db_Table {
 			"experiment" => array(
 					"columns" => "experiment_id",
 					"refTableClass" => "Application_Model_Experiments",
-					"refColumns" => "id"
+					"refColumns" => "experiment_id"
 					)
 			);
 			

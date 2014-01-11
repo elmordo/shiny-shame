@@ -64,6 +64,13 @@ class MetaController extends Zend_Controller_Action {
     protected $_adminMode = false;
     
     /**
+     * prefix primarniho klice
+     *
+     * @var string 
+     */
+    protected $_metaPrimaryPrefix = null;
+    
+    /**
      * nastavi tabulku s metadaty, se kterou se bude pracovat
      * 
      * @throws Zend_Controller_Action_Exception
@@ -82,14 +89,17 @@ class MetaController extends Zend_Controller_Action {
         switch ($metaType) {
             case self::TYPE_BIO:
                 $this->_table = new Application_Model_MetainfoBiological();
+                $this->_metaPrimaryPrefix = "metainfo_biological_";
                 break;
             
             case self::TYPE_TECH:
                 $this->_table = new Application_Model_MetainfoTechnical();
+                $this->_metaPrimaryPrefix = "metainfo_technical_";
                 break;
             
             case self::TYPE_MICROSCOPE:
                 $this->_table = new Application_Model_MetainfoMicroscopes();
+                $this->_metaPrimaryPrefix = "metainfo_microscope_";
                 break;
             
             default:
@@ -103,6 +113,7 @@ class MetaController extends Zend_Controller_Action {
         // nastaveni hodnot do view
         $this->view->parentId = $this->_parentId;
         $this->view->metaType = $metaType;
+        $this->view->primaryPrefix = $this->_metaPrimaryPrefix;
         
         // vyhodnoceni administracniho prepinace
         if ($this->_request->getParam(self::REQUEST_PARAM_ADMIN, 0)) {
@@ -220,7 +231,7 @@ class MetaController extends Zend_Controller_Action {
                     $this->_metaType, 
                     self::REQUEST_PARAM_PARENT_ID, 
                     $this->_parentId,
-                    $meta->id);
+                    $meta[$this->_metaPrimaryPrefix . "id"]);
             
             $deleteForm->setAction($action);
             

@@ -3,7 +3,7 @@ class Application_Model_Collections extends MP_Db_Table {
 	
 	protected $_name = "collections";
 	
-	protected $_primary = array("id");
+	protected $_primary = array("collection_id");
 	
 	protected $_sequence = true;
 	
@@ -11,7 +11,7 @@ class Application_Model_Collections extends MP_Db_Table {
 			"experiment" => array(
 					"columns" => "experiment_id",
 					"refTableClass" => "Application_Model_Experiments",
-					"refColumns" => "id"
+					"refColumns" => "experiment_id"
 					)
 			);
 	
@@ -28,12 +28,12 @@ class Application_Model_Collections extends MP_Db_Table {
      */
     public function createCollection(array $data, $experiment, $userId = null) {
         if (is_null($userId)) {
-            $userId = Zend_Auth::getInstance()->getIdentity()->id;
+            $userId = Zend_Auth::getInstance()->getIdentity()->user_id;
         }
         
         $retVal = $this->createRow($data);
         $retVal->user_id = $userId;
-        $retVal->experiment_id = $experiment->id;
+        $retVal->experiment_id = $experiment->experiment_id;
         
         $retVal->save();
         
@@ -62,7 +62,7 @@ class Application_Model_Collections extends MP_Db_Table {
      */
     public function findById($id) {
         $select = $this->prepareSelect();
-        $select->where("c.id = ?", $id);
+        $select->where("c.collection_id = ?", $id);
         
         return $this->_generateRow($select->query()->fetch());
     }
@@ -84,20 +84,20 @@ class Application_Model_Collections extends MP_Db_Table {
         // zakladni data
         $select->from(array("c" => $this->_name), array(
             new Zend_Db_Expr("c.*"),
-            "frame_count" => new Zend_Db_Expr("COUNT(f.id)")
+            "frame_count" => new Zend_Db_Expr("COUNT(f.frame_id)")
         ));
         
         // napojeni na snimky
-        $select->joinLeft(array("a" => $nameAssocs), "c.id = a.collection_id", array());
-        $select->joinLeft(array("f" => $nameFrames), "f.id = a.frame_id", array());
+        $select->joinLeft(array("a" => $nameAssocs), "c.collection_id = a.collection_id", array());
+        $select->joinLeft(array("f" => $nameFrames), "f.frame_id = a.frame_id", array());
         
         // napojeni na skupinu
-        $select->joinLeft(array("g" => $nameGroups), "g.id = c.group_id", array( "group_name" => "g.name"));
+        $select->joinLeft(array("g" => $nameGroups), "g.group_id = c.group_id", array( "group_name" => "g.name"));
         
         // napojeni na uzivatele
-        $select->joinInner(array("u" => $nameUsers), "u.id = c.user_id", array( "username" => "u.username"));
+        $select->joinInner(array("u" => $nameUsers), "u.user_id = c.user_id", array( "username" => "u.username"));
         
-        $select->group("c.id");
+        $select->group("c.collection_id");
         
         return $select;
     }

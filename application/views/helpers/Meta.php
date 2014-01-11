@@ -48,6 +48,7 @@ class Zend_View_Helper_Meta extends Zend_View_Helper_Abstract {
             $actions = array();
             
             foreach ($config["actions"] as $action) {
+                $action["prefix"] = $config["prefix"];
                 $actions[] = $this->_action($data, $action);
             }
             
@@ -93,9 +94,11 @@ class Zend_View_Helper_Meta extends Zend_View_Helper_Abstract {
      * @return string
      */
     public function _action($meta, array $config) {
+        $idName = $config["prefix"] . "id";
+        
         switch ($config["type"]) {
             case "link":
-                $url = str_replace("{metaId}", $meta->id, $config["url"]);
+                $url = str_replace("{metaId}", $meta[$idName], $config["url"]);
                 $retVal = sprintf("<a href='%s'>%s</a>", $url, $config["caption"]);
                 break;
         }

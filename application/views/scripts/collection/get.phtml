@@ -17,10 +17,7 @@ echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArr
 </table>
 <?php
 if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
-    $url = $this->url(array(
-        "experimentId" => $collection->experiment_id,
-        "id" => $collection->id
-    ), "put-collection");
+    $url = $this->url($collection->toArray(), "put-collection");
     
     echo $this->buttonLink("Edit collection", $url);
 }

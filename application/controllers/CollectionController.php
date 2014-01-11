@@ -22,7 +22,7 @@ class CollectionController extends Zend_Controller_Action {
      * nacte experiment, pokud je k dispozici
      */
     public function init() {
-        $experimentId = $this->_request->getParam("experimentId");
+        $experimentId = $this->_request->getParam("experiment_id");
         
         if (!is_null($experimentId)) {
             $tableExperiments = new Application_Model_Experiments();
@@ -36,7 +36,7 @@ class CollectionController extends Zend_Controller_Action {
     
     public function getAction() {
         $experiment = $this->_experiment;
-        $collection = self::findCollection($this->_request->getParam("id"));
+        $collection = self::findCollection($this->_request->getParam("collection_id"));
         
         $this->view->collection = $collection;
         $this->view->experiment = $experiment;
@@ -50,7 +50,7 @@ class CollectionController extends Zend_Controller_Action {
         $experiment = $this->_experiment;
         
         $tableCollections = new Application_Model_Collections();
-        $collections = $tableCollections->findByExperiment($experiment->id);
+        $collections = $tableCollections->findByExperiment($experiment->experiment_id);
         
         $this->view->experiment = $experiment;
         $this->view->collections = $collections;
@@ -79,7 +79,7 @@ class CollectionController extends Zend_Controller_Action {
     public function putAction() {
         $experiment = $this->_experiment;
         $form = new Application_Form_Collection();
-        $collection = self::findCollection($this->_request->getParam("id"));
+        $collection = self::findCollection($this->_request->getParam("collection_id"));
         
         $form->populate($collection->toArray());
         

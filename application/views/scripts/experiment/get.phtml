@@ -16,4 +16,4 @@ if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
 }
 
 // vypsani kolekci
-echo $this->action("index", "collection", "default", array("experimentId" => $this->experiment->id));
+echo $this->action("index", "collection", null, $this->experiment->toArray());

@@ -6,7 +6,7 @@ $acl = $this->acl();
 $user = Zend_Auth::getInstance()->getIdentity();
 
 if ($acl->isAllowed($user, "collection", "post")) {
-    $url = $this->url(array("experimentId" => $this->experiment->id), "post-collection");
+    $url = $this->url($this->experiment->toArray(), "post-collection");
     echo $this->buttonLink("Create new collection", $url);
 }
 

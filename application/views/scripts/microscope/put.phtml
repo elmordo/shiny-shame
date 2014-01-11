@@ -15,10 +15,11 @@ echo $this->form;
 // vygenerovani akci pro meta informace
 $options = array(
     "displayActions" => true,
+    "prefix" => "metainfo_microscope_",
     "actions" => array(
         "edit" => array(
             "caption" => "Edit",
-            "url" => sprintf("/microscope/%s/meta/{metaId}/put?%s=1", urlencode($this->microscope->id), MetaController::REQUEST_PARAM_ADMIN),
+            "url" => sprintf("/microscope/%s/meta/{metaId}/put?%s=1", urlencode($this->microscope->microscope_id), MetaController::REQUEST_PARAM_ADMIN),
             "class" => "button",
             "type" => "link"
         )
@@ -35,7 +36,7 @@ $user = Zend_Auth::getInstance()->getIdentity();
 if ($acl->isAllowed($user->role, "meta", "post")) {
     echo $this->action("post", "meta", "default", array(
     MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE,
-    MetaController::REQUEST_PARAM_PARENT_ID => $this->microscope->id
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->microscope->microscope_id
     ));
 }
 ?>

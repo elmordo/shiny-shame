@@ -14,7 +14,7 @@ class ExperimentController extends Zend_Controller_Action {
      */
     public function getAction() {
         // nacteni dat
-        $experiment = self::findExperiment($this->_request->getParam("id"));
+        $experiment = self::findExperiment($this->_request->getParam("experiment_id"));
 
         $this->view->experiment = $experiment;
     }
@@ -58,7 +58,7 @@ class ExperimentController extends Zend_Controller_Action {
     public function putAction() {
         // nacteni dat
         $form = self::prepareExperimentForm();
-        $experiment = self::findExperiment($this->_request->getParam("id"));
+        $experiment = self::findExperiment($this->_request->getParam("experiment_id"));
 
         if ($this->_request->isPost()) {
             // formular byl odeslan, dojde k validaci a pripadnemu ulozeni dat
@@ -106,7 +106,7 @@ class ExperimentController extends Zend_Controller_Action {
         $micList = array("" => "--NO MICROSCOPE SELECTED--");
 
         foreach ($microscopes as $microscope) {
-            $micList[$microscope->id] = $microscope->name;
+            $micList[$microscope->microscope_id] = $microscope->name;
         }
 
         $form->getElement("microscope_id")->setMultiOptions($micList);

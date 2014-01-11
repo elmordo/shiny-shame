@@ -14,7 +14,7 @@ class Application_Model_MetainfoMicroscopes extends MP_Db_Table_Meta {
     
     protected $_name = "metainfo_microscopes";
     
-    protected $_primary = "id";
+    protected $_primary = "metainfo_microscope_id";
     
     protected $_sequence = true;
     
@@ -24,7 +24,7 @@ class Application_Model_MetainfoMicroscopes extends MP_Db_Table_Meta {
         "microscope" => array(
             "columns" => "microscope_id",
             "refTableClass" => "Application_Model_Microscopes",
-            "refColumns" => "id"
+            "refColumns" => "microscope_id"
         )
     );
     

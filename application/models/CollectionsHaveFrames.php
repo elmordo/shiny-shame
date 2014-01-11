@@ -11,13 +11,13 @@ class Application_Model_CollectionsHaveFrames extends MP_Db_Table {
 			"collection" => array(
 					"columns" => "collection_id",
 					"refTableClass" => "Application_Model_Collections",
-					"refColumns" => "id"
+					"refColumns" => "collection_id"
 					),
 			
 			array(
 					"columns" => "frame_id",
 					"refTableClass" => "Application_Model_Frames",
-					"refColumns" => "id"
+					"refColumns" => "frame_id"
 					)
 				);
 

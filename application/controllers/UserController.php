@@ -103,7 +103,7 @@ class UserController extends Zend_Controller_Action {
         $identity = $this->_user;
         $tableUsers = new Application_Model_Users();
         
-        $user = $tableUsers->findById($identity->id);
+        $user = $tableUsers->findById($identity->user_id);
         
 		if ($this->_request->isPost()) {
             // formular byl odeslan metodou post - kontrola validity a update dat

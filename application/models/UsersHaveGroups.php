@@ -22,13 +22,13 @@ class Application_Model_UsersHaveGroups extends MP_Db_Table {
         "user" => array(
             "columns" => "user_id",
             "refTableClass" => "Application_Model_Users",
-            "refColumns" => array("id")
+            "refColumns" => array("user_id")
         ),
         
         "group" => array(
             "columns" => "group_id",
             "refTableClass" => "Application_Model_Groups",
-            "refColumns" => "id"
+            "refColumns" => "group_id"
         )
     );
 }

@@ -3,7 +3,7 @@
 class Application_Model_Microscopes extends MP_Db_Table {
 
     protected $_name = "microscopes";
-    protected $_primary = "id";
+    protected $_primary = "microscope_id";
     protected $_sequence = true;
     protected $_rowClass = "Application_Model_Row_Microscope";
     

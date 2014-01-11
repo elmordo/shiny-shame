@@ -53,7 +53,7 @@ class Zend_View_Helper_User extends Zend_View_Helper_Abstract {
             }
             
             $rows[] = sprintf("<tr><td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>", 
-                    $user->id,
+                    $user->user_id,
                     $user->login,
                     $user->username,
                     implode(" ", $actions));

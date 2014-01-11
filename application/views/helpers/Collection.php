@@ -46,11 +46,11 @@ class Zend_View_Helper_Collection extends Zend_View_Helper_Abstract {
         $actions = array();
         
         if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_READ)) {
-            $actions[] = sprintf("<a href='%s'>Show</a>", $this->view->url(array("experimentId" => $collection->experiment_id, "id" => $collection->id), "get-collection"));
+            $actions[] = sprintf("<a href='%s'>Show</a>", $this->view->url($collection->toArray(), "get-collection"));
         }
         
         if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
-            $actions[] = sprintf("<a href='%s'>Edit</a>", $this->view->url(array("experimentId" => $collection->experiment_id, "id" => $collection->id), "put-collection"));
+            $actions[] = sprintf("<a href='%s'>Edit</a>", $this->view->url($collection->toArray(), "put-collection"));
         }
         
         return sprintf($pattern, $collection->name, $collection->tag, implode(" ", $actions));
