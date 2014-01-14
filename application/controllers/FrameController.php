@@ -16,6 +16,19 @@ class FrameController extends Zend_Controller_Action {
     const FILE_TIFF = "TIFF";
     const FILE_ZIP = "ZIP";
     
+    public function indexAction() {
+        // nacteni informaci
+        $experimentId = $this->_request->getParam("experiment_id", null);
+        $collectionId = $this->_request->getParam("collection_id", null);
+        
+        if (is_null($experimentId)) throw new Zend_Controller_Router_Exception("Experimet id can not be null");
+        
+        $tableFrames = new Application_Model_Frames();
+        $frames = $tableFrames->findByExperimentAndCollection($experimentId, $collectionId);
+        
+        $this->view->frames = $frames;
+    }
+    
     public function uploadAction() {
         $form = @new Application_Form_FrameUpload();
         

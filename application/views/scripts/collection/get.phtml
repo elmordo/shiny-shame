@@ -10,7 +10,7 @@ echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArr
     
     echo $table->row(array("Name", $collection->name));
     echo $table->row(array("Tag", $collection->tag));
-    echo $table->row(array("Name", $collection->group_name));
+    echo $table->row(array("Group name", $collection->group_name ? $collection->group_name : "-"));
     echo $table->row(array("Owner", $collection->username));
     echo $table->row(array("Frame count", $collection->frame_count));
     ?>
@@ -21,4 +21,7 @@ if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
     
     echo $this->buttonLink("Edit collection", $url);
 }
+
+$this->header()->goDown();
+echo $this->action("index", "frame", "default", $this->collection->toArray());
 ?>

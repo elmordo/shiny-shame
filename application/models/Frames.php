@@ -18,6 +18,30 @@ class Application_Model_Frames extends MP_Db_Table {
 	protected $_rowClass = "Application_Model_Row_Frame";
 	
     /**
+     * nacte seznam snimku dle experimentu a pripadne dle kolekce
+     * 
+     * @param id $experimentId id experiment
+     * @param int $collectionId id kolekce
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public function findByExperimentAndCollection($experimentId, $collectionId = null) {
+        // sestaveni zakladni podminky
+        $where = array("experiment_id = ?" => $experimentId);
+        
+        // doplneni kolekce, pokud je potreba
+        if (!is_null($collectionId)) {
+            $nameAssocs = MP_Db_Table::getRealName("Application_Model_CollectionsHaveFrames");
+            
+            $select = new Zend_Db_Select($this->getAdapter());
+            $select->from($nameAssocs, array("frame_id"))->where("collection_id = ?", $collectionId);
+            
+            $where["frame_id in (?)"] = new Zend_Db_Expr($select->assemble());
+        }
+        
+        return $this->fetchAll($where, "ord");
+    }
+    
+    /**
      * najde snimek podle hodnot, jejich kombinace by mela byt unikatni
      * 
      * @param int $experimentId identifikacni cislo experimentu

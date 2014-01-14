@@ -25,6 +25,24 @@ class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
     }
     
     /**
+     * vraci verejnou cestu k velkemu nahledu
+     * 
+     * @return string
+     */
+    public function getPublicFullPath() {
+        return $this->_getPublicPath(self::POSTFIX_FULL);
+    }
+    
+    /**
+     * vraci verejnou cestu k malemu nahledu
+     * 
+     * @return string
+     */
+    public function getPublicSmallPath() {
+        return $this->_getPublicPath(self::POSTFIX_SMALL);
+    }
+    
+    /**
      * nastavi soubor velkeho nahledu
      * 
      * @param string $source zdrojovy soubor
@@ -67,6 +85,15 @@ class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
      */
     private function _getPath($postfix) {
         return sprintf("%s/%s%d%s.jpeg", IMAGE_PREVIEW_PATH, self::PREFIX, $this->frame_id, $postfix);
+    }
+    
+    /**
+     * vraci verejnou cestu k souboru
+     * 
+     * @return string
+     */
+    private function _getPublicPath($postfix) {
+        return sprintf("%s/%s%d%s.jpeg", IMAGE_PREVIEW_PUBLIC, self::PREFIX, $this->frame_id, $postfix);
     }
     
     /**

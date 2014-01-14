@@ -11,7 +11,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         Zend_Controller_Front::getInstance()->registerPlugin(new MP_Controller_Plugin_Acl());
         
         define("TMP_PATH", APPLICATION_PATH . "/../tmp");
-        define("IMAGE_PREVIEW_PATH", APPLICATION_PATH . "/../public/previews");
+        define("IMAGE_PREVIEW_PUBLIC", "/previews");
+        define("IMAGE_PREVIEW_PATH", APPLICATION_PATH . "/../public" . IMAGE_PREVIEW_PUBLIC);
     }
 
     protected function _initRoutes() {
