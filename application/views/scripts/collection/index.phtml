@@ -5,11 +5,6 @@ $this->header()->goDown();
 $acl = $this->acl();
 $user = Zend_Auth::getInstance()->getIdentity();
 
-if ($acl->isAllowed($user, "collection", "post")) {
-    $url = $this->url($this->experiment->toArray(), "post-collection");
-    echo $this->buttonLink("Create new collection", $url);
-}
-
 echo $this->collection()->collections($this->collections);
 
 $this->header()->goUp();

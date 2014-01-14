@@ -7,13 +7,19 @@ echo $this->experiment($this->experiment);
 // vyhodnoceni, jestli je uzivateli dovoleno editovat experiment
 $user = Zend_Auth::getInstance()->getIdentity();
 /* @var $acl Zend_Acl */
-$acl = $this->acl();
 
-if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
+$writeAble = $this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE);
+        
+if ($writeAble) {
     $url = $this->url($this->experiment->toArray(), "edit-experiment");
     
     echo $this->buttonLink("Edit experiment", $url);
 }
 
 // vypsani kolekci
-echo $this->action("index", "collection", null, $this->experiment->toArray());
+echo $this->action("index", "collection", "default", $this->experiment->toArray());
+
+// formular pro upload
+if ($this->acl("frame", "upload") && $writeAble) {
+    echo $this->action("upload", "frame", null, $this->experiment->toArray());
+}

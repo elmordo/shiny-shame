@@ -12,7 +12,7 @@
  */
 class MP_Parser_Filename_Old implements MP_Parser_Interface {
     
-    const TEST_EREG = "/^([a-zA-Z0-9]+)_([0-9]{6})_([0-9]{6})_([0-9]+)\.[a-zA-Z0-9]+/";
+    const TEST_EREG = "/^([a-zA-Z0-9]+)_([0-9]{6})_([0-9]{6})_([0-9]+)\.[a-zA-Z0-9]+$/";
     
     /**
      * otestuje, jestli jmeno souboru vyhovuje formatu
@@ -49,7 +49,7 @@ class MP_Parser_Filename_Old implements MP_Parser_Interface {
         
         // navraceni vysledku
         $retVal = new MP_Parser_Result(array(
-        MP_Parser_Result::CONFIG_DATA => array(
+        MP_Parser_Result::CONFIG_DATA => array(//ahoj puštíčku:-*)
             "collection" => $collection,
             "year" => $dateParts[0],
             "month" => $dateParts[1],

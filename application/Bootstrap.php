@@ -9,6 +9,9 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $autoloader->registerNamespace("MP_");
 
         Zend_Controller_Front::getInstance()->registerPlugin(new MP_Controller_Plugin_Acl());
+        
+        define("TMP_PATH", APPLICATION_PATH . "/../tmp");
+        define("IMAGE_PREVIEW_PATH", APPLICATION_PATH . "/../public/previews");
     }
 
     protected function _initRoutes() {
@@ -221,6 +224,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("meta"));
         $acl->addResource(new Zend_Acl_Resource("collection"));
         $acl->addResource(new Zend_Acl_Resource("group"));
+        $acl->addResource(new Zend_Acl_Resource("frame"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");

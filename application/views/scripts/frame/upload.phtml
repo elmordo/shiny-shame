@@ -1,0 +1,9 @@
+<?php
+if ($this->uploaded) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
+}
+
+echo $this->header("Upload new frames");
+echo $this->form;
+?>

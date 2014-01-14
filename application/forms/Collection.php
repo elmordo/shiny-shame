@@ -37,7 +37,8 @@ class Application_Form_Collection extends MP_Form {
                 new Zend_Filter_Null()
             ),
             "required" => false,
-            "description" => "Prefix in filename for automatic classification of new images"
+            "description" => "Prefix in filename for automatic classification of new images (read-only)",
+            "readonly" => true
         ));
         
         $this->addElement("select", "group_id", array(
