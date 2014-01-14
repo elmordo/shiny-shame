@@ -10,7 +10,7 @@
  *
  * @author petr
  */
-class Zend_View_Helper_Frame extends Zend_View_Helper_Abstract {
+class Zend_View_Helper_Frame extends MP_View_Helper_Abstract {
     
     public function frame($frame = null, array $config = array()) {
         if (is_null($frame)) {
@@ -23,9 +23,11 @@ class Zend_View_Helper_Frame extends Zend_View_Helper_Abstract {
             "listTag" => "ul",
             "listId" => null,
             "itemTag" => "li",
-            "listClass" => "",
-            "itemClass" => "",
-            "infoContainerClass" => ""
+            "listClass" => null,
+            "itemClass" => null,
+            "infoContainerClass" => null,
+            "actions" => array(),
+            "actionContainerClass" => null
             ), $config);
         
         $items = array();
@@ -34,20 +36,18 @@ class Zend_View_Helper_Frame extends Zend_View_Helper_Abstract {
             $items[] = $this->_listFrameItem($frame, $config);
         }
         
-        if (!is_null($config["listId"])) {
-            $id = sprintf(" id='%s'", $config["listId"]);
-        } else {
-            $id = "";
-        }
+        $content = implode("", $items);
         
-        return sprintf("<%s%s class='%s'>%s</%s>", $config["listTag"], $id, $config["listClass"], implode("", $items), $config["listTag"]);
+        return $this->_wrapToTag($config["listTag"], $content, array("listClass" => $config["listClass"]));
     }
     
     public function listFrameItem(Application_Model_Row_Frame $frame, array $config = array()) {
         $config = array_merge(array(
             "itemTag" => "li",
-            "itemClass" => "",
-            "infoContainerClass" => ""
+            "itemClass" => null,
+            "infoContainerClass" => null,
+            "actions" => array(),
+            "actionContainerClass" => null
         ), $config);
         
         return $this->_listFrameItem($frame, $config);
@@ -59,7 +59,24 @@ class Zend_View_Helper_Frame extends Zend_View_Helper_Abstract {
         $imgSrc = $frame->getPublicSmallPath();
         $fullUrl = $frame->getPublicFullPath();
         
-        return sprintf("<%s class='%s'><a href='%s' target='_blank'><img src='%s'></a><div class='%s'>%s (%d)</div></%s>", $config["itemTag"], $config["itemClass"], $fullUrl, $imgSrc, $config["infoContainerClass"], $date, $ord, $config["itemTag"]);
+        // sestaveni obrazku a informaci
+        $img = $this->_wrapToTag("img", null, array("src" => $imgSrc));
+        $info = $this->_wrapToTag("div", sprintf("%s (%d)", $date, $ord), array("class" => $config["infoContainerClass"]));
+        
+        // wrap odkazu
+        $a = $this->_wrapToTag("a", $img, array("href" => $fullUrl, "target" => "_blank"));
+        
+        // vytvoreni akci
+        if ($config["actions"]) {
+            $params = $frame->toArray();
+            $actionList = $this->_generateRouteActions($config["actions"], $params);
+            
+            $actions = $this->_wrapToTag("div", $actionList, array("class" => $config["actionContainerClass"]));
+        } else {
+            $actions = "";
+        }
+        
+        return $this->_wrapToTag($config["itemTag"], $a . $info . $actions, array("class" => $config["itemClass"]));
     }
 }
 

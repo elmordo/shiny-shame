@@ -10,10 +10,12 @@
  *
  * @author petr
  */
-class MP_View_Helper_ButtonLink extends Zend_View_Helper_Abstract {
+class MP_View_Helper_ButtonLink extends MP_View_Helper_Abstract {
     
-    public function buttonLink($caption, $url, $class = "button", $target = "_self") {
-        return sprintf("<a href='%s' target='%s' class='%s'>%s</a>", $url, $target, $class, $caption);
+    public function buttonLink($caption, $url, array $options = array()) {
+        $options["href"] = $url;
+        
+        return $this->_wrapToTag("a", $caption, $options);
     }
 }
 

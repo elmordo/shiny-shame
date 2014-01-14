@@ -210,6 +210,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             "action" => "get"
                 ))
         );
+        
+        $router->addRoute(
+                "frame-download", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/get.tiff", array(
+                    "module" => "default",
+                    "controller" => "frame",
+                    "action" => "download"
+                ))
+                );
     }
 
     protected function _initAcl() {

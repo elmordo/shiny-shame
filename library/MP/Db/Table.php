@@ -15,6 +15,17 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
     private static $_tableNames = array();
     
     /**
+     * vraci radek tabulky dle id
+     * pouzitelne pouze pro tabulky s jednim primarnim klicem
+     * 
+     * @param int $id identifikator tabulky
+     * @return MP_Db_Table_Row
+     */
+    public function findById($id) {
+        return $this->find($id)->current();
+    }
+    
+    /**
      * vraci skutecne jmeno tabulky na zaklade jmena tridy
      * 
      * @param string $className jmeno tridy

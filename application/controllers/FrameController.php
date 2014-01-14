@@ -16,6 +16,29 @@ class FrameController extends Zend_Controller_Action {
     const FILE_TIFF = "TIFF";
     const FILE_ZIP = "ZIP";
     
+    /**
+     * stahne originalni TIFF obrazek
+     */
+    public function downloadAction() {
+        // nacteni informaci
+        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+        
+        // kontrola opravneni pristupu k experimentu
+        if (!$experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_READ)) {
+            throw new MP_Db_Table_Row_DataAccess_Exception("Read is forbidden");
+        }
+        
+        // nacteni radku se snimkem
+        $frame = self::findFrame($this->_request->getParam("frame_id"));
+        
+        // otevreni uloziste a zapis dat do view
+        $storage = new MP_Storage_Frames($experiment);
+        
+        $this->view->imageContent = $storage->getFrameData($frame);
+        $this->view->frame = $frame;
+        $this->view->experiment = $experiment;
+    }
+    
     public function indexAction() {
         // nacteni informaci
         $experimentId = $this->_request->getParam("experiment_id", null);
@@ -29,6 +52,13 @@ class FrameController extends Zend_Controller_Action {
         $this->view->frames = $frames;
     }
     
+    /**
+     * zobrazi podrobnosti o obrazku
+     */
+    public function getAction() {
+        
+    }
+
     public function uploadAction() {
         $form = @new Application_Form_FrameUpload();
         
@@ -311,6 +341,15 @@ class FrameController extends Zend_Controller_Action {
         
         // vraceni hodnoty
         return $collectionIndex[$tag];
+    }
+    
+    public static function findFrame($frameId) {
+        $tableFrames = new Application_Model_Frames();
+        $frame = $tableFrames->findById($frameId);
+        
+        if (!$frame) throw new Zend_Db_Table_Exception(sprintf("Frame #%d not found", $frameId));
+        
+        return $frame;
     }
 }
 

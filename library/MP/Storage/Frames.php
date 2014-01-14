@@ -53,11 +53,7 @@ class MP_Storage_Frames {
         // kontrola, jestli archiv existuje
         $archive = new ZipArchive();
         
-        if (!is_file($fileName)) {
-            $archive->open($fileName, ZipArchive::CREATE);
-        } else {
-            $archive->open($fileName, ZipArchive::OVERWRITE);
-        }
+        $archive->open($fileName);
         
         $this->_archive = $archive;
         $this->_archivePath = $fileName;
@@ -92,6 +88,20 @@ class MP_Storage_Frames {
      */
     public function getExperiment() {
         return $this->_experiment;
+    }
+    
+    /**
+     * vraci TIFF jako retezec
+     * 
+     * @param Application_Model_Row_Frame $frame
+     * @return string
+     */
+    public function getFrameData(Application_Model_Row_Frame $frame) {
+        // nacteni cesty
+        $path = $this->getFramePath($frame);
+        
+        // vraceni dat
+        return $this->_archive->getFromName($path);
     }
     
     /**

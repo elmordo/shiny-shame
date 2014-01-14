@@ -42,6 +42,15 @@ class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
         return $this->_getPublicPath(self::POSTFIX_SMALL);
     }
     
+    public function getRepresentativeName() {
+        list($date, $time) = explode(" ", $this->taken_at);
+        
+        $dateArr = explode("-", $date);
+        $timeArr = explode(":", $time);
+        
+        return sprintf("%s_%s%s%s_%s%s%s_%d.%s", $this->tag, substr($dateArr[0], 2, 2), $dateArr[1], $dateArr[2], $timeArr[0], $timeArr[1], $timeArr[2], $this->ord, $this->format);
+    }
+    
     /**
      * nastavi soubor velkeho nahledu
      * 

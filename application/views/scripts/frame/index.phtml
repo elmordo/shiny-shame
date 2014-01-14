@@ -1,4 +1,4 @@
 <?php
 echo $this->header("Frames");
-echo $this->frame()->frames($this->frames);
+echo $this->frame()->frames($this->frames, array("actions" => array("frame-download" => array("caption" => "Download", "target" => "_blank"))));
 ?>
