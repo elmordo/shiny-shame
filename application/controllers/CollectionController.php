@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . "/ExperimentController.php";
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -31,7 +31,24 @@ class CollectionController extends Zend_Controller_Action {
     }
     
     public function deleteAction() {
+        $form = new MP_Form_Delete();
+        $form->setElementsBelongTo("deletecollection");
         
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            $collection = self::findCollection($this->_request->getParam("collection_id"));
+            
+            if (!is_null($collection->tag)) {
+                throw new Zend_Db_Table_Row_Exception("Collection with tag can not be deleted");
+            }
+            
+            $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+            
+            $collection->delete();
+            $this->view->isDeleted = true;
+            $this->view->experiment = $experiment;
+        }
+        
+        $this->view->deleteForm = $form;
     }
     
     public function getAction() {

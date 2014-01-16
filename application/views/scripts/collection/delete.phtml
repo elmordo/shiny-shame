@@ -1,0 +1,9 @@
+<?php
+if ($this->isDeleted) {
+    $this->redirect("get-experiment", true, $this->experiment->toArray());
+}
+
+echo $this->header("Delete collection");
+
+echo $this->deleteForm;
+?>

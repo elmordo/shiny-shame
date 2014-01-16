@@ -14,5 +14,9 @@ echo $this->buttonLink("Back to experiment", $backUrl);
 
 echo $this->form;
 
+if (is_null($this->collection->tag) && $this->collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_DELETE)) {
+    echo $this->action("delete", "collection", "default", $this->collection->toArray());
+}
+
 $this->header()->goUp();
 ?>
