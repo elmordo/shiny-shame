@@ -3,7 +3,7 @@ class Application_Model_Users extends MP_Db_Table {
 	
 	protected $_name = "users";
 	
-	protected $_primary = array("id");
+	protected $_primary = array("user_id");
 	
 	protected $_sequence = true;
 	

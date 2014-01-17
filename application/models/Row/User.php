@@ -17,14 +17,14 @@ class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Z
         $nameGroups = MP_Db_Table::getRealName("Application_Model_Groups");
         $nameAssocs = MP_Db_Table::getRealName("Application_Model_UsersHaveGroups");
         
-        $select->from(array("g" => $nameGroups), array("id"));
-        $select->joinInner(array("a" => $nameAssocs), "a.group_id = g.id", array());
+        $select->from(array("g" => $nameGroups), array("group_id"));
+        $select->joinInner(array("a" => $nameAssocs), "a.group_id = g.group_id", array());
         
         $data = $select->query()->fetchAll();
         $this->_groups = array();
         
         foreach ($data as $item) {
-            $this->_groups[] = $item["id"];
+            $this->_groups[] = $item["group_id"];
         }
     }
     
@@ -35,6 +35,17 @@ class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Z
         return $array;
     }
 	
+    /**
+     * vygeneruje novou sul
+     * 
+     * @return \Application_Model_Row_User
+     */
+    public function generateSalt() {
+        $this->salt = sha1(time() . microtime(false));
+        
+        return $this;
+    }
+    
 	/**
 	 * (non-PHPdoc)
 	 * @see Zend_Acl_Role_Interface::getRoleId()

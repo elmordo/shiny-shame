@@ -12,9 +12,25 @@
  */
 class Application_Model_Groups extends MP_Db_Table {
     
+    /**
+     * obsahuje seznam radku existujicich skupin
+     *
+     * @var Zend_Db_Table_Rowset_Abstract
+     */
+    protected static $_groups = null;
+    
+    /**
+     * obsahuje asociativni pole klic hodnota
+     * klic je id skupiny
+     * hodnota je jmeno skupiny
+     *
+     * @var array
+     */
+    protected static $_groupSelect = null;
+    
     protected $_name = "groups";
     
-    protected $_primary = "id";
+    protected $_primary = "group_id";
     
     protected $_sequence = true;
     
@@ -28,7 +44,7 @@ class Application_Model_Groups extends MP_Db_Table {
      */
     public function findById($id) {
         $select = $this->prepareSelect();
-        $select->where("g.id = ?", $id);
+        $select->where("g.group_id = ?", $id);
         
         $data = $select->query()->fetch();
         
@@ -42,7 +58,7 @@ class Application_Model_Groups extends MP_Db_Table {
      */
     public function findGroups() {
         $select = $this->prepareSelect();
-        $select->group("g.id")->order("g.name");
+        $select->group("g.group_id")->order("g.name");
         
         $data = $select->query()->fetchAll();
         
@@ -60,9 +76,54 @@ class Application_Model_Groups extends MP_Db_Table {
         
         $select = new Zend_Db_Select($this->getAdapter());
         $select->from(array("g" => $nameThis), array("g.*"));
-        $select->joinLeft(array("a" => $nameAssocs), "a.group_id = g.id", array("cnt" => new Zend_Db_Expr("COUNT(user_id)")));
+        $select->joinLeft(array("a" => $nameAssocs), "a.group_id = g.group_id", array("cnt" => new Zend_Db_Expr("COUNT(user_id)")));
         
         return $select;
+    }
+    
+    /**
+     * vraci seznam skupin jako rowset
+     * 
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public static function getGroups() {
+        if (is_null(self::$_groupSelect)) {
+            self::_cacheGroups();
+        }
+        
+        return self::$_groups;
+    }
+    
+    /**
+     * vraci asociativni pole klic hodnota
+     * klic je id skupiny
+     * hodnota je jmeno skupiny
+     * 
+     * @return array
+     */
+    public static function getGroupsIndex() {
+        if (is_null(self::$_groupSelect)) {
+            self::_cacheGroups();
+        }
+        
+        return self::$_groupSelect;
+    }
+    
+    protected static function _cacheGroups() {
+        $table = new self();
+        $groups = $table->findGroups();
+        
+        // zapsani radku
+        self::$_groups = $groups;
+        
+        // vytvoreni asociativniho pole
+        $index = array();
+        
+        foreach ($groups as $group) {
+            $index[$group->group_id] = $group->name;
+        }
+        
+        self::$_groupSelect = $index;
     }
 }
 

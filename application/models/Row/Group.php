@@ -23,7 +23,7 @@ class Application_Model_Row_Group extends Zend_Db_Table_Row_Abstract {
         $nameAssocs = MP_Db_Table::getRealName("Application_Model_UsersHaveGroups");
         
         $select->from(array("u" => $nameUsers), array("u.*", "in_group" => new Zend_Db_Expr("IFNULL(a.group_id, 0)")));
-        $select->joinLeft(array("a" => $nameAssocs), "u.id = a.user_id and a.group_id = " . $this->id, array());
+        $select->joinLeft(array("a" => $nameAssocs), "u.user_id = a.user_id and a.group_id = " . $this->group_id, array());
         
         return new Zend_Db_Table_Rowset(array(
             "data" => $select->query()->fetchAll(),
@@ -36,12 +36,12 @@ class Application_Model_Row_Group extends Zend_Db_Table_Row_Abstract {
         
         // smazani starych dat
         $tableAssocs->delete(array(
-            "group_id = ?" => $this->id
+            "group_id = ?" => $this->group_id
         ));
         
         // vytvoreni novych
         $items = array();
-        $pattern = "(" . $this->id . ", ";
+        $pattern = "(" . $this->group_id . ", ";
         
         foreach ($values as $id => $in) {
             if ($in) {

@@ -1,7 +1,17 @@
 <?php
 class UserController extends Zend_Controller_Action {
 	
-	public function deleteAction() {
+    /**
+     *
+     * @var Application_Model_Row_User
+     */
+    private $_user;
+
+    public function init() {
+        $this->_user = Zend_Auth::getInstance()->getIdentity();
+    }
+
+    public function deleteAction() {
 		
 	}
 	
@@ -9,24 +19,25 @@ class UserController extends Zend_Controller_Action {
 	 * zobrazi informace o uzivateli (read only)
 	 */
 	public function getAction() {
-		
+		// nacteni informaci
+		$this->view->user = $this->_user;
 	}
+    
+    public function getotherAction() {
+        $tableUsers = new Application_Model_Users();
+        
+        $this->_user = $tableUsers->findByLogin($this->_request->getParam("login"));
+        $this->getAction();
+    }
 	
 	/**
 	 * vypise informace o aktualnim uzivateli
 	 */
 	public function indexAction() {
-		// nacteni informaci
-		$user = Zend_Auth::getInstance()->getIdentity();
-		
-		$this->view->user = $user;
-	}
-	
-	/**
-	 * vypise seznam uzivatelu
-	 */
-	public function listAction() {
-		
+		$tableUsers = new Application_Model_Users();
+        $users = $tableUsers->fetchAll(null, "username");
+        
+        $this->view->users = $users;
 	}
 	
 	/**
@@ -60,7 +71,25 @@ class UserController extends Zend_Controller_Action {
 	 * vytvori noveho uzivatele
 	 */
 	public function postAction() {
-		
+		$form = new Application_Form_User();
+        
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            $tableUsers = new Application_Model_Users();
+            
+            $row = $tableUsers->createRow();
+            $row->login = $form->getValue("login");
+            $row->username = $form->getValue("username");
+            $row->role = $form->getValue("role");
+            
+            $row->generateSalt();
+            $row->setPassword($form->getValue("password"));
+            
+            $row->save();
+            
+            $this->view->row = $row;
+        }
+        
+        $this->view->form = $form;
 	}
 	
 	/**
@@ -71,10 +100,10 @@ class UserController extends Zend_Controller_Action {
 		$form = new Application_Form_User_My();
 		
         // nacteni uzivatele
-        $identity = Zend_Auth::getInstance()->getIdentity();
+        $identity = $this->_user;
         $tableUsers = new Application_Model_Users();
         
-        $user = $tableUsers->findById($identity->id);
+        $user = $tableUsers->findById($identity->user_id);
         
 		if ($this->_request->isPost()) {
             // formular byl odeslan metodou post - kontrola validity a update dat
@@ -122,6 +151,38 @@ class UserController extends Zend_Controller_Action {
             $this->view->form = $form;
 		}
 	}
+    
+    public function putotherAction() {
+        $tableUsers = new Application_Model_Users();
+        $user = $tableUsers->findByLogin($this->_request->getParam("login"));
+        $form = new Application_Form_User_Admin();
+        $form->populate($user->toArray());
+        
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            // nastaveni obecnych dat
+            $user->username = $form->getValue("username");
+            $user->role = $form->getValue("role");
+
+            // kontrola hesla
+            $password = $form->getValue("password");
+            
+            if (!is_null($password)) {
+                $confirm = $form->getValue("password_confirm");
+                
+                if (!is_null($confirm)) {
+                    $user->setPassword($password);
+                }
+            }
+            
+            $this->_helper->getHelper("FlashMessenger")->addMessage("Data has been saved");
+            
+            $user->save();
+            $this->view->saved = true;
+        }
+        
+        $this->view->user = $user;
+        $this->view->form = $form;
+    }
 	
 	public function putPartAction() {
 		$this->putAction();

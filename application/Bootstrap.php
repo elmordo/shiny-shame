@@ -1,4 +1,5 @@
 <?php
+
 require_once APPLICATION_PATH . '/controllers/MetaController.php';
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
@@ -8,6 +9,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $autoloader->registerNamespace("MP_");
 
         Zend_Controller_Front::getInstance()->registerPlugin(new MP_Controller_Plugin_Acl());
+        
+        define("TMP_PATH", APPLICATION_PATH . "/../tmp");
+        define("IMAGE_PREVIEW_PUBLIC", "/previews");
+        define("IMAGE_PREVIEW_PATH", APPLICATION_PATH . "/../public" . IMAGE_PREVIEW_PUBLIC);
     }
 
     protected function _initRoutes() {
@@ -18,7 +23,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 "my-account", new Zend_Controller_Router_Route("/my-account", array(
             "module" => "default",
             "controller" => "user",
-            "action" => "index"
+            "action" => "get"
                 ))
         );
 
@@ -27,6 +32,38 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             "module" => "default",
             "controller" => "user",
             "action" => "put"
+                ))
+        );
+        
+        $router->addRoute(
+                "get-user", new Zend_Controller_Router_Route("/user/:login", array(
+            "module" => "default",
+            "controller" => "user",
+            "action" => "getother"
+                ))
+        );
+        
+        $router->addRoute(
+                "put-user", new Zend_Controller_Router_Route("/user/:login/edit", array(
+            "module" => "default",
+            "controller" => "user",
+            "action" => "putother"
+                ))
+        );
+
+        $router->addRoute(
+                "users", new Zend_Controller_Router_Route("/users", array(
+            "module" => "default",
+            "controller" => "user",
+            "action" => "index"
+                ))
+        );
+        
+        $router->addRoute(
+                "post-user", new Zend_Controller_Router_Route("/new-user", array(
+            "module" => "default",
+            "controller" => "user",
+            "action" => "post"
                 ))
         );
 
@@ -61,7 +98,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             "action" => "index"
                 ))
         );
-        
+
         $router->addRoute(
                 "create-microscope", new Zend_Controller_Router_Route("/create-microscope", array(
             "module" => "default",
@@ -69,100 +106,132 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
             "action" => "post"
                 ))
         );
-        
+
         $router->addRoute(
                 "microscope-get", new Zend_Controller_Router_Route("/microscope/:tag", array(
-                    "module" => "default",
-                    "controller" => "microscope",
-                    "action" => "get"
+            "module" => "default",
+            "controller" => "microscope",
+            "action" => "get"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
                 "microscope-put", new Zend_Controller_Router_Route("/microscope/:tag/edit", array(
-                    "module" => "default",
-                    "controller" => "microscope",
-                    "action" => "put"
+            "module" => "default",
+            "controller" => "microscope",
+            "action" => "put"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
                 "meta-post", new Zend_Controller_Router_Route(sprintf("/meta/:%s/parent/:%s/post", MetaController::REQUEST_PARAM_NAME, MetaController::REQUEST_PARAM_PARENT_ID), array(
-                    "module" => "default",
-                    "controller" => "meta",
-                    "action" => "post"))
-                );
-        
+            "module" => "default",
+            "controller" => "meta",
+            "action" => "post"))
+        );
+
         $router->addRoute(
                 "meta-put-microscope", new Zend_Controller_Router_Route(sprintf("/microscope/:%s/meta/:metaId/put", MetaController::REQUEST_PARAM_PARENT_ID), array(
-                    "module" => "default",
-                    "controller" => "meta",
-                    "action" => "put",
-                    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE
+            "module" => "default",
+            "controller" => "meta",
+            "action" => "put",
+            MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_MICROSCOPE
                 ))
-                );
-        
+        );
+
         $router->addRoute(
                 "create-experiment", new Zend_Controller_Router_Route("/new-experiment", array(
-                    "module" => "default",
-                    "controller" => "experiment",
-                    "action" => "post"
+            "module" => "default",
+            "controller" => "experiment",
+            "action" => "post"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
-                "edit-experiment", new Zend_Controller_Router_Route("/experiment/:id/edit", array(
-                    "module" => "default",
-                    "controller" => "experiment",
-                    "action" => "put"
+                "edit-experiment", new Zend_Controller_Router_Route("/experiment/:experiment_id/edit", array(
+            "module" => "default",
+            "controller" => "experiment",
+            "action" => "put"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
-                "get-experiment", new Zend_Controller_Router_Route("/experiment/:id/overview", array(
-                    "module" => "default",
-                    "controller" => "experiment",
-                    "action" => "get"
+                "get-experiment", new Zend_Controller_Router_Route("/experiment/:experiment_id/overview", array(
+            "module" => "default",
+            "controller" => "experiment",
+            "action" => "get"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
-                "post-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/new-collection", array(
-                    "module" => "default",
-                    "controller" => "collection",
-                    "action" => "post"
+                "post-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/new-collection", array(
+            "module" => "default",
+            "controller" => "collection",
+            "action" => "post"
                 ))
-                );
-        
+        );
+
         $router->addRoute(
-                "put-collection", new Zend_Controller_Router_Route("/experiment/:experimentId/collection/:id/edit", array(
-                    "module" => "default",
-                    "controller" => "collection",
-                    "action" => "put"
+                "put-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id/edit", array(
+            "module" => "default",
+            "controller" => "collection",
+            "action" => "put"
                 ))
-                );
-        
+        );
+
+        $router->addRoute(
+                "get-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id", array(
+            "module" => "default",
+            "controller" => "collection",
+            "action" => "get"
+                ))
+        );
+
         $router->addRoute(
                 "groups", new Zend_Controller_Router_Route("/groups", array(
+            "module" => "default",
+            "controller" => "group",
+            "action" => "index"
+                ))
+        );
+
+        $router->addRoute(
+                "group-put", new Zend_Controller_Router_Route("/group/:group_id/edit", array(
+            "module" => "default",
+            "controller" => "group",
+            "action" => "put"
+                ))
+        );
+
+        $router->addRoute(
+                "group-get", new Zend_Controller_Router_Route("/group/:group_id", array(
+            "module" => "default",
+            "controller" => "group",
+            "action" => "get"
+                ))
+        );
+        
+        $router->addRoute(
+                "frame-download", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/download.tiff", array(
                     "module" => "default",
-                    "controller" => "group",
-                    "action" => "index"
+                    "controller" => "frame",
+                    "action" => "download"
                 ))
                 );
         
         $router->addRoute(
-                "group-put", new Zend_Controller_Router_Route("/group/:id/edit", array(
+                "frame-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/detail", array(
                     "module" => "default",
-                    "controller" => "group",
-                    "action" => "put"
-                ))
-                );
-        
-        $router->addRoute(
-                "group-get", new Zend_Controller_Router_Route("/group/:id", array(
-                    "module" => "default",
-                    "controller" => "group",
+                    "controller" => "frame",
                     "action" => "get"
+                ))
+                );
+        
+        $router->addRoute(
+                "frame-put", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/edit", array(
+                    "module" => "default",
+                    "controller" => "frame",
+                    "action" => "put"
                 ))
                 );
     }
@@ -180,6 +249,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("meta"));
         $acl->addResource(new Zend_Acl_Resource("collection"));
         $acl->addResource(new Zend_Acl_Resource("group"));
+        $acl->addResource(new Zend_Acl_Resource("frame"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");
@@ -194,7 +264,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         // povoleni akci operatorovi
         $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", array("post"));
         $acl->allow(MP_Role::ROLE_OPERATOR, "experiment", array("put", "get"), new MP_Acl_Assert_Experiment());
-        
+
         // povoleni akci adminovi
         $acl->allow(MP_Role::ROLE_ADMIN);
     }

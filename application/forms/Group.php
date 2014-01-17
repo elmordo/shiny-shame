@@ -22,6 +22,12 @@ class Application_Form_Group extends MP_Form {
             "description" => "Name of group"
         ));
         
+        $this->addElement("checkbox", "is_default", array(
+            "required" => true,
+            "label" => "Default",
+            "description" => "If group is default, new users will be assigned to it automaticaly"
+        ));
+        
         $this->addElement("submit", "submit", array(
             "label" => "Save"
         ));

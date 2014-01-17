@@ -1,1 +1,11 @@
 <?php
+$user = $this->user;
+$this->headTitle("My Account");
+?>
+<table class="info-table">
+    <?php 
+    echo $this->tableLayout()->row(array("Login name", $user->login));
+    echo $this->tableLayout()->row(array("Real name", $user->username));
+    ?>
+</table>
+<?php echo $this->buttonLink("Edit profile", $this->url(array(), "edit-profile")); ?>

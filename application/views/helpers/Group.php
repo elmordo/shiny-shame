@@ -20,7 +20,7 @@ class Zend_View_Helper_Group extends Zend_View_Helper_Abstract {
         $helper = $this->view->tableLayout();
         
         return sprintf("<table class='info-table'><tbody>%s%s%s</tbody></table>",
-                $helper->row(array("#", $data["id"])),
+                $helper->row(array("#", $data["group_id"])),
                 $helper->row(array("Name", $data["name"])),
                 $helper->row(array("Count of users", $data["cnt"]))
                 );
@@ -40,10 +40,10 @@ class Zend_View_Helper_Group extends Zend_View_Helper_Abstract {
         $rows = array();
         
         foreach ($data as $item) {
-            $url = $this->view->url(array("id" => $item["id"]), "group-get");
+            $url = $this->view->url($item->toArray(), "group-get");
             
             $rows[] = $tableHelper->row(array(
-                $item["id"],
+                $item["group_id"],
                 sprintf("<a href='%s'>%s</a>", $url, $item["name"]),
                 $item["cnt"]
             ));

@@ -1,0 +1,18 @@
+<?php
+$user = $this->user;
+$this->headTitle("My Account");
+?>
+<table class="info-table">
+    <?php 
+    echo $this->tableLayout()->row(array("Login name", $user->login));
+    echo $this->tableLayout()->row(array("Real name", $user->username));
+    ?>
+</table>
+<?php 
+$acl = $this->acl();
+$identity = Zend_Auth::getInstance()->getIdentity();
+
+if ($acl->isAllowed($identity, "user", "putother")) {
+    echo $this->buttonLink("Edit user", $this->url($user->toArray(), "put-user")); 
+}
+?>

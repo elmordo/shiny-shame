@@ -1,1 +1,10 @@
 <?php
+if ($this->row) {
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $url = $this->url($this->row->toArray(), "put-user");
+    
+    $redirector->gotoUrlAndExit($url);
+}
+
+echo $this->header("New user");
+echo $this->form;

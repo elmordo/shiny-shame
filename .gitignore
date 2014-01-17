@@ -1,6 +1,10 @@
 .*
-
+*.autosave
 *~
 !.gitignore
 /nbproject/private/
 /nbproject
+/public/changelog.txt
+/data
+/tmp
+/public/previews

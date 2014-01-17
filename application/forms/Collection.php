@@ -37,12 +37,28 @@ class Application_Form_Collection extends MP_Form {
                 new Zend_Filter_Null()
             ),
             "required" => false,
-            "description" => "Prefix in filename for automatic classification of new images"
+            "description" => "Prefix in filename for automatic classification of new images (read-only)",
+            "readonly" => true
+        ));
+        
+        $this->addElement("select", "group_id", array(
+            "label" => "Group",
+            "required" => false,
+            "filters" => array(
+                new Zend_Filter_Null()
+            ),
+            "description" => "User group for data access (can be empty)",
+            "multiOptions" => array("0" => "-- NO GROUP SELECTED --")
         ));
         
         $this->addElement("submit", "submit", array(
             "label" => "Save"
         ));
+        
+        // inicializace skupin
+        $groups = Application_Model_Groups::getGroupsIndex();
+        
+        $this->_elements["group_id"]->addMultiOptions($groups);
     }
 }
 

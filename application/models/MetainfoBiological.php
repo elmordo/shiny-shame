@@ -3,7 +3,7 @@ class Application_Model_MetainfoBiological extends MP_Db_Table_Meta {
 	
 	protected $_name = "metainfo_biological";
 	
-	protected $_primary = array("id");
+	protected $_primary = array("metainfo_biological_id");
 	
 	protected $_sequence = true;
 	
@@ -11,11 +11,11 @@ class Application_Model_MetainfoBiological extends MP_Db_Table_Meta {
 			"experiment" => array(
 					"columns" => "experiment_id",
 					"refTableClass" => "Application_Model_Experiments",
-					"refColumns" => "id"
+					"refColumns" => "experiment_id"
 					)
 			);
 	
 	protected $_rowClass = "Application_Model_Row_MetaInfoBiological";
         
-        protected $_referenceColumn = "experiment_id";
+    protected $_referenceColumn = "experiment_id";
 }

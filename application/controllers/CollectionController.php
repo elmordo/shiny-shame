@@ -1,5 +1,5 @@
 <?php
-
+require_once __DIR__ . "/ExperimentController.php";
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -22,7 +22,7 @@ class CollectionController extends Zend_Controller_Action {
      * nacte experiment, pokud je k dispozici
      */
     public function init() {
-        $experimentId = $this->_request->getParam("experimentId");
+        $experimentId = $this->_request->getParam("experiment_id");
         
         if (!is_null($experimentId)) {
             $tableExperiments = new Application_Model_Experiments();
@@ -31,11 +31,32 @@ class CollectionController extends Zend_Controller_Action {
     }
     
     public function deleteAction() {
+        $form = new MP_Form_Delete();
+        $form->setElementsBelongTo("deletecollection");
         
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            $collection = self::findCollection($this->_request->getParam("collection_id"));
+            
+            if (!is_null($collection->tag)) {
+                throw new Zend_Db_Table_Row_Exception("Collection with tag can not be deleted");
+            }
+            
+            $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+            
+            $collection->delete();
+            $this->view->isDeleted = true;
+            $this->view->experiment = $experiment;
+        }
+        
+        $this->view->deleteForm = $form;
     }
     
     public function getAction() {
+        $experiment = $this->_experiment;
+        $collection = self::findCollection($this->_request->getParam("collection_id"));
         
+        $this->view->collection = $collection;
+        $this->view->experiment = $experiment;
     }
     
     /*
@@ -46,7 +67,7 @@ class CollectionController extends Zend_Controller_Action {
         $experiment = $this->_experiment;
         
         $tableCollections = new Application_Model_Collections();
-        $collections = $tableCollections->findByExperiment($experiment->id);
+        $collections = $tableCollections->findByExperiment($experiment->experiment_id);
         
         $this->view->experiment = $experiment;
         $this->view->collections = $collections;
@@ -62,10 +83,7 @@ class CollectionController extends Zend_Controller_Action {
             if ($form->isValid($this->_request->getParams())) {
                 // vytvoreni noveho zaznamu
                 $tableCollections = new Application_Model_Collections();
-                $row = $tableCollections->createRow($form->getValues(true));
-                $row->experiment_id = $experiment->id;
-                
-                $row->save();
+                $row = $tableCollections->createCollection($form->getValues(true), $experiment);
                 
                 $this->view->row = $row;
             }
@@ -78,7 +96,7 @@ class CollectionController extends Zend_Controller_Action {
     public function putAction() {
         $experiment = $this->_experiment;
         $form = new Application_Form_Collection();
-        $collection = self::findCollection($this->_request->getParam("id"));
+        $collection = self::findCollection($this->_request->getParam("collection_id"));
         
         $form->populate($collection->toArray());
         

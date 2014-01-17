@@ -27,7 +27,7 @@ class Application_Form_Group_Users extends MP_Form {
         $this->_elementsBelongTo = "groupusers";
         
         foreach ($users as $user) {
-            $this->addElement("checkbox", $user->id, array(
+            $this->addElement("checkbox", $user->user_id, array(
                 "label" => $user->username,
                 "value" => $user->in_group ? 1 : 0
             ));

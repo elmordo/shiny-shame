@@ -12,4 +12,4 @@ echo $this->buttonLink("Back to overview", $this->url($this->experiment->toArray
 echo $this->form;
 
 // vypsani kolekci
-echo $this->action("index", "collection", "default", array("experimentId" => $this->experiment->id));
+echo $this->action("index", "collection", null, $this->experiment->toArray());

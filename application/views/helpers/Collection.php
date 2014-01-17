@@ -12,6 +12,12 @@
  */
 class Zend_View_Helper_Collection extends Zend_View_Helper_Abstract {
     
+    /**
+     * 
+     * @param Application_Model_Row_Collection $collection kolekce obrazku
+     * @param array $config
+     * @return string
+     */
     public function collection($collection = null, array $config = array()) {
         if (is_null($collection)) {
             return $this;
@@ -36,13 +42,26 @@ class Zend_View_Helper_Collection extends Zend_View_Helper_Abstract {
             <td>%s</td>
 </tr>";
         
-        return sprintf($pattern, $collection->name, $collection->tag, "");
+        // vyhodnoceni akci
+        $actions = array();
+        
+        if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_READ)) {
+            $actions[] = sprintf("<a href='%s'>Show</a>", $this->view->url($collection->toArray(), "get-collection"));
+        }
+        
+        if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
+            $actions[] = sprintf("<a href='%s'>Edit</a>", $this->view->url($collection->toArray(), "put-collection"));
+        }
+        
+        return sprintf($pattern, $collection->name, $collection->tag, implode(" ", $actions));
     }
     
     /**
      * vypise seznam kolekci v tabulce
      * 
-     * @param type $collections data kolekci
+     * @param Application_Model_Row_Collection $collections data kolekci
+     * @param Application_Model_Row_Experiment $experiment radek experimentu
+     * @return string
      */
     public function collections($collections, array $config = array()) {
         // sestaveni tabulky kolekci
@@ -50,7 +69,7 @@ class Zend_View_Helper_Collection extends Zend_View_Helper_Abstract {
         $rows = array();
         
         foreach ($collections as $item) {
-            $rows[] = $this->collection($item);
+            $rows[] = $this->collection($item, $config);
         }
         
         return sprintf("<table>%s<tbody>%s</tbody></table>", $head, implode("", $rows));

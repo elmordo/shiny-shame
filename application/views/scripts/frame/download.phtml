@@ -1,0 +1,8 @@
+<?php
+// vypnuti layout a nastaveni hlavicek
+$this->layout()->disableLayout();
+header("Content-Type: image/" . $this->frame->format);
+header("Content-Length: " . strlen($this->imageContent));
+header("Content-disposition: attachment; filename=" . $this->frame->getRepresentativeName());
+echo $this->imageContent;
+?>

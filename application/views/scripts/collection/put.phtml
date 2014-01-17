@@ -1,10 +1,7 @@
 <?php
 if ($this->redirect) {
     $redirector = new Zend_Controller_Action_Helper_Redirector();
-    $url = $this->url(array(
-        "id" => $this->collection->id,
-        "experimentId" => $this->collection->experiment_id
-    ), "put-collection");
+    $url = $this->url($this->collection->toArray(), "put-collection");
     
     $redirector->gotoUrlAndExit($url);
 }
@@ -16,6 +13,10 @@ $backUrl = $this->url($this->experiment->toArray(), "edit-experiment");
 echo $this->buttonLink("Back to experiment", $backUrl);
 
 echo $this->form;
+
+if (is_null($this->collection->tag) && $this->collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_DELETE)) {
+    echo $this->action("delete", "collection", "default", $this->collection->toArray());
+}
 
 $this->header()->goUp();
 ?>
