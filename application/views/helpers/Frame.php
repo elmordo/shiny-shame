@@ -12,10 +12,21 @@
  */
 class Zend_View_Helper_Frame extends MP_View_Helper_Abstract {
     
-    public function frame($frame = null, array $config = array()) {
+    /**
+     * 
+     * @param Application_Model_Row_Frame frame radek se snimkem
+     * @param array $config
+     * @return \Zend_View_Helper_Frame
+     */
+    public function frame(Application_Model_Row_Frame $frame = null, array $config = array()) {
         if (is_null($frame)) {
             return $this;
         }
+        
+        // nahled jednoho snimku
+        $pattern = "<div class='frame-preview'><a href='%s' target='_blank'><img src='%s' alt='%s' /></a></div>";
+        
+        return sprintf($pattern, $frame->getPublicFullPath(), $frame->getPublicSmallPath(), $frame->getRepresentativeName());
     }
     
     public function frames($frames, array $config = array()) {

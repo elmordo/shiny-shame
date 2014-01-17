@@ -56,7 +56,31 @@ class FrameController extends Zend_Controller_Action {
      * zobrazi podrobnosti o obrazku
      */
     public function getAction() {
+        // nacteni snimku a experimentu
+        $frame = self::findFrame($this->_request->getParam("frame_id"));
+        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
         
+        // nacteni kolekci
+        $collections = $frame->findCollections();
+        
+        $this->view->frame = $frame;
+        $this->view->experiment = $experiment;
+        $this->view->collections = $collections;
+    }
+    
+    /**
+     * editace obrazku
+     */
+    public function putAction() {
+        $frame = self::findFrame($this->_request->getParam("frame_id"));
+        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+        
+        $form = new Application_Form_Frame();
+        $form->populate($frame->toArray());
+        
+        $this->view->frame = $frame;
+        $this->view->experiment = $experiment;
+        $this->view->form = $form;
     }
 
     public function uploadAction() {
@@ -342,7 +366,14 @@ class FrameController extends Zend_Controller_Action {
         // vraceni hodnoty
         return $collectionIndex[$tag];
     }
-    
+
+    /**
+     * najde snimek dle jeho id
+     * 
+     * @param int $frameId identifikacni cislo snimku
+     * @return Application_Model_Row_Frame
+     * @throws Zend_Db_Table_Exception
+     */
     public static function findFrame($frameId) {
         $tableFrames = new Application_Model_Frames();
         $frame = $tableFrames->findById($frameId);

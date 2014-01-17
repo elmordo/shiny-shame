@@ -1,0 +1,13 @@
+<?php
+// kontrola moznosti zobrazeni
+if ($this->session->is_hidden) return;
+
+echo $this->session($this->comments);
+
+if (!$this->session->is_readonly) {
+?>
+<h3>Nový komentář</h3>
+<?php 
+	echo $this->action("create", "comment", "comment", array("sessionId" => $this->session->id)); 
+}	
+?>

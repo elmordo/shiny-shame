@@ -212,10 +212,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
         
         $router->addRoute(
-                "frame-download", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/get.tiff", array(
+                "frame-download", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/download.tiff", array(
                     "module" => "default",
                     "controller" => "frame",
                     "action" => "download"
+                ))
+                );
+        
+        $router->addRoute(
+                "frame-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/detail", array(
+                    "module" => "default",
+                    "controller" => "frame",
+                    "action" => "get"
+                ))
+                );
+        
+        $router->addRoute(
+                "frame-put", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/edit", array(
+                    "module" => "default",
+                    "controller" => "frame",
+                    "action" => "put"
                 ))
                 );
     }

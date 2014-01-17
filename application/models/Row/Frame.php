@@ -7,6 +7,20 @@ class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
     const PREFIX = "prev_";
     
     /**
+     * najde seznam kolekci, kterych je snimek clenem
+     * 
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public function findCollections() {
+        $tableCollections = new Application_Model_Collections();
+        $select = $tableCollections->prepareSelect();
+        
+        $select->where("a.frame_id = ?", $this->frame_id);
+        
+        return $tableCollections->_generateRowset($select->query()->fetchAll());
+    }
+    
+    /**
      * vraci cestu k velkemu nahledu
      * 
      * @return string

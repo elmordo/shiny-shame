@@ -1,0 +1,33 @@
+<?php
+echo $this->header("Frame overview - " . $this->frame->getRepresentativeName());
+echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArray(), "get-experiment"));
+$frame = $this->frame;
+?>
+<table class="info-table">
+    <tbody>
+        <?php
+        echo $this->tableLayout()->row(array("Experiment name: ", $this->experiment->name));
+        echo $this->tableLayout()->row(array("Taken at: ", $this->sqlDateTime($frame->taken_at)));
+        echo $this->tableLayout()->row(array("Ord: ", $frame->ord));
+        echo $this->tableLayout()->row(array("Comment: ", $frame->comment));
+        echo $this->tableLayout()->row(array("Format: ", $frame->format));
+        echo $this->tableLayout()->row(array("Width: ", $frame->width));
+        echo $this->tableLayout()->row(array("Height: ", $frame->height));
+        echo $this->tableLayout()->row(array("Size: ", $frame->size));
+        ?>
+    </tbody>
+</table>
+<?php
+if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
+    echo $this->buttonLink("Edit frame", $this->url($this->frame->toArray(), "frame-put"));
+}
+?>
+<div>
+    <?php echo sprintf("<a href='%s' target='_blank'><img src='%s' /></a>", $frame->getPublicFullPath(), $frame->getPublicSmallPath()); ?>
+</div>
+<?php
+$this->header()->goDown();
+echo $this->header("Collections");
+echo $this->collection()->collections($this->collections);
+
+$this->header()->goUp();

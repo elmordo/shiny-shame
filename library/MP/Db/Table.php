@@ -49,7 +49,7 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
      * @param bool $stored prepinac ulozene hodnoty
      * @return Zend_Db_Table_Row_Abstract
      */
-    protected function _generateRow(array $data, $stored = true) {
+    public function _generateRow(array $data, $stored = true) {
         $rowClassName = $this->_rowClass;
         $retVal = new $rowClassName(array(
             "data" => $data,
@@ -67,7 +67,7 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
      * @param bool $stored prepinac ulozene hodnoty
      * @return Zend_Db_Table_Rowset_Abstract
      */
-    protected function _generateRowset(array $data, $stored = true) {
+    public function _generateRowset(array $data, $stored = true) {
         // vytvoreni rowsetu a vraceni dat
         $rowsetName = $this->_rowsetClass;
         $retVal = new $rowsetName(array(
