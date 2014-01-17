@@ -1,4 +1,8 @@
 <?php
+if ($this->frame->isSaved()) {
+    $this->redirect($_SERVER["HTTP_REFERER"]);
+}
+
 echo $this->header("Edit frame " . $this->frame->getRepresentativeName());
 
 echo $this->frame($this->frame);
