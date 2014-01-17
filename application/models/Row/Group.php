@@ -10,7 +10,7 @@
  *
  * @author petr
  */
-class Application_Model_Row_Group extends Zend_Db_Table_Row_Abstract {
+class Application_Model_Row_Group extends MP_Db_Table_Row {
     
     const FIND_ALL = 1;
     const FIND_REG = 2;

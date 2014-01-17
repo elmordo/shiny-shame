@@ -1,6 +1,6 @@
 <?php
 // otestovani presmerovani
-if ($this->redirect) {
+if ($this->microscope->isSaved()) {
     $redirector = new Zend_Controller_Action_Helper_Redirector();
     $redirector->gotoUrlAndExit($this->url($this->microscope->toArray()));
 }

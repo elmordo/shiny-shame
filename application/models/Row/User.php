@@ -1,5 +1,5 @@
 <?php
-class Application_Model_Row_User extends Zend_Db_Table_Row_Abstract implements Zend_Acl_Role_Interface {
+class Application_Model_Row_User extends MP_Db_Table_Row implements Zend_Acl_Role_Interface {
     
     /**
      * seznam skupin, ve kterych je uzivatel clenem
