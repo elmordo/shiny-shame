@@ -248,7 +248,7 @@ class FrameController extends Zend_Controller_Action {
         
         // nacteni souboru
         $zipSource = new ZipArchive();
-        $zipSource->open($fileName);
+        $zipSource->open($fileName, ZipArchive::CREATE);
         
         // iterace nad zaznamy a zapis dat do databaze a na disk
         $maxI = $zipSource->numFiles;
