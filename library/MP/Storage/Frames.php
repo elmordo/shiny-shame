@@ -51,7 +51,7 @@ class MP_Storage_Frames {
         $fileName = sprintf("%s/experiment_%d.zip", $dataDir, $experiment->experiment_id);
         
         // kontrola, jestli archiv existuje
-        $archive = new ZipArchive(ZipArchive::OVERWRITE);
+        $archive = new ZipArchive();
         
         if (($status = $archive->open($fileName)) !== true) {
             $error = "unknown error";
