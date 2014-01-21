@@ -82,7 +82,7 @@ class MP_Storage_Frames {
         
         switch ($source) {
             case self::SOURCE_FILE:
-                $this->_archive->addFile($file, $localName);
+                $this->_archive->addFromString($localName, file_get_contents($file));
                 break;
             
             case self::SOURCE_STRING:
