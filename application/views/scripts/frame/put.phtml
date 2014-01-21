@@ -5,6 +5,8 @@ if ($this->frame->isSaved()) {
 
 echo $this->header("Edit frame " . $this->frame->getRepresentativeName());
 
+echo $this->buttonLink("Back to overview", $this->url($this->frame->toArray(), "frame-get"));
+
 echo $this->frame($this->frame);
 echo $this->form;
 ?>

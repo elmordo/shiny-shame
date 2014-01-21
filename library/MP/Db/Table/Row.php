@@ -108,6 +108,18 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
         
         return $retVal;
     }
+    
+    /**
+     * nastavi novou hodnotu prepinace isSaved
+     * 
+     * @param bool $saved nova hodnota prepinace
+     * @return \MP_Db_Table_Row
+     */
+    public function setSaved($saved) {
+        $this->_isSaved = (bool) $saved;
+        
+        return $this;
+    }
 }
 
 ?>

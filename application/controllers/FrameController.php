@@ -169,10 +169,11 @@ class FrameController extends Zend_Controller_Action {
             }
             
             $tableAssocs->setFrameCollections($frame, $collectionIds);
-            
+            $frame->setSaved(true);
         }
         
         $this->view->formCollections = $formCollections;
+        $this->view->frame = $frame;
     }
     
     /**
