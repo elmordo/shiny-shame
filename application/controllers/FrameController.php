@@ -16,6 +16,8 @@ class FrameController extends Zend_Controller_Action {
     const FILE_TIFF = "TIFF";
     const FILE_ZIP = "ZIP";
     
+    private static $_frames = array();
+    
     /**
      * stahne originalni TIFF obrazek
      */
@@ -62,10 +64,15 @@ class FrameController extends Zend_Controller_Action {
         
         // nacteni kolekci
         $collections = $frame->findCollections();
+        $userCollections = $frame->findUserCollections();
+        
+        $formUserCollections = new Application_Form_Frame_UserCollections();
+        $formUserCollections->setCollections($userCollections);
         
         $this->view->frame = $frame;
         $this->view->experiment = $experiment;
         $this->view->collections = $collections;
+        $this->view->formUserCollections = $formUserCollections;
     }
     
     /**
@@ -131,6 +138,36 @@ class FrameController extends Zend_Controller_Action {
         }
         
         $this->view->form = $form;
+    }
+    
+    public function ucollectionsAction() {
+        $frameId = $this->_request->getParam("frame_id");
+        $frame = self::findFrame($frameId);
+        
+        $collections = $frame->findUserCollections();
+        $formCollections = new Application_Form_Frame_UserCollections();
+        $formCollections->setCollections($collections);
+        
+        // kontrola validity a pripadny zapis zmen
+        if ($this->_request->isPost() && $formCollections->isValid($this->_request->getParams())) {
+            // smazani starych dat
+            $tableAssocs = new Application_Model_CollectionsHaveFrames();
+
+            // vlozeni dat
+            $collectionIds = array();
+            $values = $formCollections->getValues(true);
+            
+            foreach ($values as $id => $val) {
+                if ($val) {
+                    $collectionIds[] = $id;
+                }
+            }
+            
+            $tableAssocs->setFrameCollections($frame, $collectionIds);
+            
+        }
+        
+        $this->view->formCollections = $formCollections;
     }
     
     /**
@@ -375,10 +412,16 @@ class FrameController extends Zend_Controller_Action {
      * @throws Zend_Db_Table_Exception
      */
     public static function findFrame($frameId) {
+        if (isset(self::$_frames[$frameId])) {
+            return self::$_frames[$frameId];
+        }
+        
         $tableFrames = new Application_Model_Frames();
         $frame = $tableFrames->findById($frameId);
         
         if (!$frame) throw new Zend_Db_Table_Exception(sprintf("Frame #%d not found", $frameId));
+        
+        self::$_frames[$frameId] = $frame;
         
         return $frame;
     }

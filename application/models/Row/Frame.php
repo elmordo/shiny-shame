@@ -1,5 +1,5 @@
 <?php
-class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
+class Application_Model_Row_Frame extends MP_Db_Table_Row {
 	
     const POSTFIX_SMALL = "_small";
     const POSTFIX_FULL = "_full";
@@ -20,6 +20,24 @@ class Application_Model_Row_Frame extends Zend_Db_Table_Row_Abstract {
         return $tableCollections->_generateRowset($select->query()->fetchAll());
     }
     
+    public function findUserCollections() {
+        $tableCollections = new Application_Model_Collections();
+        $nameCollections = MP_Db_Table::getRealName("Application_Model_Collections");
+        $nameAssocs = MP_Db_Table::getRealName("Application_Model_CollectionsHaveFrames");
+        
+        $select = new Zend_Db_Select(Zend_Db_Table::getDefaultAdapter());
+        $select->from(array("c" => $nameCollections));
+        $select->joinLeft(array("a" => $nameAssocs), "a.collection_id = c.collection_id and frame_id = " . $this->frame_id, array("a.frame_id"));
+        
+        $select->where("c.experiment_id = ?", $this->experiment_id);
+        $select->where("c.tag is null");
+        
+        $data = $select->query()->fetchAll();
+        
+        return $tableCollections->_generateRowset($data);
+    }
+
+
     /**
      * vraci cestu k velkemu nahledu
      * 

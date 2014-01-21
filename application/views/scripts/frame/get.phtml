@@ -1,6 +1,17 @@
 <?php
 echo $this->header("Frame overview - " . $this->frame->getRepresentativeName());
 echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArray(), "get-experiment"));
+
+// vypis kolekci, kde je snimek zarazen
+?>
+<ul>
+<?php
+foreach ($this->collections as $collection) {
+    printf("<li>%s</li>", $this->buttonLink($collection->name, $this->url($collection->toArray(), "get-collection")));
+}
+?>
+</ul>
+<?php
 $frame = $this->frame;
 ?>
 <table class="info-table">
@@ -27,7 +38,6 @@ if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
 </div>
 <?php
 $this->header()->goDown();
-echo $this->header("Collections");
-echo $this->collection()->collections($this->collections);
+echo $this->action("ucollections", "frame", "default", $this->frame->toArray());
 
 $this->header()->goUp();
