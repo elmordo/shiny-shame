@@ -85,6 +85,11 @@ class FrameController extends Zend_Controller_Action {
         $form = new Application_Form_Frame();
         $form->populate($frame->toArray());
         
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            $frame->setFromArray($form->getValues(true));
+            $frame->save();
+        }
+        
         $this->view->frame = $frame;
         $this->view->experiment = $experiment;
         $this->view->form = $form;

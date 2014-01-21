@@ -12,7 +12,19 @@
  */
 class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
     
+    /**
+     * vychoti pristupova prava
+     *
+     * @var str
+     */
     protected $_dataAccess = "rwdr--r--";
+    
+    /**
+     * indikator, zda byl radek ulozen
+     *
+     * @var bool
+     */
+    protected $_isSaved = false;
     
     public function checkAccess($accessRequest, $identity = null) {
         // pokud radek neimplementuje rozhrani DataAccess, navratova hodnota je vzdy True
@@ -58,6 +70,43 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
             default:
                 throw new MP_Db_Table_Row_DataAccess_Exception(sprintf("invalid access request for %d", $accessRequest));
         }
+    }
+    
+    /**
+     * resetuje prepinac isSaved
+     * 
+     * @return MP_Table_Row
+     */
+    public function clearSaved() {
+        $this->_isSaved = false;
+        
+        return $this;
+    }
+    
+    /**
+     * vraci stav prepinace ulozeni
+     * 
+     * @return bool
+     */
+    public function isSaved() {
+        return $this->_isSaved;
+    }
+    
+    /**
+     * Saves the properties to the database.
+     *
+     * This performs an intelligent insert/update, and reloads the
+     * properties with fresh data from the table on success.
+     *
+     * @return mixed The primary key value(s), as an associative array if the
+     *     key is compound, or a scalar if the key is single-column.
+     */
+    public function save() {
+        $retVal = parent::save();
+        
+        $this->_isSaved = true;
+        
+        return $retVal;
     }
 }
 

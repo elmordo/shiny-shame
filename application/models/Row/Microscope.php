@@ -1,5 +1,5 @@
 <?php
-class Application_Model_Row_Microscope extends Zend_Db_Table_Row_Abstract {
+class Application_Model_Row_Microscope extends MP_Db_Table_Row {
 	
     /**
      * vraci metainformace tykajici se mikroskopu
