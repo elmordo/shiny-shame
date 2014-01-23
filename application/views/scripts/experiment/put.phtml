@@ -13,3 +13,27 @@ echo $this->form;
 
 // vypsani kolekci
 echo $this->action("index", "collection", null, $this->experiment->toArray());
+
+echo $this->header("Biological information");
+
+$paramBio = array(
+    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_BIO,
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+);
+
+echo $this->action("index.part", "meta", "default", $paramBio);
+$this->header()->goDown();
+echo $this->action("post", "meta", "default", $paramBio);
+$this->header()->goUp();
+echo $this->header("Technical information");
+
+$paramTech = array(
+    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_TECH,
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+);
+
+echo $this->action("index.part", "meta", "default", $paramTech);
+$this->header()->goDown();
+echo $this->action("post", "meta", "default", $paramTech);
+
+$this->header()->goUp()->goUp();

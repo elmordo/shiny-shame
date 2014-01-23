@@ -23,3 +23,17 @@ echo $this->action("index", "collection", "default", $this->experiment->toArray(
 if ($this->acl("frame", "upload") && $writeAble) {
     echo $this->action("upload", "frame", null, $this->experiment->toArray());
 }
+
+echo $this->header("Biological information");
+echo $this->action("index.part", "meta", "default", array(
+    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_BIO,
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+));
+
+echo $this->header("Technical information");
+echo $this->action("index.part", "meta", "default", array(
+    MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_TECH,
+    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+));
+
+$this->header()->goUp();

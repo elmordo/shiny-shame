@@ -5,6 +5,4 @@ echo $this->meta($this->items);
 // nacteni dat ACL
 $acl = Zend_Controller_Front::getInstance()->getPlugin("MP_Controller_Plugin_Acl")->getAcl();
 $user = Zend_Auth::getInstance()->getIdentity();
-
-$this->header()->goDown();
 ?>

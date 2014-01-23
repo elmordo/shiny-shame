@@ -2,19 +2,7 @@
 if ($this->item) {
     // behem zpracovani byl vytvoren zaznam - probehne presmerovani v zavislosti na typu zaznamu
     $redirector = new Zend_Controller_Action_Helper_Redirector();
-    
-    switch ($this->metaType) {
-        case MetaController::TYPE_MICROSCOPE:
-            // nacteni mikroskopu
-            $tableMicroscope = new Application_Model_Microscopes();
-            $microscope = $tableMicroscope->findById($this->item->getParentId());
-            
-            $url = $this->url(array("tag" => $microscope->tag), "microscope-put");
-            break;
-        
-    }
-    
-    $redirector->gotoUrlAndExit($url);
+    $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
 }
 
 echo $this->header("New information");

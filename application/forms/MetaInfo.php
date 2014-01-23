@@ -14,7 +14,10 @@ class Application_Form_MetaInfo extends MP_Form {
 
         $this->addElement("text", "internal_name", array(
             "label" => "Internal name",
-            "required" => true
+            "required" => false,
+            "filters" => array(
+                new Zend_Filter_Null()
+            )
         ));
 
         $this->addElement("text", "value", array(

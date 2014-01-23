@@ -15,7 +15,7 @@ class Application_Model_MetainfoBiological extends MP_Db_Table_Meta {
 					)
 			);
 	
-	protected $_rowClass = "Application_Model_Row_MetaInfoBiological";
+	protected $_rowClass = "Application_Model_Row_MetainfoBiological";
         
     protected $_referenceColumn = "experiment_id";
 }
