@@ -1,24 +1,26 @@
 <?php
-if ($this->experiment->isSaved()) {
+$experiment = $this->experiment;
+
+if ($experiment->isSaved()) {
     $redirector = new Zend_Controller_Action_Helper_Redirector();
     $redirector->gotoUrlAndExit($_SERVER["HTTP_REFERER"]);
 }
 
-$this->headTitle($this->experiment->name);
+$this->headTitle($experiment->name);
 
-echo $this->header($this->experiment->name);
+echo $this->header($experiment->name);
 $this->header()->goDown();
-echo $this->buttonLink("Back to overview", $this->url($this->experiment->toArray(), "get-experiment"));
+echo $this->buttonLink("Back to overview", $this->url($experiment->toArray(), "get-experiment"));
 echo $this->form;
 
 // vypsani kolekci
-echo $this->action("index", "collection", null, $this->experiment->toArray());
+echo $this->action("index", "collection", null, $experiment->toArray());
 
 echo $this->header("Biological information");
 
 $paramBio = array(
     MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_BIO,
-    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+    MetaController::REQUEST_PARAM_PARENT_ID => $experiment->experiment_id
 );
 
 echo $this->action("index.part", "meta", "default", $paramBio);
@@ -29,11 +31,16 @@ echo $this->header("Technical information");
 
 $paramTech = array(
     MetaController::REQUEST_PARAM_NAME => MetaController::TYPE_TECH,
-    MetaController::REQUEST_PARAM_PARENT_ID => $this->experiment->experiment_id
+    MetaController::REQUEST_PARAM_PARENT_ID => $experiment->experiment_id
 );
 
 echo $this->action("index.part", "meta", "default", $paramTech);
 $this->header()->goDown();
 echo $this->action("post", "meta", "default", $paramTech);
 
+if ($experiment->microscope_id) {
+    $url = sprintf("/experiment/copyinfo?experiment_id=%d", $experiment->experiment_id);
+    echo $this->buttonLink("Copy microscope meta information", $url);
+    echo "<em>Warning! All old technical information will be deleted!</em>";
+}
 $this->header()->goUp()->goUp();

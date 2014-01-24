@@ -3,6 +3,19 @@
 class ExperimentController extends Zend_Controller_Action {
 
     /**
+     * zkopiruje metainformace o experimentu
+     */
+    public function copyinfoAction() {
+        $id = $this->_request->getParam("experiment_id");
+        $experiment = self::findExperiment($id);
+        
+        // nacteni a zapis novych dat
+        $experiment->importMicroscopeMeta();
+        
+        $this->view->experiment = $experiment;
+    }
+    
+    /**
      * smaze experiment
      */
     public function deleteAction() {

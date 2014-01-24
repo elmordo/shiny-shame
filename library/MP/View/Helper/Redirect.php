@@ -19,7 +19,11 @@ class MP_View_Helper_Redirect extends Zend_View_Helper_Abstract {
      * @param bool $exit pokud je True, po presmerovani se ukonci beh
      * @param array $params parametry routy, pokud jsou NULL, je v $route ulozena URL
      */
-    public function redirect($route, $exit = true, array $params = null) {
+    public function redirect($route = null, $exit = true, array $params = null) {
+        if (is_null($route)) {
+            $route = $_SERVER["HTTP_REFERER"];
+        }
+        
         if (!is_null($params)) {
             $route = $this->view->url($params, $route);
         }
