@@ -14,6 +14,11 @@ class CollectionController extends MP_Controller_Action {
     
     protected $_sourceTable = "Application_Model_Collections";
     
+    /**
+     * aktualne zpracovavany experiment
+     *
+     * @var MP_Db_Table_Row
+     */
     protected $_experiment = null;
     
     public function init() {

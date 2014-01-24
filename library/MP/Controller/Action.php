@@ -116,15 +116,15 @@ class MP_Controller_Action extends Zend_Controller_Action {
         }
         
         // zjisteni primarniho klice
-        $primary = $row->getPrimaryKey();
+        $tableObj = $row->getTable();
+        $primaryKeyName = $tableObj->info(Zend_Db_Table_Abstract::PRIMARY);
         
         // cachovani je pristupne pouze pro jednoduche primarni klice
-        if (count($primary) != 1) {
+        if (count($primaryKeyName) != 1) {
             throw new Zend_Db_Table_Row_Exception("Cache is available only for simple primary keys");
         }
-        
-        reset($primary);
-        $primaryVal = current($primary);
+        reset($primaryKeyName);
+        $primaryVal = $row[current($primaryKeyName)];
         
         self::$_rowCache[$tableName][$primaryVal] = $row;
     }
