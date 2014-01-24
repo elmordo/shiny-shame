@@ -12,6 +12,8 @@
  */
 class MP_Db_Table extends Zend_Db_Table_Abstract {
     
+    protected $_rowClass = "MP_Db_Table_Row";
+    
     private static $_tableNames = array();
     
     /**

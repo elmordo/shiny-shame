@@ -10,9 +10,11 @@
  *
  * @author petr
  */
-class GroupController extends Zend_Controller_Action {
+class GroupController extends MP_Controller_Action {
     
     const DEL_ARRAY = "delgroup";
+    
+    protected $_sourceTable = "Application_Model_Groups";
     
     /**
      * smaze uzivatelskou skupinu
@@ -24,7 +26,7 @@ class GroupController extends Zend_Controller_Action {
         
         if ($this->_request->isPost() && isset($params[self::DEL_ARRAY])) {
             if ($form->isValid($params)) {
-                $group = self::loadGroup($this->_request->getParam("group_id"));
+                $group = $this->findById($this->_request->getParam("group_id"));
                 $group->delete();
                 
                 $this->view->deleted = true;
@@ -38,7 +40,7 @@ class GroupController extends Zend_Controller_Action {
      * vypise informace o uzivatelske skupine
      */
     public function getAction() {
-        $group = self::loadGroup($this->_request->getParam("group_id"));
+        $group = $this->findById($this->_request->getParam("group_id"));
         
         $this->view->group = $group;
     }
@@ -76,7 +78,7 @@ class GroupController extends Zend_Controller_Action {
      */
     public function putAction() {
        $form = new Application_Form_Group();
-       $group = self::loadGroup($this->_request->getParam("group_id"));
+       $group = $this->findById($this->_request->getParam("group_id"));
        $form->populate($group->toArray());
        
        if ($this->_request->isPost()) {
@@ -93,7 +95,7 @@ class GroupController extends Zend_Controller_Action {
     }
     
     public function usersAction() {
-        $group = self::loadGroup($this->_request->getParam("group_id"));
+        $group = $this->findById($this->_request->getParam("group_id"));
         
         $users = $group->findUsers();
         $form = new Application_Form_Group_Users();
@@ -113,22 +115,6 @@ class GroupController extends Zend_Controller_Action {
         }
         
         $this->view->form = $form;
-    }
-    
-    /**
-     * nacte skupinu dle id a vraci instanci radku
-     * 
-     * @param int $id identifikacni cislo skupiny
-     * @return Application_Model_Row_Group
-     * @throws Zend_Db_Table_Exception
-     */
-    public static function loadGroup($id) {
-        $tableGroups = new Application_Model_Groups();
-        $group = $tableGroups->findById($id);
-        
-        if (!$group) throw new Zend_Db_Table_Exception(sprintf("User group #%d not found", $id));
-        
-        return $group;
     }
     
     /**

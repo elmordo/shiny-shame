@@ -11,19 +11,21 @@ require_once __DIR__ . "/ExperimentController.php";
  *
  * @author petr
  */
-class FrameController extends Zend_Controller_Action {
+class FrameController extends MP_Controller_Action {
     
     const FILE_TIFF = "TIFF";
     const FILE_ZIP = "ZIP";
     
     private static $_frames = array();
     
+    protected $_sourceTable = "Application_Model_Frames";
+    
     /**
      * stahne originalni TIFF obrazek
      */
     public function downloadAction() {
         // nacteni informaci
-        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+        $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
         
         // kontrola opravneni pristupu k experimentu
         if (!$experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_READ)) {
@@ -31,7 +33,7 @@ class FrameController extends Zend_Controller_Action {
         }
         
         // nacteni radku se snimkem
-        $frame = self::findFrame($this->_request->getParam("frame_id"));
+        $frame = $this->findById($this->_request->getParam("frame_id"));
         
         // otevreni uloziste a zapis dat do view
         $storage = new MP_Storage_Frames($experiment);
@@ -59,8 +61,8 @@ class FrameController extends Zend_Controller_Action {
      */
     public function getAction() {
         // nacteni snimku a experimentu
-        $frame = self::findFrame($this->_request->getParam("frame_id"));
-        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+        $frame = $this->findById($this->_request->getParam("frame_id"));
+        $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
         
         // nacteni kolekci
         $collections = $frame->findCollections();
@@ -79,8 +81,8 @@ class FrameController extends Zend_Controller_Action {
      * editace obrazku
      */
     public function putAction() {
-        $frame = self::findFrame($this->_request->getParam("frame_id"));
-        $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+        $frame = $this->findById($this->_request->getParam("frame_id"));
+        $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
         
         $form = new Application_Form_Frame();
         $form->populate($frame->toArray());
@@ -106,7 +108,7 @@ class FrameController extends Zend_Controller_Action {
             $rewrite = $form->getValue("rewrite_existing");
             
             // nacteni experimentu
-            $experiment = ExperimentController::findExperiment($this->_request->getParam("experiment_id"));
+            $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
             
             // nacteni existujici kolekci a jejich indexace dle tagu
             $collections = $experiment->findCollections();
@@ -147,7 +149,7 @@ class FrameController extends Zend_Controller_Action {
     
     public function ucollectionsAction() {
         $frameId = $this->_request->getParam("frame_id");
-        $frame = self::findFrame($frameId);
+        $frame = $this->findById($frameId);
         
         $collections = $frame->findUserCollections();
         $formCollections = new Application_Form_Frame_UserCollections();
@@ -408,28 +410,6 @@ class FrameController extends Zend_Controller_Action {
         
         // vraceni hodnoty
         return $collectionIndex[$tag];
-    }
-
-    /**
-     * najde snimek dle jeho id
-     * 
-     * @param int $frameId identifikacni cislo snimku
-     * @return Application_Model_Row_Frame
-     * @throws Zend_Db_Table_Exception
-     */
-    public static function findFrame($frameId) {
-        if (isset(self::$_frames[$frameId])) {
-            return self::$_frames[$frameId];
-        }
-        
-        $tableFrames = new Application_Model_Frames();
-        $frame = $tableFrames->findById($frameId);
-        
-        if (!$frame) throw new Zend_Db_Table_Exception(sprintf("Frame #%d not found", $frameId));
-        
-        self::$_frames[$frameId] = $frame;
-        
-        return $frame;
     }
 }
 

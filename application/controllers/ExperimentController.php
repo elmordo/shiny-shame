@@ -1,13 +1,15 @@
 <?php
 
-class ExperimentController extends Zend_Controller_Action {
+class ExperimentController extends MP_Controller_Action {
 
+    protected $_sourceTable = "Application_Model_Experiments";
+    
     /**
      * zkopiruje metainformace o experimentu
      */
     public function copyinfoAction() {
         $id = $this->_request->getParam("experiment_id");
-        $experiment = self::findExperiment($id);
+        $experiment = $this->findById($id);
         
         // nacteni a zapis novych dat
         $experiment->importMicroscopeMeta();
@@ -27,7 +29,7 @@ class ExperimentController extends Zend_Controller_Action {
      */
     public function getAction() {
         // nacteni dat
-        $experiment = self::findExperiment($this->_request->getParam("experiment_id"));
+        $experiment = $this->findById($this->_request->getParam("experiment_id"));
 
         $this->view->experiment = $experiment;
     }
@@ -71,7 +73,7 @@ class ExperimentController extends Zend_Controller_Action {
     public function putAction() {
         // nacteni dat
         $form = self::prepareExperimentForm();
-        $experiment = self::findExperiment($this->_request->getParam("experiment_id"));
+        $experiment = $this->findById($this->_request->getParam("experiment_id"));
 
         if ($this->_request->isPost()) {
             // formular byl odeslan, dojde k validaci a pripadnemu ulozeni dat
@@ -87,16 +89,6 @@ class ExperimentController extends Zend_Controller_Action {
 
         $this->view->form = $form;
         $this->view->experiment = $experiment;
-    }
-
-    public static function findExperiment($id) {
-        $tableExperiments = new Application_Model_Experiments();
-        $experiment = $tableExperiments->findById($id);
-
-        if (is_null($experiment))
-            throw new Zend_Db_Table_Exception(sprintf("Experiment #%s not found", $id));
-
-        return $experiment;
     }
 
     /**

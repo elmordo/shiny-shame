@@ -1,7 +1,9 @@
 <?php
 require_once APPLICATION_PATH . '/controllers/MetaController.php';
 
-class MicroscopeController extends Zend_Controller_Action {
+class MicroscopeController extends MP_Controller_Action {
+    
+    protected $_sourceTable = "Application_Model_Microscopes";
 
     /*
      * zobrazi informace o mikroskopu
