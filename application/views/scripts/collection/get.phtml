@@ -23,5 +23,8 @@ if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
 }
 
 $this->header()->goDown();
+
+echo $this->comment($collection->comment_html);
+
 echo $this->action("index", "frame", "default", $this->collection->toArray());
 ?>

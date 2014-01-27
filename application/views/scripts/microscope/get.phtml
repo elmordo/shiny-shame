@@ -9,7 +9,6 @@ $this->header()->goDown();
 <?php
 echo $this->tableLayout()->row(array("Name", $microscope->name));
 echo $this->tableLayout()->row(array("Tag", $microscope->tag));
-echo $this->tableLayout()->row(array("Comment", $microscope->comment));
 echo $this->tableLayout()->row(array("Suspended", $microscope->is_suspended ? "Yes" : "No"));
 ?>
     </tbody>
@@ -25,6 +24,8 @@ if ($acl->isAllowed($user->role, "microscope", "put")) {
     
     printf("<a href='%s'>Edit</a>", $url);
 }
+
+echo $this->comment($microscope->comment_html);
 
 // vypsani metainformaci
 echo $this->header("Technical data");

@@ -23,7 +23,9 @@ class Application_Form_Frame extends MP_Form {
             "required" => false,
             "filters" => array(
                 new Zend_Filter_Null()
-            )
+            ),
+            "class" => "textile",
+            "title" => "Supported Textile"
         ));
         
         $this->addElement("submit", "submit", array(

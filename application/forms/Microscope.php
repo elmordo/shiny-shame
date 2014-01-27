@@ -21,7 +21,9 @@ class Application_Form_Microscope extends MP_Form {
             "required" => false,
             "filters" => array(
                 new Zend_Filter_Null()
-            )
+            ),
+            "class" => "textile",
+            "title" => "Supported Textile"
         ));
 
         $this->addElement("checkbox", "is_suspended", array(

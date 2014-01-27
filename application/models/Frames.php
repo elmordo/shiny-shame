@@ -16,6 +16,17 @@ class Application_Model_Frames extends MP_Db_Table {
 			);
 			
 	protected $_rowClass = "Application_Model_Row_Frame";
+    
+    protected $_markups = array(
+        array(
+            "source" => "comment",
+            "target" => "comment_html",
+            "parser" => self::MARKUP_DEFAULT_PARSER,
+            "renderer" => self::MARKUP_DEFAULT_RENDERER
+        )
+    );
+    
+    protected $_markupsEnabled = true;
 	
     /**
      * nacte seznam snimku dle experimentu a pripadne dle kolekce

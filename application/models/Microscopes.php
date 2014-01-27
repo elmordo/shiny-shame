@@ -7,6 +7,17 @@ class Application_Model_Microscopes extends MP_Db_Table {
     protected $_sequence = true;
     protected $_rowClass = "Application_Model_Row_Microscope";
     
+    protected $_markups = array(
+        array(
+            "source" => "comment",
+            "target" => "comment_html",
+            "parser" => self::MARKUP_DEFAULT_PARSER,
+            "renderer" => self::MARKUP_DEFAULT_RENDERER
+        )
+    );
+    
+    protected $_markupsEnabled = true;
+    
     /**
      * nacte seznam dostupnych mikroskopu
      * 

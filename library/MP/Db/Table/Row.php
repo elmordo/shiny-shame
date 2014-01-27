@@ -93,6 +93,55 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
     }
     
     /**
+     * provede preklad pomoci markup prekladacu
+     * 
+     * @param bool $force pokud je True, pokusi se preklad ikdyz je v tabulce vypnut
+     * @return MP_Db_Table_Row
+     */
+    public function processMarkups($force = false) {
+        // kontrola podpory ze strany tabulky
+        if (!$this->_table instanceof MP_Db_Table) return $this;
+        
+        // kontrola (nasilne) aktivace
+        if (!$force && !$this->_table->getMarkupsEnabled()) return $this;
+        
+        // nacteni konfigurace a provedeni zmen
+        $markupConfig = $this->_table->getMarkups();
+        
+        $parsers = array();
+        $renderers = array();
+        
+        // prevedeni vsech hodnot
+        foreach ($markupConfig as $item) {
+            // kontrola, zda byl zdroj modifikovan
+            $source = $item[MP_Db_Table::MARKUP_SOURCE];
+            
+            $parser = $item[MP_Db_Table::MARKUP_PARSER];
+            $renderer = $item[MP_Db_Table::MARKUP_RENDERER];
+            
+            if (!isset($parsers[$parser])) {
+                $parsers[$parser] = new $parser();
+            }
+            
+            if (!isset($renderers[$renderer])) {
+                $renderers[$renderer] = new $renderer();
+            }
+            
+            $source = $item[MP_Db_Table::MARKUP_SOURCE];
+            $target = $item[MP_Db_Table::MARKUP_TARGET];
+            
+            if (!is_null($this[$source])) {
+                // provedeni transformace
+                $data = $parsers[$parser]->parse($this[$source]);
+                $output = $renderers[$renderer]->render($data);
+                
+                // zapis vysledku
+                $this[$target] = $output;
+            }
+        }
+    }
+    
+    /**
      * Saves the properties to the database.
      *
      * This performs an intelligent insert/update, and reloads the
@@ -107,6 +156,21 @@ class MP_Db_Table_Row extends Zend_Db_Table_Row_Abstract {
         $this->_isSaved = true;
         
         return $retVal;
+    }
+    
+    /**
+     * provede nastaveni dat z pole
+     * pripadne provede transformaci dat pomoci markup prekladacu
+     * 
+     * @param array $data
+     * @return \MP_Db_Table_Row
+     */
+    public function setFromArray(array $data) {
+        $retVal = parent::setFromArray($data);
+        
+        $this->processMarkups();
+        
+        return $this;
     }
     
     /**

@@ -17,6 +17,17 @@ class Application_Model_Collections extends MP_Db_Table {
 	
 	protected $_rowClass = "Application_Model_Row_Collection";
     
+    protected $_markups = array(
+        array(
+            "source" => "comment",
+            "target" => "comment_html",
+            "parser" => self::MARKUP_DEFAULT_PARSER,
+            "renderer" => self::MARKUP_DEFAULT_RENDERER
+        )
+    );
+    
+    protected $_markupsEnabled = true;
+    
     /**
      * vytvori novou instanci radku kolekce a vraci ji
      * radek je automaticky ulozen

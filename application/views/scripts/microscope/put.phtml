@@ -10,6 +10,8 @@ $this->headTitle($this->microscope->name);
 
 echo $this->header(sprintf("Edit microscope - %s", $this->microscope->name));
 $this->header()->goDown();
+
+echo $this->buttonLink("Back to overview", $this->url($this->microscope->toArray(), "microscope-get"));
 echo $this->form;
 
 // vygenerovani akci pro meta informace

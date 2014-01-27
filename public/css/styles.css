@@ -6,6 +6,8 @@
         Purpose of the stylesheet follows.
 */
 
+@namespace mp url(http://micropic.localhost);
+
 root { 
     display: block;
 }
@@ -19,3 +21,5 @@ root {
 .info-table tr td:first-child { font-style: italic; }
 .info-table tr td:last-child { font-weight: bolder; }
 .info-table tr td { margin: 0; padding: 5px 15px 5px 5px; }
+
+.textile { background: url(/images/textile.png) no-repeat center; border-radius: 5px; border: 2px solid #c4c4c4; padding: 5px; }

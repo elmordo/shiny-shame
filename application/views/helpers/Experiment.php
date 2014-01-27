@@ -32,7 +32,6 @@ class Zend_View_Helper_Experiment extends Zend_View_Helper_Abstract {
         
         $rows = array(
             $tableHelper->row(array("Name", $experiment->name)),
-            $tableHelper->row(array("Comment", nl2br($experiment->comment))),
             $tableHelper->row(array("Created at", $createdAt)),
             $tableHelper->row(array("User name", $experiment->username)),
             $tableHelper->row(array("Microscope", $experiment->microscope_name)),
@@ -42,7 +41,9 @@ class Zend_View_Helper_Experiment extends Zend_View_Helper_Abstract {
         
         $table = sprintf("<table class='info-table'>%s</table>", implode("", $rows));
         
-        return $table;
+        $comment = $this->view->comment($experiment->comment_html);
+        
+        return $table . $comment;
     }
     
     public function tableHeader(array $config = array()) {

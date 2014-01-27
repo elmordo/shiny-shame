@@ -28,7 +28,9 @@ class Application_Form_Collection extends MP_Form {
                 new Zend_Filter_Null()
             ),
             "label" => "Comment",
-            "description" => "Comment of collection"
+            "description" => "Comment of collection",
+            "class" => "textile",
+            "title" => "Supported Textile"
         ));
         
         $this->addElement("text", "tag", array(

@@ -20,7 +20,6 @@ $frame = $this->frame;
         echo $this->tableLayout()->row(array("Experiment name: ", $this->experiment->name));
         echo $this->tableLayout()->row(array("Taken at: ", $this->sqlDateTime($frame->taken_at)));
         echo $this->tableLayout()->row(array("Ord: ", $frame->ord));
-        echo $this->tableLayout()->row(array("Comment: ", $frame->comment));
         echo $this->tableLayout()->row(array("Format: ", $frame->format));
         echo $this->tableLayout()->row(array("Width: ", $frame->width));
         echo $this->tableLayout()->row(array("Height: ", $frame->height));
@@ -38,6 +37,7 @@ if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
 </div>
 <?php
 $this->header()->goDown();
+echo $this->comment($this->frame->comment_html);
 echo $this->action("ucollections", "frame", "default", $this->frame->toArray());
 
 $this->header()->goUp();
