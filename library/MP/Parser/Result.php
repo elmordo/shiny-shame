@@ -47,7 +47,7 @@ class MP_Parser_Result {
      */
     public function __get($name) {
         if (!isset($this->_data[$name])) {
-            throw new MP_Parser_Exception(sprintf("Item '%s' does not exists in parse result"));
+            throw new MP_Parser_Exception(sprintf("Item '%s' does not exists in parse result", $name));
         }
         
         return $this->_data[$name];

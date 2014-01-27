@@ -12,7 +12,7 @@
  */
 class MP_Parser_Filename_Old implements MP_Parser_Interface {
     
-    const TEST_EREG = "/^([a-zA-Z0-9]+)_([0-9]{6})_([0-9]{6})_([0-9]+)\.[a-zA-Z0-9]+$/";
+    const TEST_EREG = "/^([a-zA-Z0-9]+)_+([0-9]{6})_+([0-9]{6})_+([0-9]+)\.([a-zA-Z0-9]+)$/";
     
     /**
      * otestuje, jestli jmeno souboru vyhovuje formatu
@@ -34,15 +34,19 @@ class MP_Parser_Filename_Old implements MP_Parser_Interface {
      */
     public function parse($data) {
         try {
-            // rozlozeni na jmeno soubrou a priponu
-            list($filename, $ext) = explode(".", $data);
+            // zpracovani dat
+            $match = @preg_match(self::TEST_EREG, $data, $parts);
             
-            // rozlozeni jmena na casti
-            list($collection, $date, $time, $ord) = explode("_", $filename);
+            if (!$match) throw new MP_Parser_Exception("Invalid data format", 1);
+            
+            list(, $collection, $date, $time, $ord, $format) = $parts;
             
             // rozlozeni datumu a casu
             $dateParts = $this->explodeToThree($date);
             $timeParts = $this->explodeToThree($time);
+        } catch (MP_Parser_Exception $e) {
+            // pokracovani v propagaci vyjimky
+            throw $e;
         } catch (Exception $e) {
             throw new MP_Parser_Exception("Invalid data format", 1, $e);
         }
@@ -58,7 +62,7 @@ class MP_Parser_Filename_Old implements MP_Parser_Interface {
             "minute" => $timeParts[1],
             "second" => $timeParts[2],
             "ord" => $ord,
-            "format" => $ext
+            "format" => $parts[5]
         ),
         MP_Parser_Result::CONFIG_PARSER => $this));
         
