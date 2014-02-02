@@ -8,10 +8,10 @@ class Application_Model_Collections extends MP_Db_Table {
 	protected $_sequence = true;
 	
 	protected $_referenceMap = array(
-			"experiment" => array(
-					"columns" => "experiment_id",
-					"refTableClass" => "Application_Model_Experiments",
-					"refColumns" => "experiment_id"
+			"serie" => array(
+					"columns" => "serie_id",
+					"refTableClass" => "Application_Model_Series",
+					"refColumns" => "serie_id"
 					)
 			);
 	
@@ -33,18 +33,18 @@ class Application_Model_Collections extends MP_Db_Table {
      * radek je automaticky ulozen
      * 
      * @param array $data data k ulozeni
-     * @param Application_Model_Row_Experiment $experiment experiment do ktereho kolekce spada
+     * @param Application_Model_Row_Serie $serie experiment do ktereho kolekce spada
      * @param int $userId id uzivatele
      * @return Application_Model_Row_Collection
      */
-    public function createCollection(array $data, $experiment, $userId = null) {
+    public function createCollection(array $data, $serie, $userId = null) {
         if (is_null($userId)) {
             $userId = Zend_Auth::getInstance()->getIdentity()->user_id;
         }
         
         $retVal = $this->createRow($data);
         $retVal->user_id = $userId;
-        $retVal->experiment_id = $experiment->experiment_id;
+        $retVal->experiment_id = $serie->serie_id;
         
         $retVal->save();
         
@@ -58,9 +58,9 @@ class Application_Model_Collections extends MP_Db_Table {
      * @param string $order razeni
      * @return Zend_Db_Table_Rowset_Abstract
      */
-    public function findByExperiment($experimentId, $order = null) {
+    public function findBySerie($serieId, $order = null) {
         $select = $this->prepareSelect();
-        $select->where("c.experiment_id = ?", $experimentId);
+        $select->where("c.serie_id = ?", $serieId);
         
         return $this->_generateRowset($select->query()->fetchAll());
     }
