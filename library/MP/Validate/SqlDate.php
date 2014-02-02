@@ -20,7 +20,7 @@ class MP_Validate_SqlDate extends Zend_Validate_Abstract {
     const CHECH_DATE_AND_OR_TIME = 4;
     
     const PATTERN_DATE = "[0-9]{4}(-[0-9]{2}){2}";
-    const PATTERN_TIME = "[0-9]{2}(-[0-9]{2}){2}";
+    const PATTERN_TIME = "[0-9]{2}(:[0-9]{2}){2}";
     
     protected $_messageTemplates = array(
         self::INVALID => "Incorrect date format"
