@@ -31,6 +31,8 @@ class Application_Form_Sample extends MP_Form {
             "title" => "Supported Textile"
         ));
         
+        $this->addSubForm(new MP_Form_AccessPermisions(), self::PERMISIONS_SUBFORM);
+        
         $this->addElement("submit", "save", array(
             "label" => "Save"
         ));

@@ -55,6 +55,8 @@ class Application_Form_Serie extends MP_Form {
             "description" => "Date and time when measure was ended"
         ));
         
+        $this->addSubForm(new MP_Form_AccessPermisions(), self::PERMISIONS_SUBFORM);
+        
         $this->addElement("submit", "submit", array(
             "label" => "Save"
         ));

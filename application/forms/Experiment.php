@@ -11,6 +11,8 @@ class Application_Form_Experiment extends MP_Form {
             "required" => true
         ));
         
+        # $this->addSubForm(new MP_Form_AccessPermisions(), "access_rights");
+        
         $this->addElement("select", "microscope_id", array(
             "label" => "Microscope",
             "required" => false,
@@ -55,10 +57,12 @@ class Application_Form_Experiment extends MP_Form {
                 new Zend_Filter_Null()
             )
         ));
+        
+        $this->addSubForm(new MP_Form_AccessPermisions(), self::PERMISIONS_SUBFORM);
 
         $this->addElement("submit", "submit", array(
             "label" => "Save"
         ));
     }
-
+    
 }
