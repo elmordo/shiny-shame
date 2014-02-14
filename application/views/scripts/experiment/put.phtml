@@ -13,9 +13,6 @@ $this->header()->goDown();
 echo $this->buttonLink("Back to overview", $this->url($experiment->toArray(), "get-experiment"));
 echo $this->form;
 
-// vypsani kolekci
-echo $this->action("index", "collection", null, $experiment->toArray());
-
 echo $this->header("Biological information");
 
 $paramBio = array(

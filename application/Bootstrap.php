@@ -164,7 +164,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "post-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/new-collection", array(
+                "post-collection", new Zend_Controller_Router_Route("/serie/:serie_id/new-collection", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "post"
@@ -172,7 +172,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "put-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id/edit", array(
+                "put-collection", new Zend_Controller_Router_Route("/serie/:serie_id/collection/:collection_id/edit", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "put"
@@ -180,7 +180,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "get-collection", new Zend_Controller_Router_Route("/experiment/:experiment_id/collection/:collection_id", array(
+                "get-collection", new Zend_Controller_Router_Route("/serie/:serie_id/collection/:collection_id", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "get"
@@ -234,6 +234,38 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "action" => "put"
                 ))
                 );
+        
+        $router->addRoute(
+                "sample-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/get", array(
+                    "module" => "default",
+                    "controller" => "sample",
+                    "action" => "get"
+                ))
+                );
+        
+        $router->addRoute(
+                "sample-put", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/edit", array(
+                    "module" => "default",
+                    "controller" => "sample",
+                    "action" => "put"
+                ))
+                );
+        
+        $router->addRoute(
+                "serie-get", new Zend_Controller_Router_Route("/sample/:sample_id/serie/:serie_id/get", array(
+                    "module" => "default",
+                    "controller" => "serie",
+                    "action" => "get"
+                ))
+                );
+        
+        $router->addRoute(
+                "serie-put", new Zend_Controller_Router_Route("/sample/:sample_id/serie/:serie_id/edit", array(
+                    "module" => "default",
+                    "controller" => "serie",
+                    "action" => "put"
+                ))
+                );
     }
 
     protected function _initAcl() {
@@ -250,6 +282,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $acl->addResource(new Zend_Acl_Resource("collection"));
         $acl->addResource(new Zend_Acl_Resource("group"));
         $acl->addResource(new Zend_Acl_Resource("frame"));
+        $acl->addResource(new Zend_Acl_Resource("sample"));
+        $acl->addResource(new Zend_Acl_Resource("serie"));
 
         // povoleni akci hostovi
         $acl->allow(MP_Role::ROLE_GUEST, "index");

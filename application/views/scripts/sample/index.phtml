@@ -1,0 +1,14 @@
+<?php
+// hlavicka a prehledova tabulka
+echo $this->header("Samples");
+$this->header()->goDown();
+
+echo $this->sample()->samples($this->samples);
+
+// pokud je uzivatel opravnen, pak se zobrazi formular pro vytvoreni noveho vzorku
+if ($this->acl("sample", "post")) {
+    echo $this->action("post", "sample", "default", $this->experiment->toArray());
+}
+
+$this->header()->goUp();
+?>

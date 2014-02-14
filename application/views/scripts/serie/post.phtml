@@ -1,0 +1,9 @@
+<?php
+if ($this->serie) {
+    $this->redirect("serie-get", true, $this->serie->toArray());
+}
+
+echo $this->header("New serie");
+
+echo $this->form;
+?>

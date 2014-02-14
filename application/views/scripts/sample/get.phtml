@@ -1,0 +1,23 @@
+<?php
+$sample = $this->sample;
+echo $this->header(sprintf("Sample - %s", $sample->name));
+$this->header()->goDown();
+echo $this->buttonLink("Back to experiment", $this->url($this->experiment->toArray(), "get-experiment"));
+?>
+<table class="info-table">
+    <?php
+    $table = $this->tableLayout();
+    echo $table->row(array("Name", $sample->name));
+    echo $table->row(array("# of series", $sample->series));
+    ?>
+</table>
+<?php
+echo $this->buttonLink("Edit sample", $this->url($sample->toArray(), "sample-put"));
+echo $this->header("Comment");
+?>
+<div class="comment">
+    <?php echo $sample->comment_html; ?>
+</div>
+<?php
+echo $this->action("index", "serie", "default", $this->sample->toArray());
+?>

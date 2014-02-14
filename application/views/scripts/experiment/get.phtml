@@ -17,12 +17,7 @@ if ($writeAble) {
 }
 
 // vypsani kolekci
-echo $this->action("index", "collection", "default", $this->experiment->toArray());
-
-// formular pro upload
-if ($this->acl("frame", "upload") && $writeAble) {
-    echo $this->action("upload", "frame", null, $this->experiment->toArray());
-}
+echo $this->action("index", "sample", "default", $this->experiment->toArray());
 
 echo $this->header("Biological information");
 echo $this->action("index.part", "meta", "default", array(

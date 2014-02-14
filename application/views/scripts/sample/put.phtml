@@ -1,0 +1,15 @@
+<?php
+$sample = $this->sample;
+
+if ($sample->isSaved()) {
+    $this->redirect();
+}
+
+echo $this->header("Sample " . $sample->name);
+$this->header()->goDown();
+echo $this->buttonLink("Back to overview", $this->url($sample->toArray(), "sample-get"));
+echo $this->form;
+
+echo $this->action("delete", "sample", "default", $sample->toArray());
+$this->header()->goUp();
+?>

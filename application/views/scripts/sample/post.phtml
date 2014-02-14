@@ -1,0 +1,9 @@
+<?php
+if ($this->row) {
+    $this->redirect("sample-get", true, $this->row->toArray());
+}
+
+echo $this->header("New sample");
+
+echo $this->form;
+?>

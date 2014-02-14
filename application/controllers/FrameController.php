@@ -108,10 +108,10 @@ class FrameController extends MP_Controller_Action {
             $rewrite = $form->getValue("rewrite_existing");
             
             // nacteni experimentu
-            $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
+            $serie = self::findRowById($this->_request->getParam("serie_id"), "Series");
             
             // nacteni existujici kolekci a jejich indexace dle tagu
-            $collections = $experiment->findCollections();
+            $collections = $serie->findCollections();
             $collectionIndex = new ArrayObject(array());
             
             foreach ($collections as $collection) {
@@ -132,11 +132,11 @@ class FrameController extends MP_Controller_Action {
             
             switch($extension) {
                 case self::FILE_TIFF:
-                    $this->saveTiff($fileElement, $experiment, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
+                    $this->saveTiff($fileElement, $serie, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
                     break;
                 
                 case self::FILE_ZIP:
-                    $this->saveZip($fileElement, $experiment, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
+                    $this->saveZip($fileElement, $serie, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
                     break;
                 
             }
@@ -182,7 +182,7 @@ class FrameController extends MP_Controller_Action {
      * ulozi nahrany jeden TIFF obrazek
      * 
      * @param Zend_Form_Element_File $file formularove policko souboru
-     * @param Application_Model_Row_Experiment $experiment radek experimentu, ke kteremu snimek nalezi
+     * @param Application_Model_Row_Serie $serie radek experimentu, ke kteremu snimek nalezi
      * @param MP_Storage_Frames $archive uloziste dat
      * @param ArrayObject $collectionIndex index kolekci
      * @param bool $createCollections prepinac povolujici nebo zakazujici tvorbu novych kolekci
@@ -190,7 +190,7 @@ class FrameController extends MP_Controller_Action {
      * @return type
      * @throws Zend_File_Transfer_Exception
      */
-    public function saveTiff(Zend_Form_Element_File $file, $experiment, MP_Storage_Frames $archive, ArrayObject $collectionIndex, $createCollections, $rewriteExisting) {
+    public function saveTiff(Zend_Form_Element_File $file, $serie, MP_Storage_Frames $archive, ArrayObject $collectionIndex, $createCollections, $rewriteExisting) {
         // rozlozeni a kontrola nazvu
         $fileName = $file->getFileName();
         $info = pathinfo($fileName);
@@ -223,7 +223,7 @@ class FrameController extends MP_Controller_Action {
      * ulozi serii TIFF souboru ze ZIP archivu
      * 
      * @param Zend_Form_Element_File $file formularove policko souboru
-     * @param Application_Model_Row_Experiment $experiment radek experimentu, ke kteremu snimek nalezi
+     * @param Application_Model_Row_Serie $serie radek experimentu, ke kteremu snimek nalezi
      * @param MP_Storage_Frames $archive uloziste dat
      * @param ArrayObject $collectionIndex index kolekci
      * @param bool $createCollections prepinac povolujici nebo zakazujici tvorbu novych kolekci
@@ -231,7 +231,7 @@ class FrameController extends MP_Controller_Action {
      * @return type
      * @throws Zend_File_Transfer_Exception
      */
-    public function saveZip(Zend_Form_Element_File $file, $experiment, MP_Storage_Frames $archive, ArrayObject $collectionIndex, $createCollections, $rewriteExisting) {
+    public function saveZip(Zend_Form_Element_File $file, $serie, MP_Storage_Frames $archive, ArrayObject $collectionIndex, $createCollections, $rewriteExisting) {
         // prijem souboru a nacteni jmena
         $file->receive();
         $file->receive();

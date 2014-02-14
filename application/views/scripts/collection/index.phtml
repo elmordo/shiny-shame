@@ -5,12 +5,10 @@ $this->header()->goDown();
 $acl = $this->acl();
 $user = Zend_Auth::getInstance()->getIdentity();
 
-if ($this->experiment->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
-    echo $this->buttonLink(
-            "Create new collection",
-            $this->url($this->experiment->toArray(), "post-collection")
-            );
-}
+echo $this->buttonLink(
+        "Create new collection",
+        $this->url($this->serie->toArray(), "post-collection")
+        );
 
 echo $this->collection()->collections($this->collections);
 

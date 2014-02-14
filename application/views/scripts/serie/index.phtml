@@ -1,0 +1,29 @@
+<?php
+echo $this->header("Series");
+$this->header()->goDown();
+?>
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Frames</td>
+        </tr>
+    </thead>
+    <?php 
+    foreach ($this->series as $serie) {
+        $url = $this->url($serie->toArray(), "serie-get");
+        ?>
+    <tbody>
+        <tr>
+            <td><?php echo "<a href='", $url, "'>", $serie->name, "</a>"; ?></td>
+            <td><?php echo $serie->frames; ?></td>
+        </tr>
+    </tbody>
+    <?php
+    }
+    ?>
+</table>
+<?php
+echo $this->action("post", "serie", "default", $this->sample->toArray());
+$this->header()->goUp();
+?>

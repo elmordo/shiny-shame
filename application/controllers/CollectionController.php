@@ -19,15 +19,15 @@ class CollectionController extends MP_Controller_Action {
      *
      * @var MP_Db_Table_Row
      */
-    protected $_experiment = null;
+    protected $_serie = null;
     
     public function init() {
         parent::init();
         
-        $experimentId = $this->_request->getParam("experiment_id");
+        $serieId = $this->_request->getParam("serie_id");
         
-        if ($experimentId) {
-            $this->_experiment = self::findRowById($experimentId, "Experiments");
+        if ($serieId) {
+            $this->_serie = self::findRowById($serieId, "Series");
         }
     }
     
@@ -63,18 +63,18 @@ class CollectionController extends MP_Controller_Action {
      */
     public function indexAction() {
         // kontrola pristupu k experimentu
-        $experiment = $this->_experiment;
+        $serie = $this->_serie;
         
         $tableCollections = new Application_Model_Collections();
-        $collections = $tableCollections->findByExperiment($experiment->experiment_id);
+        $collections = $tableCollections->findBySerie($serie->serie_id);
         
-        $this->view->experiment = $experiment;
+        $this->view->serie = $serie;
         $this->view->collections = $collections;
     }
     
     public function postAction() {
         $form = new Application_Form_Collection();
-        $experiment = $this->_experiment;
+        $serie = $this->_serie;
         
         // vyhodnoceni jestli byl formular odeslan jako POST
         if ($this->_request->isPost()) {
@@ -89,7 +89,7 @@ class CollectionController extends MP_Controller_Action {
         }
         
         $this->view->form = $form;
-        $this->view->experiment = $experiment;
+        $this->view->serie = $serie;
     }
     
     public function putAction() {

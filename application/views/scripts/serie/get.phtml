@@ -1,0 +1,24 @@
+<?php
+$serie = $this->serie;
+
+echo $this->header("Serie - " . $serie->name);
+$this->header()->goDown();
+?>
+<table class="info-table">
+    <?php
+    $table = $this->tableLayout();
+    echo $table->row(array("Name", $serie->name));
+    echo $table->row(array("Starts at", $serie->start_at ? $this->sqlDateTime($serie->start_at) : "-"));
+    echo $table->row(array("Ends at", $serie->end_at ? $this->sqlDateTime($serie->end_at) : "-"));
+    ?>
+</table>
+<?php
+echo $this->buttonLink("Edit serie", $this->url($serie->toArray(), "serie-put"));
+
+echo $this->header("Comment");
+echo $serie->comment_html;
+
+echo $this->action("index", "collection", "default", $serie->toArray());
+
+echo $this->action("upload", "frame", "default", $serie->toArray());
+?>

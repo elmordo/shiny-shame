@@ -38,6 +38,40 @@ class Application_Model_Series extends MP_Db_Table {
     );
     
     protected $_markupsEnabled = true;
+    
+    /**
+     * vraci seznam serii dle vzorku
+     * 
+     * @param int $sampleId identifikacni cislo vzorku
+     * @return Zend_Db_Table_Rowset_Abstract
+     */
+    public function findBySample($sampleId) {
+        $select = $this->prepareSelect();
+        $select->where("sample_id = ?" ,$sampleId);
+        
+        $data = $select->query()->fetchAll();
+        
+        return $this->_generateRowset($data);
+    }
+    
+    /**
+     * pripravy select pro rozsirene vyhledavani
+     * 
+     * @return \Zend_Db_Select
+     */
+    public function prepareSelect() {
+        // zakladni informace
+        $select = new Zend_Db_Select($this->getAdapter());
+        $select->from(array("s" => $this->_name))->group("s.serie_id");
+        
+        // pripojeni snimku
+        $nameFrames = self::getRealName("Application_Model_Frames");
+        $select->joinLeft(array("f" => $nameFrames), "f.serie_id = s.serie_id", array(
+            "frames" => new Zend_Db_Expr("COUNT(f.frame_id)")
+        ));
+        
+        return $select;
+    }
 }
 
 ?>
