@@ -1,7 +1,10 @@
 <?php
+if ($this->isDeleted) {
+    $url = $this->url($this->serieInfo, "sample-get");
+    $redirector = new Zend_Controller_Action_Helper_Redirector();
+    $redirector->gotoUrlAndExit($url);
+}
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+echo $this->header("Delete sierie");
+echo $this->form;
 ?>

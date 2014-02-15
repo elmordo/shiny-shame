@@ -40,6 +40,20 @@ class Application_Model_Series extends MP_Db_Table {
     protected $_markupsEnabled = true;
     
     /**
+     * najde serii dle jejiho id
+     * pripoji dodatecne informace
+     * 
+     * @param int $id identifikacni cislo serie
+     * @return Application_Model_Row_Serie
+     */
+    public function findById($id) {
+        $select = $this->prepareSelect();
+        $select->where("s.serie_id = ?", $id);
+        
+        return $this->_generateRow($select->query()->fetch());
+    }
+    
+    /**
      * vraci seznam serii dle vzorku
      * 
      * @param int $sampleId identifikacni cislo vzorku
@@ -47,7 +61,7 @@ class Application_Model_Series extends MP_Db_Table {
      */
     public function findBySample($sampleId) {
         $select = $this->prepareSelect();
-        $select->where("sample_id = ?" ,$sampleId);
+        $select->where("s.sample_id = ?" ,$sampleId);
         
         $data = $select->query()->fetchAll();
         
@@ -69,6 +83,10 @@ class Application_Model_Series extends MP_Db_Table {
         $select->joinLeft(array("f" => $nameFrames), "f.serie_id = s.serie_id", array(
             "frames" => new Zend_Db_Expr("COUNT(f.frame_id)")
         ));
+        
+        // propojeni na vzorky (kvuli id experimentu)
+        $nameSamples = self::getRealName("Application_Model_Samples");
+        $select->joinInner(array("sa" => $nameSamples), "sa.sample_id = s.sample_id", array("experiment_id"));
         
         return $select;
     }

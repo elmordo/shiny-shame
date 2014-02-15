@@ -6,4 +6,8 @@ if ($this->serie->isSaved()) {
 echo $this->header("Edit serie - " . $this->serie->name);
 echo $this->buttonLink("Back to overview", $this->url($this->serie->toArray(), "serie-get"));
 echo $this->form;
+
+$this->header()->goDown();
+echo $this->action("delete", "serie", "default", $this->serie->toArray());
+$this->header()->goUp();
 ?>

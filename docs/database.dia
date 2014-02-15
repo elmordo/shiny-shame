@@ -2280,13 +2280,13 @@ tabulky#</dia:string>
         <dia:point val="56.57,12.2"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="56.4582,11.8691;69.6118,41.8809"/>
+        <dia:rectangle val="56.4582,11.8691;69.6118,42.6809"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
         <dia:point val="56.57,12.2"/>
         <dia:point val="63.035,12.2"/>
-        <dia:point val="63.035,41.55"/>
-        <dia:point val="69.5,41.55"/>
+        <dia:point val="63.035,42.35"/>
+        <dia:point val="69.5,42.35"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
@@ -3862,7 +3862,7 @@ tabulky#</dia:string>
         <dia:point val="69.5,38.85"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="69.45,38.8;85.835,45.5"/>
+        <dia:rectangle val="69.45,38.8;85.835,46.3"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="69.5,38.85"/>
@@ -3871,13 +3871,13 @@ tabulky#</dia:string>
         <dia:real val="16.285"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="6.5999999999999996"/>
+        <dia:real val="7.4000000000000004"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#samples#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
-        <dia:string>##</dia:string>
+        <dia:string>#DataAccess#</dia:string>
       </dia:attribute>
       <dia:attribute name="comment">
         <dia:string>#tabulka vzorků#</dia:string>
@@ -4137,7 +4137,7 @@ tabulky#</dia:string>
         <dia:point val="88.8,39.7"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="88.75,39.65;104.75,47.95"/>
+        <dia:rectangle val="88.75,39.65;104.75,48.75"/>
       </dia:attribute>
       <dia:attribute name="elem_corner">
         <dia:point val="88.8,39.7"/>
@@ -4146,13 +4146,13 @@ tabulky#</dia:string>
         <dia:real val="15.9"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="8.1999999999999993"/>
+        <dia:real val="9"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#series#</dia:string>
       </dia:attribute>
       <dia:attribute name="stereotype">
-        <dia:string>##</dia:string>
+        <dia:string>#DataAccess#</dia:string>
       </dia:attribute>
       <dia:attribute name="comment">
         <dia:string>#časové série snímků#</dia:string>
@@ -4455,14 +4455,14 @@ tabulky#</dia:string>
     </dia:object>
     <dia:object type="Standard - ZigZagLine" version="1" id="O27">
       <dia:attribute name="obj_pos">
-        <dia:point val="104.7,41.6"/>
+        <dia:point val="104.7,42.4"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="104.588,41.2691;108.712,46.9809"/>
+        <dia:rectangle val="104.588,42.0691;108.712,46.9809"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="104.7,41.6"/>
-        <dia:point val="106.65,41.6"/>
+        <dia:point val="104.7,42.4"/>
+        <dia:point val="106.65,42.4"/>
         <dia:point val="106.65,46.65"/>
         <dia:point val="108.6,46.65"/>
       </dia:attribute>
@@ -4499,16 +4499,16 @@ tabulky#</dia:string>
     </dia:object>
     <dia:object type="Standard - ZigZagLine" version="1" id="O28">
       <dia:attribute name="obj_pos">
-        <dia:point val="85.785,40.75"/>
+        <dia:point val="85.785,41.55"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="85.6732,40.4191;88.9118,42.7309"/>
+        <dia:rectangle val="85.6732,41.2191;88.9118,43.5309"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="85.785,40.75"/>
-        <dia:point val="87.2925,40.75"/>
-        <dia:point val="87.2925,42.4"/>
-        <dia:point val="88.8,42.4"/>
+        <dia:point val="85.785,41.55"/>
+        <dia:point val="87.2925,41.55"/>
+        <dia:point val="87.2925,43.2"/>
+        <dia:point val="88.8,43.2"/>
       </dia:attribute>
       <dia:attribute name="orth_orient">
         <dia:enum val="0"/>
@@ -4543,14 +4543,14 @@ tabulky#</dia:string>
     </dia:object>
     <dia:object type="Standard - ZigZagLine" version="1" id="O29">
       <dia:attribute name="obj_pos">
-        <dia:point val="104.7,41.6"/>
+        <dia:point val="104.7,42.4"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="89.8032,23.1191;105.8,41.9309"/>
+        <dia:rectangle val="89.8032,23.1191;105.8,42.7309"/>
       </dia:attribute>
       <dia:attribute name="orth_points">
-        <dia:point val="104.7,41.6"/>
-        <dia:point val="105.75,41.6"/>
+        <dia:point val="104.7,42.4"/>
+        <dia:point val="105.75,42.4"/>
         <dia:point val="105.75,23.45"/>
         <dia:point val="89.915,23.45"/>
       </dia:attribute>

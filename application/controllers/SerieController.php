@@ -15,7 +15,22 @@ class SerieController extends MP_Controller_Action {
     protected $_sourceTable = "Application_Model_Series";
     
     public function deleteAction() {
+        $form = new MP_Form_Delete();
+        $form->setElementsBelongTo("deleteserie");
         
+        if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
+            // nacteni dat
+            $serie = $this->findById($this->_request->getParam("serie_id"));
+            $info = $serie->toArray();
+            
+            // smazani serie a oznacena, ze serie byla smazana
+            $serie->delete();
+            
+            $this->view->isDeleted = true;
+            $this->view->serieInfo = $info;
+        }
+        
+        $this->view->form = $form;
     }
     
     public function getAction() {
