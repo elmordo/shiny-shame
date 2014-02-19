@@ -8,9 +8,15 @@
 
 @namespace mp url(http://micropic.localhost);
 
+/* OBECNE STYLY */
 root { 
     display: block;
 }
+.clear { clear: both; }
+span.button-link { margin: 10px 15px; padding: 0; border-radius: 5px; border: 1px solid black; }
+span.button-link:hover { background: #aaaaaa; }
+span.button-link a { text-decoration: none; font-weight: bold; padding: 2px 5px; }
+span.button-link:hover a { color: #000; }
 
 /* HLAVNI MENU */
 #main-menu { padding: 0px; border-radius: 10px; border: 1px #000000 solid; }
@@ -21,6 +27,13 @@ root {
 /* FORMULARE */
 .required { font-weight: bolder; }
 .textile { background: url(/images/textile.png) no-repeat center; border-radius: 5px; border: 2px solid #c4c4c4; padding: 5px; }
+form .label, form .element { float: left; }
+form .label, form .textarea-label { text-align: right; width: 150px; padding-top: 5px; margin-right: 15px; }
+form .description { padding: 5px; background-color: #fef47c; position: absolute; display: none; }
+.textarea:hover .description, .element:hover .description { display: inline; }
+.element-row { margin: 5px 0px; padding: 5px 0; width: 100%; border-bottom: 1px solid #d3d3d3; }
+.form-content { border: 1px black solid; width: 800px; border-radius: 15px; padding: 5px 15px; }
+form fieldset { margin: 0 -15px; border: none; border-top: 1px solid black; border-bottom:  1px solid black; }
 
 /* TABULKY S INFORMACEMI O POLOZCE */
 .info-table tr td:first-child { font-style: italic; }

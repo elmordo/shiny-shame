@@ -73,12 +73,13 @@ class MP_Storage_Frames {
      * prida snimek do archivu. Pokud kolekce neni nastavena, vlozi ho do korenoveho adresare
      * 
      * @param string $file jmeno souboru, kde je snimek ulozen
+     * @param Application_Model_Row_Serie $serie serie snimku
      * @param Application_Model_Row_Frame $frame radek s daty o snimku
      * @param int $source identifikace zdroje
      */
-    public function addFrame($file, Application_Model_Row_Frame $frame, $source = self::SOURCE_FILE) {
+    public function addFrame($file, Application_Model_Row_Serie $serie, Application_Model_Row_Frame $frame, $source = self::SOURCE_FILE) {
         // sestaveni interniho jmena a zapis do souboru
-        $localName = $this->getFramePath($frame);
+        $localName = $this->getFramePath($serie, $frame);
         
         switch ($source) {
             case self::SOURCE_FILE:
@@ -106,9 +107,9 @@ class MP_Storage_Frames {
      * @param Application_Model_Row_Frame $frame
      * @return string
      */
-    public function getFrameData(Application_Model_Row_Frame $frame) {
+    public function getFrameData(Application_Model_Row_Serie $serie, Application_Model_Row_Frame $frame) {
         // nacteni cesty
-        $path = $this->getFramePath($frame);
+        $path = $this->getFramePath($serie, $frame);
         
         // vraceni dat
         return $this->_archive->getFromName($path);
@@ -117,17 +118,18 @@ class MP_Storage_Frames {
     /**
      * vraci cestu ke snimku v archivu
      * 
+     * @param Application_Model_Row_Serie $serie serie do ktere snimek patri
      * @param Application_Model_Row_Frame $frame radek s infromacemi o snimku
      * @return string
      */
-    public function getFramePath($frame) {
+    public function getFramePath(Application_Model_Row_Serie $serie, $frame) {
         // sestaveni datumu a casu
         list($sqlDate, $sqlTime) = explode(" ", $frame->taken_at);
         $dateParts = explode("-", $sqlDate);
         $date = substr($dateParts[0], 2, 2) . $dateParts[1] . $dateParts[2];
         
         $time = str_replace(":", "", $sqlTime);
-        return sprintf("%s/%s_%s_%d.%s", $frame->tag, $date, $time, $frame->ord, $frame->format);
+        return sprintf("%s/%s/%s/%s_%s_%d.%s", $serie->sample_id, $serie->serie_id, $frame->tag, $date, $time, $frame->ord, $frame->format);
     }
     
     /**

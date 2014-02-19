@@ -141,6 +141,18 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
     }
     
     /**
+     * pripravy vyhledavaci dotaz
+     * 
+     * @return \Zend_Db_Select
+     */
+    public function prepareSelect() {
+       $retVal = new Zend_Db_Select($this->getAdapter());
+       $retVal->from($this->_name);
+       
+       return $retVal; 
+    }
+    
+    /**
      * zapne nebo vypne markup prekladace
      * 
      * @param bool $enabled nove nastaveni
@@ -159,7 +171,12 @@ class MP_Db_Table extends Zend_Db_Table_Abstract {
      * @param bool $stored prepinac ulozene hodnoty
      * @return Zend_Db_Table_Row_Abstract
      */
-    public function _generateRow(array $data, $stored = true) {
+    public function _generateRow($data, $stored = true) {
+        // pokud jsou data prazdna, vraci NULL
+        if (!$data) {
+            return null;
+        }
+        
         $rowClassName = $this->_rowClass;
         $retVal = new $rowClassName(array(
             "data" => $data,

@@ -45,13 +45,13 @@ class FrameController extends MP_Controller_Action {
     
     public function indexAction() {
         // nacteni informaci
-        $experimentId = $this->_request->getParam("experiment_id", null);
+        $serieId = $this->_request->getParam("serie_id", null);
         $collectionId = $this->_request->getParam("collection_id", null);
         
-        if (is_null($experimentId)) throw new Zend_Controller_Router_Exception("Experimet id can not be null");
+        if (is_null($serieId)) throw new Zend_Controller_Router_Exception("Experimet id can not be null");
         
         $tableFrames = new Application_Model_Frames();
-        $frames = $tableFrames->findByExperimentAndCollection($experimentId, $collectionId);
+        $frames = $tableFrames->findBySerieAndCollection($serieId, $collectionId);
         
         $this->view->frames = $frames;
     }
@@ -62,7 +62,7 @@ class FrameController extends MP_Controller_Action {
     public function getAction() {
         // nacteni snimku a experimentu
         $frame = $this->findById($this->_request->getParam("frame_id"));
-        $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
+        $serie = self::findRowById($this->_request->getParam("serie_id"), "Series");
         
         // nacteni kolekci
         $collections = $frame->findCollections();
@@ -72,7 +72,7 @@ class FrameController extends MP_Controller_Action {
         $formUserCollections->setCollections($userCollections);
         
         $this->view->frame = $frame;
-        $this->view->experiment = $experiment;
+        $this->view->serie = $serie;
         $this->view->collections = $collections;
         $this->view->formUserCollections = $formUserCollections;
     }
@@ -109,6 +109,7 @@ class FrameController extends MP_Controller_Action {
             
             // nacteni experimentu
             $serie = self::findRowById($this->_request->getParam("serie_id"), "Series");
+            $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
             
             // nacteni existujici kolekci a jejich indexace dle tagu
             $collections = $serie->findCollections();
@@ -197,7 +198,7 @@ class FrameController extends MP_Controller_Action {
         $report = MP_Parser_Filename::parse($info["basename"]);
         
         // nacteni kolekce
-        $collection = $this->_getCollection($experiment, $report->collection, $collectionIndex, $createCollections);
+        $collection = $this->_getCollection($serie, $report->collection, $collectionIndex, $createCollections);
         
         if (is_null($collection)) return;
         
@@ -216,7 +217,7 @@ class FrameController extends MP_Controller_Action {
             }
         }
         
-        $this->_saveFile($experiment, $archive, $collection, $fileName, $report, $rewriteExisting);
+        $this->_saveFile($serie, $archive, $collection, $fileName, $report, $rewriteExisting);
     }
     
     /**
@@ -287,7 +288,7 @@ class FrameController extends MP_Controller_Action {
                 }
                 
                 // nacteni kolekce
-                $collection = $this->_getCollection($experiment, $parseReport->collection, $collectionIndex, $createCollections);
+                $collection = $this->_getCollection($serie, $parseReport->collection, $collectionIndex, $createCollections);
                 
                 // kontrola kolekce - pokud kolekce neni, pak se preskakuje na dalsi snimek
                 if (is_null($collection)) {
@@ -295,7 +296,7 @@ class FrameController extends MP_Controller_Action {
                 }
                 
                 // import souboru
-                $this->_saveFile($experiment, $archive, $collection, $tmpFile, $parseReport, $rewriteExisting);
+                $this->_saveFile($serie, $archive, $collection, $tmpFile, $parseReport, $rewriteExisting);
                 
                 // odstraneni docasneho souboru
                 unlink($tmpFile);
@@ -307,7 +308,7 @@ class FrameController extends MP_Controller_Action {
     /**
      * zpracuje snimek
      * 
-     * @param Application_Model_Row_Experiment $experiment zdrojovy experiment
+     * @param Application_Model_Row_Experiment $serie zdrojova serie snimku
      * @param MP_Storage_Frames $archive uloziste dat
      * @param Application_Model_Row_Collection $collection kolekce, do ktere bude snimek pridan
      * @param string $fileName jmeno fyzickeho souboru na serveru
@@ -315,12 +316,13 @@ class FrameController extends MP_Controller_Action {
      * @param bool $rewriteExisting povoluje nebo zakazuje prepis existujicich snimku
      * @return Application_Model_Row_Frame
      */
-    private function _saveFile($experiment, MP_Storage_Frames $archive, Application_Model_Row_Collection $collection, $fileName, MP_Parser_Result $parseReport, $rewriteExisting) {
+    private function _saveFile($serie, MP_Storage_Frames $archive, Application_Model_Row_Collection $collection, $fileName, MP_Parser_Result $parseReport, $rewriteExisting) {
         // kontrola, jestli neni uz dany objekt zapsan
         $tableFrames = new Application_Model_Frames();
-        $frame = $tableFrames->findByInfo($experiment->experiment_id, $parseReport->collection, $parseReport->ord);
+        $frame = $tableFrames->findByInfo($serie->serie_id, $parseReport->collection, $parseReport->ord);
         
         if ($frame) {
+            // snimek byl nalezen a musime se rozhodnout, co udelame
             if ($rewriteExisting) {
                 // muzeme prepisovat existujici
                 $frame->delete();
@@ -331,7 +333,7 @@ class FrameController extends MP_Controller_Action {
         }
         
         $frame = $tableFrames->createRow(array(
-            "experiment_id" => $experiment->experiment_id,
+            "serie_id" => $serie->serie_id,
             "tag" => $parseReport->collection,
             "format" => $parseReport->format,
             "taken_at" => sprintf("20%s-%s-%s %s:%s:%s", 
@@ -363,7 +365,7 @@ class FrameController extends MP_Controller_Action {
         $frame->height = $imgSize[1];
         
         // zapis do archivu
-        $archive->addFrame($fileName, $frame);
+        $archive->addFrame($fileName, $serie, $frame);
         
         // ulozeni radku a nakopirovani nahledu
         $frame->save();
@@ -385,12 +387,12 @@ class FrameController extends MP_Controller_Action {
      * vraci kolekci z indexu dle jmena
      * pokud kolekce neexistuje a parameter $createCollection je nastaven na True, pak vytvori novou kolekci
      * 
-     * @param $experiment radek s experimentem
+     * @param $serie radek se serii
      * @param type $tag predpona kolekce
      * @param array $collectionIndex aktualni index kolekci
      * @param bool $createCollections povoleni zda se smi vytvaret nove kolekce
      */
-    private function _getCollection($experiment, $tag, ArrayObject &$collectionIndex, $createCollections) {
+    private function _getCollection($serie, $tag, ArrayObject &$collectionIndex, $createCollections) {
         // kontrola, jestli kolekce exsituje
         if (!isset($collectionIndex[$tag])) {
             // kotnrola potvrzeni vytvaret nove kolekce
@@ -403,7 +405,7 @@ class FrameController extends MP_Controller_Action {
             $collection = $tableCollections->createCollection(array(
                 "tag" => $tag,
                 "name" => $tag
-            ), $experiment);
+            ), $serie);
             
             $collectionIndex[$tag] = $collection;
         }

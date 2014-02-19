@@ -220,7 +220,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 );
         
         $router->addRoute(
-                "frame-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/frame/:frame_id/detail", array(
+                "frame-get", new Zend_Controller_Router_Route("/serie/:serie_id/frame/:frame_id/detail", array(
                     "module" => "default",
                     "controller" => "frame",
                     "action" => "get"
@@ -252,7 +252,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 );
         
         $router->addRoute(
-                "serie-get", new Zend_Controller_Router_Route("/sample/:sample_id/serie/:serie_id/get", array(
+                "serie-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/serie/:serie_id/get", array(
                     "module" => "default",
                     "controller" => "serie",
                     "action" => "get"
@@ -260,7 +260,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 );
         
         $router->addRoute(
-                "serie-put", new Zend_Controller_Router_Route("/sample/:sample_id/serie/:serie_id/edit", array(
+                "serie-put", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/serie/:serie_id/edit", array(
                     "module" => "default",
                     "controller" => "serie",
                     "action" => "put"

@@ -29,7 +29,7 @@ class Application_Model_Row_Frame extends MP_Db_Table_Row {
         $select->from(array("c" => $nameCollections));
         $select->joinLeft(array("a" => $nameAssocs), "a.collection_id = c.collection_id and frame_id = " . $this->frame_id, array("a.frame_id"));
         
-        $select->where("c.experiment_id = ?", $this->experiment_id);
+        $select->where("c.serie_id = ?", $this->serie_id);
         $select->where("c.tag is null");
         
         $data = $select->query()->fetchAll();

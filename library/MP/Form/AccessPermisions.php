@@ -23,6 +23,16 @@ class MP_Form_AccessPermisions extends Zend_Form_SubForm {
     
     protected $_groupId = "group_id";
     
+    protected $_elementDecorators = array(
+        "ViewHelper",
+        "Standard"
+        );
+    
+    public function __construct($options = null) {
+        $this->addPrefixPath("MP_Form_Decorator_", "MP/Form/Decorator/", Zend_Form::DECORATOR);
+        parent::__construct($options);
+    }
+    
     public function init() {
         
         $this->setElementsBelongTo(self::FORM_BELONGS_TO);
@@ -55,21 +65,24 @@ class MP_Form_AccessPermisions extends Zend_Form_SubForm {
             "multiOptions" => $vals,
             "value" => $delete,
             "required" => true,
-            "label" => "User"
+            "label" => "User",
+            "description" => "Access permisions for owner"
         ));
         
         $this->addElement("select", self::GROUP_NAME, array(
             "multiOptions" => $vals,
             "value" => $read,
             "required" => true,
-            "label" => "Group"
+            "label" => "Group",
+            "description" => "Access permisions for group with special rights"
         ));
         
         $this->addElement("select", self::OTHER_NAME, array(
             "multiOptions" => $vals,
             "value" => $read,
             "required" => true,
-            "label" => "Other"
+            "label" => "Other",
+            "description" => "Access permisions for other users who are not owners neither in group"
         ));
         
     }

@@ -51,11 +51,11 @@ class CollectionController extends MP_Controller_Action {
     }
     
     public function getAction() {
-        $experiment = $this->_experiment;
+        $serie = $this->_serie;
         $collection = $this->findById($this->_request->getParam("collection_id"));
         
         $this->view->collection = $collection;
-        $this->view->experiment = $experiment;
+        $this->view->serie = $serie;
     }
     
     /*
@@ -93,7 +93,7 @@ class CollectionController extends MP_Controller_Action {
     }
     
     public function putAction() {
-        $experiment = $this->_experiment;
+        $serie = $this->_serie;
         $form = new Application_Form_Collection();
         $collection = $this->findById($this->_request->getParam("collection_id"));
         
@@ -113,7 +113,7 @@ class CollectionController extends MP_Controller_Action {
         
         $this->view->form = $form;
         $this->view->collection = $collection;
-        $this->view->experiment = $experiment;
+        $this->view->serie = $serie;
     }
 }
 

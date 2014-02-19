@@ -2,7 +2,27 @@
 class MP_Form extends Zend_Form {
     
     const PERMISIONS_SUBFORM = "permisions";
-	
+    
+    protected $_elementDecorators = array(
+        "ViewHelper",
+        "Standard"
+        );
+
+    public function __construct($options = null) {
+        $this->addPrefixPath("MP_Form_Decorator_", "MP/Form/Decorator/", Zend_Form::DECORATOR);
+        parent::__construct($options);
+        
+        $this->_decorators = array(
+            new Zend_Form_Decorator_FormElements(),
+            new Zend_Form_Decorator_HtmlTag(array(
+                "tag" => "div",
+                "class" => "form-content"
+            )),
+            new Zend_Form_Decorator_Form()
+        );
+    }
+
+
     /**
      * nejprve zkonstroluje, jestou jsou nejaka data k dipozici
      * 

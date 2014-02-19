@@ -15,7 +15,7 @@ class MP_View_Helper_ButtonLink extends MP_View_Helper_Abstract {
     public function buttonLink($caption, $url, array $options = array()) {
         $options["href"] = $url;
         
-        return $this->_wrapToTag("a", $caption, $options);
+        return "<span class='button-link'>" . $this->_wrapToTag("a", $caption, $options) . "</span>";
     }
 }
 

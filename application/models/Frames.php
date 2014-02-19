@@ -27,44 +27,73 @@ class Application_Model_Frames extends MP_Db_Table {
     );
     
     protected $_markupsEnabled = true;
+    
+    /**
+     * vraci radek dle snimku
+     * 
+     * @param int $id identifikacni cislo snimku
+     * @return Application_Model_Row_Frame
+     */
+    public function findById($id) {
+        $select = $this->prepareSelect();
+        $select->where("f.frame_id = ?", $id);
+        
+        return $this->_generateRow($select->query()->fetch());
+    }
 	
     /**
-     * nacte seznam snimku dle experimentu a pripadne dle kolekce
+     * nacte seznam snimku dle serie a pripadne dle kolekce
      * 
-     * @param id $experimentId id experiment
+     * @param id $serieId id serie
      * @param int $collectionId id kolekce
      * @return Zend_Db_Table_Rowset_Abstract
      */
-    public function findByExperimentAndCollection($experimentId, $collectionId = null) {
+    public function findBySerieAndCollection($serieId, $collectionId = null) {
         // sestaveni zakladni podminky
-        $where = array("experiment_id = ?" => $experimentId);
+        $select = $this->prepareSelect();
+        $select->where("f.serie_id = ?", $serieId);
         
-        // doplneni kolekce, pokud je potreba
+        // pripadne napojeni na kolekce
         if (!is_null($collectionId)) {
-            $nameAssocs = MP_Db_Table::getRealName("Application_Model_CollectionsHaveFrames");
-            
-            $select = new Zend_Db_Select($this->getAdapter());
-            $select->from($nameAssocs, array("frame_id"))->where("collection_id = ?", $collectionId);
-            
-            $where["frame_id in (?)"] = new Zend_Db_Expr($select->assemble());
+            $nameCollections = self::getRealName("Application_Model_CollectionsHaveFrames");
+            $select->joinInner(array("c" => $nameCollections), "c.frame_id = f.frame_id", array());
+            $select->where("c.collection_id = ?", $collectionId);
         }
         
-        return $this->fetchAll($where, "ord");
+        return $this->_generateRowset($select->query()->fetchAll());
     }
     
     /**
      * najde snimek podle hodnot, jejich kombinace by mela byt unikatni
      * 
-     * @param int $experimentId identifikacni cislo experimentu
+     * @param int $serieId identifikacni cislo serie snimku
      * @param string $tag kolekce, do ktere v zakladu spada
      * @param int $ord poradi snimku
      * @return Application_Model_Row_Frame
      */
-    public function findByInfo($experimentId, $tag, $ord) {
-        return $this->fetchRow(array(
-            "experiment_id = ?" => $experimentId,
-            "tag like ?" => $tag,
-            "ord = ?" => $ord
-        ));
+    public function findByInfo($serieId, $tag, $ord) {
+        $select = $this->prepareSelect();
+        
+        $select->where("f.serie_id = ?", $serieId)
+                ->where("f.tag like ?", $tag)
+                ->where("f.ord = ?", $ord);
+        
+        return $this->_generateRow($select->query()->fetch());
+    }
+    
+    public function prepareSelect() {
+        // zakladni nastaveni
+        $select = new Zend_Db_Select($this->getAdapter());
+        $select->from(array("f" => $this->_name));
+        
+        // navazani na serii
+        $nameSeries = self::getRealName("Application_Model_Series");
+        $select->joinInner(array("se" => $nameSeries), "se.serie_id = f.serie_id", array());
+        
+        // navazani na vzorek
+        $nameSamples = self::getRealName("Application_Model_Samples");
+        $select->joinInner(array("sa" => $nameSamples), "sa.sample_id = se.sample_id", array("sa.sample_id", "sa.experiment_id"));
+        
+        return $select;
     }
 }

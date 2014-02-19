@@ -14,13 +14,6 @@ class Application_Model_Row_Experiment extends MP_Db_Table_Row implements MP_Db_
     private $_microscope = null;
     
     /**
-     * seznam kolekci pripojenych k experimentu
-     *
-     * @var Zend_Db_Table_Rowset_Abstract
-     */
-    private $_collections = null;
-    
-    /**
      * smaze biologicke metainformace
      * 
      * @return Application_Model_Row_Experiment
@@ -40,15 +33,6 @@ class Application_Model_Row_Experiment extends MP_Db_Table_Row implements MP_Db_
         $this->_clearMeta(new Application_Model_MetainfoTechnical());
         
         return $this;
-    }
-    
-    public function findCollections() {
-        if (is_null($this->_collections)) {
-            $tableCollections = new Application_Model_Collections();
-            $this->_collections = $tableCollections->fetchAll(array("experiment_id = ?" => $this->experiment_id), "name");
-        }
-        
-        return $this->_collections;
     }
     
     /**

@@ -44,7 +44,7 @@ class Application_Model_Collections extends MP_Db_Table {
         
         $retVal = $this->createRow($data);
         $retVal->user_id = $userId;
-        $retVal->experiment_id = $serie->serie_id;
+        $retVal->serie_id = $serie->serie_id;
         
         $retVal->save();
         
