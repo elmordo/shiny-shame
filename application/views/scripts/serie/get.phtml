@@ -22,3 +22,16 @@ echo $this->action("index", "collection", "default", $serie->toArray());
 
 echo $this->action("upload", "frame", "default", $serie->toArray());
 ?>
+<applet
+    code="wjhk.jupload2.JUploadApplet"
+    name="JUpload1"
+    archive="/wjhk.jupload.jar"
+    width="640"
+    height="300"
+    mayscript="true"
+    alt="The java plugin must be installed.">
+    <param name="postURL" value="/frame/applet?serie_id=<?php echo $serie->serie_id; ?>" />
+    <param name="nbFilesPerRequest" value="1" />
+    <param name="debugLevel" value="0"/> wjhk.jupload.jar or higher plugin required.
+    <param name="showLogWindow" value="true" />
+</applet>

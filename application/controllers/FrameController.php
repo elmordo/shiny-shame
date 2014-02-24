@@ -20,6 +20,22 @@ class FrameController extends MP_Controller_Action {
     
     protected $_sourceTable = "Application_Model_Frames";
     
+    public function appletAction() {
+        // vytvoreni pomocneho elementu
+        $file = new Zend_Form_Element_File("File0");
+        
+        // nacteni dat
+        $serieId = $this->_request->getParam("serie_id");
+        $serie = self::findRowById($serieId, "Series");
+        $experiment = self::findRowById($serie->experiment_id, "Experiments");
+        $archive = new MP_Storage_Frames($experiment);
+        
+        // nactnei indexu kolekci
+        $collectionIndex = $this->_loadCollections($serie);
+        
+        $this->saveTiff($file, $serie, $archive, $collectionIndex, true, true);
+    }
+    
     /**
      * stahne originalni TIFF obrazek
      */
@@ -112,14 +128,7 @@ class FrameController extends MP_Controller_Action {
             $experiment = self::findRowById($this->_request->getParam("experiment_id"), "Experiments");
             
             // nacteni existujici kolekci a jejich indexace dle tagu
-            $collections = $serie->findCollections();
-            $collectionIndex = new ArrayObject(array());
-            
-            foreach ($collections as $collection) {
-                if (!is_null($collection->tag)) {
-                    $collectionIndex[$collection->tag] = $collection;
-                }
-            }
+            $collections = $this->_loadCollections($serie);
             
             // otevreni archivu
             $archive = new MP_Storage_Frames($experiment);
@@ -206,7 +215,12 @@ class FrameController extends MP_Controller_Action {
         $file->receive();
         
         $filesInfo = $file->getFileInfo();
-        $fileName = $filesInfo["file"]["tmp_name"];
+        
+        if (isset($filesInfo["file"])) {
+            $fileName = $filesInfo["file"]["tmp_name"];
+        } else {
+            $fileName = $filesInfo["File0"]["tmp_name"];
+        }
         
         // kontrola existence souboru
         if (!is_file($fileName)) {
@@ -412,6 +426,25 @@ class FrameController extends MP_Controller_Action {
         
         // vraceni hodnoty
         return $collectionIndex[$tag];
+    }
+    
+    /**
+     * nacte a zaindexuje kolekce
+     * 
+     * @param Application_Model_Row_Serie $serie serie, ze ktere nacist kolekce
+     * @return array
+     */
+    private function _loadCollections(Application_Model_Row_Serie $serie) {
+        $collections = $serie->findCollections();
+        $collectionIndex = new ArrayObject(array());
+            
+        foreach ($collections as $collection) {
+            if (!is_null($collection->tag)) {
+                $collectionIndex[$collection->tag] = $collection;
+            }
+        }
+        
+        return $collectionIndex;
     }
 }
 
