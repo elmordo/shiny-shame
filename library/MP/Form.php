@@ -65,4 +65,28 @@ class MP_Form extends Zend_Form {
         
         return $retVal;
     }
+    
+    public function populate(array $values, $route=null) {
+        parent::populate($values);
+        
+        if (!is_null($route)) {
+            $this->setRouteAction($route, $values);
+        }
+    }
+    
+    /**
+     * nastavi akci z routy
+     * 
+     * @param type $route
+     * @param type $params
+     * @return \MP_Form
+     */
+    public function setRouteAction($route, $params) {
+        $router = Zend_Controller_Front::getInstance()->getRouter();
+        $url = $router->assemble($params, $route);
+        
+        $this->setAction($url);
+        
+        return $this;
+    }
 }

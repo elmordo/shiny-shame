@@ -4,6 +4,12 @@ echo $this->header(sprintf("Collection %s", $collection->name));
 
 echo $this->buttonLink("Back to serie", $this->url($this->serie->toArray(), "serie-get"));
 ?>
+<div class="tabs">
+    <ul>
+        <li><a href="#collection-overview">Overview</a></li>
+        <li><a href="#collection-frames">Frames</a></li>
+    </ul>
+    <div id="collection-overview">
 <table class="info-table">
     <?php
     $table = $this->tableLayout();
@@ -19,12 +25,17 @@ echo $this->buttonLink("Back to serie", $this->url($this->serie->toArray(), "ser
 if ($collection->checkAccess(MP_Db_Table_Row_DataAccess::ACCESS_WRITE)) {
     $url = $this->url($collection->toArray(), "put-collection");
     
-    echo $this->buttonLink("Edit collection", $url);
+    echo $this->buttonLink("Edit collection", $url, array(), true);
 }
 
 $this->header()->goDown();
 
 echo $this->comment($collection->comment_html);
-
+?>
+    </div>
+    <div id="collection-frames">
+        <?php
 echo $this->action("index", "frame", "default", $this->collection->toArray());
 ?>
+    </div>
+</div>

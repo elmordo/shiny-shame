@@ -52,7 +52,7 @@ class FrameController extends MP_Controller_Action {
         
         $tableFrames = new Application_Model_Frames();
         $frames = $tableFrames->findBySerieAndCollection($serieId, $collectionId);
-        
+
         $this->view->frames = $frames;
     }
     

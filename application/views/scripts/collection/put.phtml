@@ -9,8 +9,8 @@ if ($this->collection->isSaved()) {
 echo $this->header(sprintf("Edit collection &QUOT;%s&QUOT;", $this->collection->name));
 $this->header()->goDown();
 
-$backUrl = $this->url($this->experiment->toArray(), "edit-experiment");
-echo $this->buttonLink("Back to experiment", $backUrl);
+$backUrl = $this->url($this->collection->toArray(), "get-collection");
+echo $this->buttonLink("Back to collection", $backUrl);
 
 echo $this->form;
 

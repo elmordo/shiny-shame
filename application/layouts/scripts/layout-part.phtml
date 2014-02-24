@@ -1,0 +1,13 @@
+<div class="partial">
+    <?php
+    $pattern = "<input type='hidden' name='%s' value='%d' />";
+    
+    printf($pattern, "width", $this->partWidth ? $this->partWidth : 0);
+    printf($pattern, "height", $this->partHeight ? $this->partHeight : 0);
+    ?>
+    <div class="partial-content">
+<?php
+echo $this->layout()->content;
+?>
+    </div>
+</div>

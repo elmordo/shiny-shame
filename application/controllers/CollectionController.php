@@ -97,7 +97,7 @@ class CollectionController extends MP_Controller_Action {
         $form = new Application_Form_Collection();
         $collection = $this->findById($this->_request->getParam("collection_id"));
         
-        $form->populate($collection->toArray());
+        $form->populate($collection->toArray(), "put-collection");
         
         // vyhodnoceni odeslani
         if ($this->_request->isPost()) {
@@ -114,6 +114,14 @@ class CollectionController extends MP_Controller_Action {
         $this->view->form = $form;
         $this->view->collection = $collection;
         $this->view->serie = $serie;
+    }
+    
+    public function putPartAction() {
+        $this->putAction();
+    }
+    
+    public function putJsonAction() {
+        $this->putAction();
     }
 }
 

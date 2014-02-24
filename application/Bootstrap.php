@@ -8,7 +8,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $autoloader = Zend_Loader_Autoloader::getInstance();
         $autoloader->registerNamespace("MP_");
 
-        Zend_Controller_Front::getInstance()->registerPlugin(new MP_Controller_Plugin_Acl());
+        $front = Zend_Controller_Front::getInstance();
+        $front->registerPlugin(new MP_Controller_Plugin_Acl());
+        $front->registerPlugin(new MP_Controller_Plugin_Layout());
+        
         
         define("TMP_PATH", APPLICATION_PATH . "/../tmp");
         define("IMAGE_PREVIEW_PUBLIC", "/previews");
@@ -172,7 +175,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         );
 
         $router->addRoute(
-                "put-collection", new Zend_Controller_Router_Route("/serie/:serie_id/collection/:collection_id/edit", array(
+                "put-collection", new MP_Controller_Router_Route("/serie/:serie_id/collection/:collection_id/edit", array(
             "module" => "default",
             "controller" => "collection",
             "action" => "put"
@@ -334,8 +337,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $title->setSeparator(" - ");
         $title->headTitle("MicroPic");
 
+        // pripojeni stylu
         $styles = new Zend_View_Helper_HeadLink();
         $styles->appendStylesheet("/css/styles.css");
+        $styles->appendStylesheet("/css/start/jquery-ui-1.10.4.custom.min.css");
+        
+        // pripojeni javascriptu
+        $scripts = new Zend_View_Helper_HeadScript();
+        $scripts->appendFile("/js/third/jquery-2.1.0.min.js", "text/javascript");
+        $scripts->appendFile("/js/third/jquery-ui-1.10.4.custom.min.js", "text/javascript");
+        $scripts->appendFile("/js/extensions.js", "text/javascript");
+        $scripts->appendFile("/js/application.js", "text/javascript");
     }
 
 }
