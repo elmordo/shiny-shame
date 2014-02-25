@@ -1,37 +1,52 @@
 <?php
 $serie = $this->serie;
-
 echo $this->header("Serie - " . $serie->name);
+echo $this->buttonLink("Back to experiment", $this->url($serie->toArray(), "get-experiment"));
 $this->header()->goDown();
 ?>
-<table class="info-table">
-    <?php
-    $table = $this->tableLayout();
-    echo $table->row(array("Name", $serie->name));
-    echo $table->row(array("Starts at", $serie->start_at ? $this->sqlDateTime($serie->start_at) : "-"));
-    echo $table->row(array("Ends at", $serie->end_at ? $this->sqlDateTime($serie->end_at) : "-"));
-    ?>
-</table>
-<?php
-echo $this->buttonLink("Edit serie", $this->url($serie->toArray(), "serie-put"));
+<div class="tabs">
+    <ul>
+        <li><a href="#serie-overview">Overview</a></li>
+        <li><a href="#serie-collections">Collections</a></li>
+        <li><a href="#serie-new-data">Upload new data</a></li>
+    </ul>
+    <div id="serie-overview">
+        <table class="info-table">
+            <?php
+            $table = $this->tableLayout();
+            echo $table->row(array("Name", $serie->name));
+            echo $table->row(array("Starts at", $serie->start_at ? $this->sqlDateTime($serie->start_at) : "-"));
+            echo $table->row(array("Ends at", $serie->end_at ? $this->sqlDateTime($serie->end_at) : "-"));
+            ?>
+        </table>
+        <?php
+        echo $this->buttonLink("Edit serie", $this->url($serie->toArray(), "serie-put"));
 
-echo $this->header("Comment");
-echo $serie->comment_html;
-
-echo $this->action("index", "collection", "default", $serie->toArray());
-
-echo $this->action("upload", "frame", "default", $serie->toArray());
-?>
-<applet
-    code="wjhk.jupload2.JUploadApplet"
-    name="JUpload1"
-    archive="/wjhk.jupload.jar"
-    width="640"
-    height="300"
-    mayscript="true"
-    alt="The java plugin must be installed.">
-    <param name="postURL" value="/frame/applet?serie_id=<?php echo $serie->serie_id; ?>" />
-    <param name="nbFilesPerRequest" value="1" />
-    <param name="debugLevel" value="0"/> wjhk.jupload.jar or higher plugin required.
-    <param name="showLogWindow" value="true" />
-</applet>
+        echo $this->header("Comment");
+        echo $serie->comment_html;
+        ?>
+    </div>
+    <div id="serie-collections">
+        <?php
+        echo $this->action("index", "collection", "default", $serie->toArray());
+        ?>
+    </div>
+    <div id="serie-new-data">
+        <?php
+        echo $this->action("upload", "frame", "default", $serie->toArray());
+        ?>
+        <applet
+            code="wjhk.jupload2.JUploadApplet"
+            name="JUpload1"
+            archive="/wjhk.jupload.jar"
+            width="640"
+            height="300"
+            mayscript="true"
+            alt="The java plugin must be installed.">
+            <param name="postURL" value="/frame/applet?serie_id=<?php echo $serie->serie_id; ?>" />
+            <param name="nbFilesPerRequest" value="1" />
+            <param name="debugLevel" value="0"/> wjhk.jupload.jar or higher plugin required.
+            <param name="showLogWindow" value="true" />
+        </applet>
+    </div>
+</div>
