@@ -58,6 +58,7 @@ class Application_Model_Frames extends MP_Db_Table {
             $nameCollections = self::getRealName("Application_Model_CollectionsHaveFrames");
             $select->joinInner(array("c" => $nameCollections), "c.frame_id = f.frame_id", array());
             $select->where("c.collection_id = ?", $collectionId);
+            $select->order("ord");
         }
         
         return $this->_generateRowset($select->query()->fetchAll());

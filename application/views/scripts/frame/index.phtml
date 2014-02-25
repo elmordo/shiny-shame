@@ -1,5 +1,9 @@
 <?php
 echo $this->header("Frames");
+
+echo "<div id='frame-director-controls'></div>";
+echo "<div id='frame-container'>";
+
 echo $this->frame()->frames($this->frames, array(
     "actions" => array(
         "frame-get" => array(
@@ -11,4 +15,11 @@ echo $this->frame()->frames($this->frames, array(
             )
         )
     ));
+
+echo "</div>";
 ?>
+<div id="big-frame">
+    <div id="big-frame-wrapper">
+        <img src="<?php if ($this->frames->count()) echo $this->frames[0]->getPublicFullPath(); ?>">
+    </div>
+</div>

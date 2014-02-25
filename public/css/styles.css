@@ -39,3 +39,10 @@ form fieldset { margin: 0 -15px; border: none; border-top: 1px solid black; bord
 .info-table tr td:first-child { font-style: italic; }
 .info-table tr td:last-child { font-weight: bolder; }
 .info-table tr td { margin: 0; padding: 5px 15px 5px 5px; }
+
+#frame-container { overflow-x: scroll; overflow-y: hidden; width: 100%; height: 320px; }
+#frames { display: block; height: 320px; white-space: nowrap; }
+#frames li { display: inline-block; margin: 5px 10px;  width: 300px; }
+#frames li.active { border: 3px solid green; margin: 2px 7px; }
+#frames li div { max-width: 250px; margin: auto; }
+#big-frame-wrapper { margin: auto; }

@@ -49,7 +49,7 @@ class Zend_View_Helper_Frame extends MP_View_Helper_Abstract {
         
         $content = implode("", $items);
         
-        return $this->_wrapToTag($config["listTag"], $content, array("listClass" => $config["listClass"]));
+        return $this->_wrapToTag($config["listTag"], $content, array("listClass" => $config["listClass"], "id" => "frames"));
     }
     
     public function listFrameItem(Application_Model_Row_Frame $frame, array $config = array()) {
