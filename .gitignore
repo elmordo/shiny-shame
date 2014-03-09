@@ -2,6 +2,7 @@
 *.autosave
 *~
 !.gitignore
+!.htaccess
 /nbproject/private/
 /nbproject
 /public/changelog.txt
