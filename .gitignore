@@ -9,3 +9,6 @@
 /data
 /tmp
 /public/previews
+/python/tmp
+*sublime*
+

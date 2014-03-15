@@ -1,0 +1,19 @@
+Zde se nachází pythonový převaděč obrázků
+
+Důvod tohoto programu je ten, že při nahrávání obrázků na server to trvá moc dlouho. Pomocí tohoto podprogramu je zpracování obrázků provedeno asynchronně, nezávisle na PHP skriptu obsluhujícím uživatele.
+Podprogram je řešen jako síťový server, který poslouchá požadavky z adresy 127.0.0.1 na definovém portu (standadně 56565).
+PHP program pošle programu požadavek, je zařazen do fronty a jakmile se uvolní pracovní vlákno, tak požadavek je zpracován.
+
+Komunikační protokol
+====================
+
+# první čtyři byty obsahují velikost zprávy (little endian)
+# nasleduje obsah zprávy
+
+zprava se sklada z:
+
+# jmeno volane metody
+# vycet parametru kodovanych base64
+
+jednotlive položky jsou od sebe odděleny pomocí znaku \n
+stejná architektura je použita pro serializace requestu
