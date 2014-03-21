@@ -60,7 +60,7 @@ class Server(threading.Thread):
 			conn.close()
 
 			# zpracovani zpravy a ulozeni do fronty
-			request = Request.deserialize(msg)
+			request = Request.unserialize(msg)
 
 			# pokud se jedna o pozadavek k vypnuti, pak se nic nebude zarazovat do fornty a server se vypne
 			if request.method == "shutdown":
@@ -72,8 +72,8 @@ class Server(threading.Thread):
 			# spusteni zpracovani fronty
 			Queue.processQueue()
 
+		sck.shutdown(socket.SHUT_WR)
 		sck.close()
-		sck.shutdown()
 
 	def _receive(self, s):
 		'''
@@ -89,8 +89,8 @@ class Server(threading.Thread):
 		# zpracovani na delku
 		length = 0
 
-		for i in range(self._LENGTH_BYTES):
-			length += lenData[i] << (i * 8)
+		for i in range(4):
+			length += ord(lenData[i]) << (i * 8)
 
 		# nacteni zpravy
 		return self._readLength(s, length)
@@ -112,16 +112,16 @@ class Server(threading.Thread):
 		read = 0
 		rest = l
 
-		while l > 0:
+		while rest > 0:
 			# vypocet delky k nacteni
 			toRead = min([rest, self.MAX_CHUNK])
 
 			# nacteni dat
 			chunk = s.recv(toRead)
-			rest += len(chunk)
+			rest -= len(chunk)
 
 			# zapis do navratove hodnoty
-			retVal += rest
+			retVal += chunk
 
 		# vraceni dat
 		return retVal

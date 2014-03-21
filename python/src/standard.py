@@ -1,5 +1,7 @@
 from PIL import Image
+from zipfile import ZipFile, ZIP_DEFLATED
 import os
+import sys
 
 class Method(object):
 	'''
@@ -17,6 +19,43 @@ class Method(object):
 
 		'''
 		raise NotImplementedError()
+
+class WriteToArchive(Method):
+	'''
+	zapise snimek do archivu
+	poradi parametru je
+	- data obrazku
+	- cesta k archivu
+	- cesta k souboru v archivu
+
+	'''
+
+	def do(self, request):
+		'''
+		provede zapis obrazku do archivu
+
+		'''
+		# nacteni parametru
+		params = request.params
+
+		# vytvoreni docasne slozky
+		path = params[2].split("/")
+		fileName = path.pop()
+		rootDir = path[0]
+		dirName = "/".join(path)
+
+		os.makedirs("tmp/" + "/".join(path))
+
+		f = open("tmp/" + params[2], "w")
+		f.write(params[0])
+		f.close()
+
+		os.system("cd tmp; zip -r %s %s" % (params[1], rootDir));
+
+		os.remove("tmp/" + params[2])
+		rootDirPath = "tmp/" + rootDir
+
+		os.system("rm -r " + rootDirPath)
 
 class ImagePreviewer(Method):
 	'''
@@ -100,5 +139,9 @@ class ImagePreviewer(Method):
 		preview = pImp.resize((newWidth, newHeight))
 
 		# zapis dat na disk
-		pImp.convert("L").save(fullName)
-		preview.convert("L").save(prevName)
+		basePath = "../public/previews/"
+		fullRealName = "%sprev_%s_full.jpeg" % (basePath, params[1].__str__())
+		prevRealName = "%sprev_%s_small.jpeg" % (basePath, params[1].__str__())
+		pImp.convert("L").save(fullRealName)
+		preview.convert("L").save(prevRealName)
+

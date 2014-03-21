@@ -142,11 +142,11 @@ class FrameController extends MP_Controller_Action {
             
             switch($extension) {
                 case self::FILE_TIFF:
-                    $this->saveTiff($fileElement, $serie, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
+                    $this->saveTiff($fileElement, $serie, $archive, $collections, (bool) $createCols, (bool) $rewrite);
                     break;
                 
                 case self::FILE_ZIP:
-                    $this->saveZip($fileElement, $serie, $archive, $collectionIndex, (bool) $createCols, (bool) $rewrite);
+                    $this->saveZip($fileElement, $serie, $archive, $collections, (bool) $createCols, (bool) $rewrite);
                     break;
                 
             }
@@ -360,7 +360,7 @@ class FrameController extends MP_Controller_Action {
             "ord" => $parseReport->ord,
             "size" => filesize($fileName)
         ));
-        
+        /*
         // prevedeni na JPEG soubor
         $tmpFullName = $fileName . "_full.jpeg";
         $tmpSmallName = $fileName . "_small.jpeg";
@@ -377,23 +377,42 @@ class FrameController extends MP_Controller_Action {
         
         $frame->width = $imgSize[0];
         $frame->height = $imgSize[1];
+        */
         
-        // zapis do archivu
-        $archive->addFrame($fileName, $serie, $frame);
-        
-        // ulozeni radku a nakopirovani nahledu
+        // ulozeni snimku a zapis do kolekce
         $frame->save();
-        
+        $collection->addFrame($frame);
+
+        // zapis do archivu
+        //$archive->addFrame($fileName, $serie, $frame);
+
+        // vytvoreni pozadavku a odeslani na server
+        $request = new MP_PyServer_Request("standard.ImagePreviewer", array(
+            file_get_contents($fileName),
+            $frame->frame_id,
+            300,
+            300
+        ));
+
+        MP_PyServer_Connection::sendRequest($request);
+
+        // pozadavek na zapis do archivu
+        $aRequest = new MP_PyServer_Request("standard.WriteToArchive", array(
+            file_get_contents($fileName),
+            $archive->getStorageLocation(),
+            $archive->getFramePath($serie, $frame)
+            ));
+
+        MP_PyServer_Connection::sendRequest($aRequest);
+
+        /*
         $frame->setFullPreview($tmpFullName);
         $frame->setSmallPreview($tmpSmallName);
-        
-        // zapsani snimku do kolekce
-        $collection->addFrame($frame);
         
         // odstraneni docasnych souboru
         unlink($tmpFullName);
         unlink($tmpSmallName);
-        
+        */
         return $frame;
     }
     

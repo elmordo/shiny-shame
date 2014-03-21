@@ -11,4 +11,4 @@
 /public/previews
 /python/tmp
 *sublime*
-
+*.pyc

@@ -4,6 +4,7 @@ import threading
 import datetime
 import dircache
 import os
+import standard as std
 
 class Queue(threading.Thread):
 	'''
@@ -33,9 +34,9 @@ class Queue(threading.Thread):
 
 		'''
 		# kontrola instance
-		if (self._INSTANCE == None):
+		if (cls._INSTANCE == None):
 			# vytvoreni nove instance
-			self._INSTANCE = super(Queue, self).__new__(*args, **kwargs)
+			cls._INSTANCE = super(Queue, cls).__new__(cls, *args, **kwargs)
 
 		return cls._INSTANCE
 
@@ -50,10 +51,16 @@ class Queue(threading.Thread):
 		request = self.__class__.pop()
 
 		while request is not None:
+			methodName = request.method
+
+			if methodName == "standard.ImagePreviewer":
+				std.ImagePreviewer().do(request)
+			elif methodName == "standard.WriteToArchive":
+				std.WriteToArchive().do(request)
 
 			# nacteni dalsiho pozadavku
 			request = self.__class__.pop()
-
+		
 		# ukonceni behu procesu
 		self.__class__._IN_PROCESS = False
 
@@ -92,6 +99,7 @@ class Queue(threading.Thread):
 
 		# kontrola zda byl nalezen soubor
 		if filePath is None:
+			cls._LOCK.release()
 			return None
 
 		# nacteni a smazani souboru
@@ -111,7 +119,11 @@ class Queue(threading.Thread):
 
 		'''
 		# pokud je zpracovani aktivni, pak se nic nedeje
+		if cls._IN_PROCESS:
+			return
 
+		# start procesu
+		cls().start()
 
 	@classmethod
 	def push(cls, request):
@@ -176,7 +188,7 @@ class Request(object):
 		params = [ self._method ]
 
 		for param in self._params:
-			params.append(base64.encode(self._params.__str__()))
+			params.append(base64.b64encode(param))
 
 		# slouceni do jednoho retezce
 		return "\n".join(params)
@@ -217,11 +229,11 @@ class Request(object):
 		params = list()
 
 		for item in splitted:
-			params.append(base64.decode(item))
+			params.append(base64.b64decode(item))
 
 		# vytvoreni navratove hodnoty a nastaveni dat
 		retVal = Request()
-		retval._method = methodName
+		retVal._method = methodName
 		retVal._params = params
 
 		return retVal
