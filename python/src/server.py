@@ -87,10 +87,7 @@ class Server(threading.Thread):
 		lenData = self._readLength(s, self._LENGTH_BYTES)
 
 		# zpracovani na delku
-		length = 0
-
-		for i in range(4):
-			length += ord(lenData[i]) << (i * 8)
+		length = self.readHeader(lenData);
 
 		# nacteni zpravy
 		return self._readLength(s, length)
@@ -125,3 +122,37 @@ class Server(threading.Thread):
 
 		# vraceni dat
 		return retVal
+
+	@classmethod
+	def readHeader(cls, msg):
+		'''
+		@param msg: zprava prijata od klienta
+		@return: int
+		nacte header a vraci delku zpravy
+
+		'''
+		length = 0
+
+		for i in range(cls._LENGTH_BYTES):
+			length += ord(msg[i]) << (i * 8)
+
+		return length;
+
+	@classmethod
+	def writeHeader(cls, data):
+		'''
+		@param data: data k odeslani
+		@return: str
+		vytvori hlavicku, kterou pripoji k datum a vraci kompletni zpravu
+
+		'''
+		# nacteni a zpracovani delky zpravy
+		msgLen = len(data)
+		lenData = list()
+
+		for i in range(cls._LENGTH_BYTES):
+			lenData.append(chr(msgLen >> (i * 8)))
+
+		header = "".join(lenData)
+
+		return header + data;
