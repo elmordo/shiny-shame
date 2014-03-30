@@ -24,7 +24,10 @@ class MP_PyServer_Connection {
 		// pokud spojeni nebylo vytvoreno, pokusime se spustit server
 		if (!$conn) {
 			exec("cd " . APPLICATION_PATH . "/../python; sh start");
+<<<<<<< HEAD
 			sleep(1);
+=======
+>>>>>>> 1f928b7afaf2d10b5e3488099cbbb6e02d377864
 			$conn = fsockopen(self::$_host, self::$_port);
 		}
 
