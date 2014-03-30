@@ -21,9 +21,15 @@ class MP_PyServer_Connection {
 		// vytvoreni spojeni a vraceni handleru
 		$conn = fsockopen(self::$_host, self::$_port);
 
+		// pokud spojeni nebylo vytvoreno, pokusime se spustit server
+		if (!$conn) {
+			exec("cd " . APPLICATION_PATH . "/../python; sh start");
+			$conn = fsockopen(self::$_host, self::$_port);
+		}
+
+		// kontrola, zda bylo spojeni navazano
 		if (!$conn) throw new MP_PyServer_Exception("Unable to connect python server", 1);
 		
-
 		return $conn;
 	}
 }
