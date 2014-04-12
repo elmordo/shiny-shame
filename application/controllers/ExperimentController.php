@@ -52,6 +52,8 @@ class ExperimentController extends MP_Controller_Action {
     public function postAction() {
         // vytvoreni formulare
         $form = self::prepareExperimentForm();
+        $url = $this->view->url($this->_request->getParams(), "create-experiment");
+        $form->setAction($url);
 
         if ($this->_request->isPost()) {
             // formular byl odeslan -> zkontroluji se data
@@ -74,6 +76,8 @@ class ExperimentController extends MP_Controller_Action {
         // nacteni dat
         $form = self::prepareExperimentForm();
         $experiment = $this->findById($this->_request->getParam("experiment_id"));
+        $url = $this->view->url($this->_request->getParams(), "edit-experiment");
+        $form->setAction($url);
 
         if ($this->_request->isPost()) {
             // formular byl odeslan, dojde k validaci a pripadnemu ulozeni dat

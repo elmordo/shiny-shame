@@ -5,9 +5,22 @@ if ($this->serie->isSaved()) {
 
 echo $this->header("Edit serie - " . $this->serie->name);
 echo $this->buttonLink("Back to overview", $this->url($this->serie->toArray(), "serie-get"));
-echo $this->form;
-
-$this->header()->goDown();
-echo $this->action("delete", "serie", "default", $this->serie->toArray());
-$this->header()->goUp();
 ?>
+<div class="tabs">
+    <ul>
+        <li><a href="#serie-edit">Edit serie</a></li>
+        <li><a href="#serie-delete">Delete serie</a></li>
+    </ul>
+    <div id="serie-edit">
+<?php
+echo $this->form;
+?>
+</div>
+    <div id="serie-delete">
+    <?php
+    $this->header()->goDown();
+    echo $this->action("delete", "serie", "default", $this->serie->toArray());
+    $this->header()->goUp();
+    ?>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 <?php
 if ($this->serie) {
-    $this->redirect("serie-get", true, $this->serie->toArray());
+    $this->redirect("serie-get", true, array_merge($this->sample->toArray(), $this->serie->toArray()));
 }
 
 echo $this->header("New serie");

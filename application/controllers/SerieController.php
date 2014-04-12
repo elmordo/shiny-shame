@@ -51,8 +51,10 @@ class SerieController extends MP_Controller_Action {
     public function postAction() {
         // vytvoreni formulare a nacteni ifnormaci o vzorku
         $form = new Application_Form_Serie();
+        $form->setAction($this->view->url($this->_request->getParams(), "serie-post"));
+
         $sample = $this->findRowById($this->_request->getParam("sample_id"), "Samples");
-        
+
         // kontrola, jestli byl formular odeslan a zda jsou data validni
         if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
             // data jsou validni - vytvoreni nove serie snimku
@@ -64,6 +66,7 @@ class SerieController extends MP_Controller_Action {
             $serie->save();
             
             $this->view->serie = $serie;
+            $this->view->sample = $sample;
         }
         
         $this->view->form = $form;
@@ -74,7 +77,10 @@ class SerieController extends MP_Controller_Action {
         $form = new Application_Form_Serie();
         $serie = $this->findById($this->_request->getParam("serie_id"));
         $form->populate($serie->toArray());
-        
+
+        $url = $this->view->url($this->_request->getParams(), "serie-put");
+        $form->setAction($url);
+
         // kontrola, zda byl formular odeslan
         if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
             // formular byl odeslan a je validni - ulozeni zmen

@@ -56,6 +56,8 @@ class SampleController extends MP_Controller_Action {
     
     public function postAction() {
         $form = new Application_Form_Sample();
+        $url = $this->view->url($this->_request->getParams(), "sample-post");
+        $form->setAction($url);
         
         if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
             $row = $this->_sourceTable->createRow();
@@ -74,6 +76,9 @@ class SampleController extends MP_Controller_Action {
         $form = new Application_Form_Sample();
         $sample = $this->findById($this->_request->getParam("sample_id"), "Samples");
         $form->populate($sample->toArray());
+
+        $url = $this->view->url($this->_request->getParams(), "sample-put");
+        $form->setAction($url);
         
         if ($this->_request->isPost() && $form->isValid($this->_request->getParams())) {
             $sample->setFromArray($form->getValues(true));

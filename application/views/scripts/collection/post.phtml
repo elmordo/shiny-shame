@@ -6,11 +6,11 @@ if ($this->row) {
     $redirector->gotoUrlAndExit($url);
 }
 
-echo $this->header(sprintf("New collection for experiment &QUOT;%s&QUOT;", $this->experiment->name));
+echo $this->header(sprintf("New collection for experiment &QUOT;%s&QUOT;", $this->serie->name));
 $this->header()->goDown();
 
-$backUrl = $this->url($this->experiment->toArray(), "edit-experiment");
-echo $this->buttonLink("Back to experiment", $backUrl);
+$backUrl = $this->url($this->serie->toArray(), "serie-get");
+echo $this->buttonLink("Back to serie", $backUrl);
 
 echo $this->form;
 

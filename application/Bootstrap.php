@@ -11,6 +11,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
         $front = Zend_Controller_Front::getInstance();
         $front->registerPlugin(new MP_Controller_Plugin_Acl());
         $front->registerPlugin(new MP_Controller_Plugin_Layout());
+        $front->registerPlugin(new MP_Controller_Plugin_PrevPage());
         
         
         define("TMP_PATH", APPLICATION_PATH . "/../tmp");
@@ -255,6 +256,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                 );
         
         $router->addRoute(
+                "sample-post", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/create", array(
+                    "module" => "default",
+                    "controller" => "sample",
+                    "action" => "post"
+                ))
+                );
+        
+        $router->addRoute(
                 "serie-get", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/serie/:serie_id/get", array(
                     "module" => "default",
                     "controller" => "serie",
@@ -267,6 +276,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap {
                     "module" => "default",
                     "controller" => "serie",
                     "action" => "put"
+                ))
+                );
+
+        $router->addRoute(
+                "serie-post", new Zend_Controller_Router_Route("/experiment/:experiment_id/sample/:sample_id/serie/create", array(
+                    "module" => "default",
+                    "controller" => "serie",
+                    "action" => "post"
                 ))
                 );
     }

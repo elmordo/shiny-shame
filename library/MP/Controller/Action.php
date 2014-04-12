@@ -101,6 +101,57 @@ class MP_Controller_Action extends Zend_Controller_Action {
         
         return self::$_rowCache[$tableName][$id];
     }
+
+    /**
+     * nastavi tuto akci na akci formulare a pripadne prida dalsi parametry
+     * v tuto chvili neni podporovana rekurze u parametru
+     * @param Zend_Form $form formular, na kterem bude nastavena akce
+     * @param array $params dodatecne parametry
+     * @param array $keys pripadny seznam klicu, ktere budou vybrany z parametru
+     * @return Zend_Form
+     */
+    public function setThisAction(Zend_Form $form, array $params = array(), array $keys = null) {
+        // kontrola parametru
+        if (!is_null($keys)) {
+            $newParams = array();
+
+            foreach ($keys as $key) {
+                if (isset($params[$key])) {
+                    $newParams[$key] = $params[$key];
+                }
+            }
+
+            // nahrazeni dat
+            $params = $newParams;
+        }
+
+        // sestaveni routy
+        $module = $this->_request->getModuleName();
+        $controller = $this->_request->getControllerName();
+        $action = $this->_request->getActionName();
+
+        // sesaveni zakladni cesty
+        $path = "/" . $controller . "/" . $action;
+
+        if ($module != "default") {
+            $path = "/" . $module . $path;
+        }
+
+        // doplneni parametu, pokud jsou treba 
+        if ($params) {
+            $pairs = array();
+
+            foreach ($params as $name => $value) {
+                $pairs[] = $name . "=" . $value;
+            }
+
+            $path .= "?" . implode("&", $pairs);
+        }
+
+        $form->setAction($path);
+
+        return $form;
+    }
     
     /**
      * zapise radek do cache

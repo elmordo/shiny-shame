@@ -74,6 +74,7 @@ class CollectionController extends MP_Controller_Action {
     
     public function postAction() {
         $form = new Application_Form_Collection();
+        $this->setThisAction($form);
         $serie = $this->_serie;
         
         // vyhodnoceni jestli byl formular odeslan jako POST

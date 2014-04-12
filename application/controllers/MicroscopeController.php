@@ -36,6 +36,7 @@ class MicroscopeController extends MP_Controller_Action {
      */
     public function postAction() {
         $form = new Application_Form_Microscope();
+        $form->setAction($this->view->url($this->_request->getParams(), "create-microscope"));
 
         if ($this->_request->isPost()) {
             // validace dat
@@ -60,8 +61,6 @@ class MicroscopeController extends MP_Controller_Action {
      */
     public function postPartAction() {
         $this->postAction();
-        
-        $this->view->form->setAction("create-microscope");
     }
     
     /*
@@ -71,6 +70,7 @@ class MicroscopeController extends MP_Controller_Action {
         // nacteni mikroskopu
         $microscope = self::findByTag($this->_request->getParam("tag"));
         $form = new Application_Form_Microscope();
+        $form->setAction($this->view->url($this->_request->getParams(), "microscope-put"));
         
         if ($this->_request->isPost()) {
             // validace formulare
